@@ -24,7 +24,7 @@ defmodule IStackWeb.AuthController do
     end
   end
 
-  def verify_email_password(conn, %{"name" => name, "password" => password } = params) do
+  def verify_name_password(conn, %{"name" => name, "password" => password } = params) do
     case Account.get_user_by_name(name) do
       nil ->
         conn

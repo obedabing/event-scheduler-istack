@@ -23,7 +23,7 @@ defmodule IStackWeb.AuthControllerTest do
     setup [:create_user]
 
     test "name and password", %{conn: conn} do
-      conn = post(conn, Routes.auth_path(conn, :verify_email_password), name: "some name", password: "some password")
+      conn = post(conn, Routes.auth_path(conn, :verify_name_password), name: "some name", password: "some password")
        
       assert %{
         "jwt" => jwt,

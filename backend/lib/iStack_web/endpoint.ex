@@ -42,5 +42,7 @@ defmodule IStackWeb.Endpoint do
     key: "_iStack_key",
     signing_salt: "KnSvf3aZ"
 
+  plug CORSPlug
+
   plug IStackWeb.Router
 end

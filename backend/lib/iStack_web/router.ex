@@ -14,6 +14,8 @@ defmodule IStackWeb.Router do
   end
 
   pipeline :api do
+    plug CORSPlug
+
     plug :accepts, ["json"]
   end
 
@@ -21,7 +23,7 @@ defmodule IStackWeb.Router do
     pipe_through :api
 
     scope "/auth" do
-      post "/login", AuthController, :verify_email_password
+      post "/login", AuthController, :verify_name_password
       post "/token/verify", AuthController, :verify_platform_token
     end
 
