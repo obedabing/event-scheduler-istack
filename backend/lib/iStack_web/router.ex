@@ -9,12 +9,23 @@ defmodule IStackWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :auth do
+    plug IStack.Auth.Pipeline
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/api", IStackWeb do
     pipe_through :api
+
+    scope "/auth" do
+      post "/login", AuthController, :verify_email_password
+      post "/token/verify", AuthController, :verify_platform_token
+    end
+
+    pipe_through :auth
 
     resources "/users", UserController
   end

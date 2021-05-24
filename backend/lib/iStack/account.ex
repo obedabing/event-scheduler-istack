@@ -37,6 +37,16 @@ defmodule IStack.Account do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_by_name(name) do
+    query = from(
+      u in User,
+      where: u.name == ^name,
+      select: u,
+    )
+    
+    Repo.one(query)
+  end
+
   @doc """
   Creates a user.
 
