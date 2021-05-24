@@ -13,14 +13,9 @@ defmodule IStackWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", IStackWeb do
-    pipe_through :browser
+  scope "/api", IStackWeb do
+    pipe_through :api
 
-    get "/", PageController, :index
+    resources "/users", UserController
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", IStackWeb do
-  #   pipe_through :api
-  # end
 end
