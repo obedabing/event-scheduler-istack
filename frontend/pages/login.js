@@ -1,19 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
+import { useRouter } from 'next/router'
+
 import {
-  login
+  login,
+  getCookieJwt,
 } from '../src/actions'
 
 const Admin = () => {
+  const router = useRouter()
   const [userData, setUserData] = useState({
     name: '',
     password: '',
   })
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    console.log(getCookieJwt(), "AHAHAHAHAHHA")
+    if (getCookieJwt()) {
+      router.replace('/admin')
+    }
+  }, [])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -21,12 +33,22 @@ const Admin = () => {
       ...userData,
       [name]: value,
     })
+
+    if (error) {
+      setError(null)
+    }
   }
 
   const handleLogin = () => {
     const { name, password } = userData
     login(name, password).then((res) => {
-      console.log(res)
+      if (res.status === 400) {
+        setError(res.data)
+      } 
+
+      if (res.status === 200) {
+        router.push('/admin')
+      } 
     })
   }
   
@@ -62,6 +84,7 @@ const Admin = () => {
               variant="outlined"
               onChange={handleChange}
               value={userData.name}
+              error={error}
             />
           </Grid>
           <Grid item>
@@ -72,6 +95,8 @@ const Admin = () => {
               type="password"
               onChange={handleChange}
               value={userData.password}
+              error={error}
+              helperText={error && error.message}
             />
           </Grid>
           <Grid item style={{ display: 'flex', justifyContent: 'flex-end' }}>
