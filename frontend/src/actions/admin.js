@@ -10,6 +10,7 @@ const cookieOptions = {
 
 import {
   verifyNameAndPassword,
+  verifyToken as verifyJwt,
 } from '../api'
 
 const setCookieJwt = (jwt) => {
@@ -20,7 +21,18 @@ export const getCookieJwt = () => {
   return Cookies.get('istack-token')
 }
 
-export const login = async (name, password) =>{
+export const verifyToken = async () => {
+  try {
+    const jwt = getCookieJwt()
+    const res = await verifyJwt(jwt)
+    
+    return res
+  } catch ({ response }) {
+    return response
+  }
+}
+
+export const login = async (name, password) => {
   try {
     const res = await verifyNameAndPassword({
       name,

@@ -10,16 +10,23 @@ import { useRouter } from 'next/router'
 import {
   logout,
   getCookieJwt,
+  verifyToken,
 } from '../src/actions'
 
 const Admin = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (!getCookieJwt()) {
+    if (getCookieJwt()) {
+      verifyToken().then((res) => {
+        if (res.status !== 200) {
+          router.replace('/login')
+        }
+      })
+    } else {
       router.replace('/login')
     }
-  }, [])
+  }, [verifyToken])
 
   const handleLogout = () => {
     logout()
