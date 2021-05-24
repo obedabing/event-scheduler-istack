@@ -1,5 +1,5 @@
-defmodule IStack.Account.Guardian do
-  use Guardian, otp_app: :auth_me
+defmodule IStack.Auth.Guardian do
+  use Guardian, otp_app: :iStack
 
   alias IStack.Account
 

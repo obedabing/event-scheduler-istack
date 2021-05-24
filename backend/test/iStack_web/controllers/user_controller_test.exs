@@ -42,7 +42,6 @@ defmodule IStackWeb.UserControllerTest do
       assert %{
                "id" => id,
                "name" => "some name",
-               "password" => "some password",
                "type" => "some type"
              } = json_response(conn, 200)["data"]
     end
@@ -65,7 +64,6 @@ defmodule IStackWeb.UserControllerTest do
       assert %{
                "id" => id,
                "name" => "some updated name",
-               "password" => "some updated password",
                "type" => "some updated type"
              } = json_response(conn, 200)["data"]
     end

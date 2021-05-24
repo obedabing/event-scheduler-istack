@@ -25,8 +25,8 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :auth_me, IStack.Account.Guardian,
-  issuer: "auth_me",
+config :iStack, IStack.Auth.Guardian,
+  issuer: "IStack",
   secret_key: "RZtKvFBZJOAwSAIVS5fwV3N9/rsCuGa75iXGa3l+zri5Mhly+GB+Aq1IxV5Zy0n1"
 
 # Import environment specific config. This must remain at the bottom
