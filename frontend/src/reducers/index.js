@@ -1,7 +1,7 @@
 import eventReducer from './adminEventReducer'
 
 const reducer = {
-  eventDat: eventReducer,
+  eventData: eventReducer,
 }
 
 export default reducer

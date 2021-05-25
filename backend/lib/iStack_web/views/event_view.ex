@@ -12,7 +12,6 @@ defmodule IStackWeb.EventView do
 
   def render("event.json", %{event: event}) do
     %{id: event.id,
-      date: event.date,
-      name: event.name}
+      date: event.date}
   end
 end

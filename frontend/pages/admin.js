@@ -8,23 +8,45 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
+import Accordion from '@material-ui/core/Accordion'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Container } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useRouter } from 'next/router'
 
 import EventFormModal from '../src/components/EventFormModal'
+import EventSchedFormModal from '../src/components/EventSchedFormModal'
 
 import {
   logout,
-  getCookieJwt,
   verifyToken,
   createEvent,
+  fetchEvents,
+  createEventSched,
 } from '../src/actions'
+
+import {
+  getCookieJwt
+ } from '../src/utils'
 
 const Admin = () => {
   const router = useRouter()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchEvents())
+  }, [fetchEvents])
+
+  const {
+    eventData,
+    eventIds,
+  } = useSelector(({ eventData  }) => ({
+    eventData: eventData.event.data,
+    eventIds: eventData.event.ids,
+  }))
 
   useEffect(() => {
     if (getCookieJwt()) {
@@ -43,12 +65,24 @@ const Admin = () => {
     router.replace('/login')
   }
 
-
+  const [selectedEvent, setSelectedEvent] = useState(null)
   const [openEventModal, setOpenEventModal] = useState(false)
+  const [openEventSchedModal, setOpenEventSchedModal] = useState(false)
+
   const handleCreateEvent = (data) => {
     dispatch(createEvent(data)).then((res) => {
       if (res.status === 201) {
         setOpenEventModal(false)
+        dispatch(fetchEvents())
+      }
+    })
+  }
+
+  const handleCreateEventSched = (data, eventId) => {
+    dispatch(createEventSched(data, eventId)).then((res) => {
+      if (res.status === 201) {
+        setOpenEventSchedModal(false)
+        // dispatch(fetchEvents())
       }
     })
   }
@@ -72,19 +106,65 @@ const Admin = () => {
       </AppBar>
     )
   }
+
+  const renderEventScheduleAccordionContainer = () => {
+
+    return (
+      <Grid container spacing={2}>
+        <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography>SCHEDULE</Typography>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              setOpenEventSchedModal(true)
+            }}
+          >
+            ADD SCHEDULE
+          </Button>
+        </Grid>
+      </Grid>
+    )
+  }
+
+  const renderEventAccordionList = () => (
+      eventIds.map((id) => {
+        const data = eventData[id]
+        return (
+          <Grid item xs={8}>
+            <Accordion
+              onChange={() => setSelectedEvent(data)}
+              expanded={selectedEvent && selectedEvent.id === id}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>{data.date}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {renderEventScheduleAccordionContainer()}
+              </AccordionDetails>
+            </Accordion>
+          </Grid>
+        )
+      })
+    )
   
   return (
     <Container maxWidth='xl' style={{ padding: '0px' }}>
       {renderHeader()}
       <Grid 
         container
+        justify="center"
         style={{
           backgroundColor: 'grey',
           padding: '20px',
         }}
         spacing={2}
       >
-       <Grid item xs={12}>
+        <Grid item xs={8}>
           <Button
             color="primary"
             variant="contained"
@@ -94,12 +174,21 @@ const Admin = () => {
           >
             ADD EVENT
           </Button>
-       </Grid>
+        </Grid>
+        {renderEventAccordionList()}
       </Grid>
       <EventFormModal
         open={openEventModal}
         onClose={(status) => setOpenEventModal(status)}
         onCreate={handleCreateEvent}
+      />
+      <EventSchedFormModal
+        open={openEventSchedModal}
+        defaultDate={selectedEvent && selectedEvent.date}
+        onClose={(status) => setOpenEventSchedModal(status)}
+        onCreate={(data) => {
+          handleCreateEventSched(data, selectedEvent.id)
+        }}
       />
     </Container>
   )

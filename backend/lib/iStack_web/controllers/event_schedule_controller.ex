@@ -1,6 +1,6 @@
 defmodule IStackWeb.EventScheduleController do
   use IStackWeb, :controller
-
+  
   alias IStack.Events
   alias IStack.Events.EventSchedule
 
@@ -13,9 +13,13 @@ defmodule IStackWeb.EventScheduleController do
 
   def create(conn, %{"event_schedule" => event_schedule_params, "event_id" => event_id}) do
     event = Events.get_event!(event_id)
-
+    %{ "time" => time } = event_schedule_params
+    {:ok, transformed_time} = Time.from_iso8601(time)
+    data = %{
+      "time" => transformed_time
+    }
     with {:ok, %EventSchedule{} = event_schedule} <- 
-      Events.create_event_schedule_with_assoc(event_schedule_params, event) do
+      Events.create_event_schedule_with_assoc(data, event) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.event_schedule_path(conn, :show, event_schedule))

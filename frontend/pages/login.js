@@ -9,8 +9,12 @@ import { useRouter } from 'next/router'
 
 import {
   login,
-  getCookieJwt,
 } from '../src/actions'
+
+import {
+  getCookieJwt
+ } from '../src/utils'
+
 
 const Admin = () => {
   const router = useRouter()
@@ -21,7 +25,6 @@ const Admin = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    console.log(getCookieJwt(), "AHAHAHAHAHHA")
     if (getCookieJwt()) {
       router.replace('/admin')
     }

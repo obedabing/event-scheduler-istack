@@ -21,6 +21,16 @@ const adminEventReducer = (state = initialState, action) => {
     const { payload } = action
     return {
       ...state,
+      event: {
+        data: payload.reduce(
+          (acc, val) => ({
+            ...acc,
+            [val.id]: val,
+          }),
+          {}
+        ),
+        ids: payload.map((res) => res.id),
+      },
     }
   }
 

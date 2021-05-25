@@ -1,4 +1,7 @@
 import * as types from '../constants'
+import {
+  getCookieJwt
+} from '../utils'
 
 import {
   verifyNameAndPassword,
@@ -7,10 +10,6 @@ import {
 
 const setCookieJwt = (jwt) => {
   types.cookieStorage.set('istack-token', jwt, types.cookieOptions)
-}
-
-export const getCookieJwt = () => {
-  return types.cookieStorage.get('istack-token')
 }
 
 export const verifyToken = async () => {
