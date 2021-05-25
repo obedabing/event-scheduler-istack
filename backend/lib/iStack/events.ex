@@ -145,6 +145,13 @@ defmodule IStack.Events do
       {:error, %Ecto.Changeset{}}
 
   """
+  def create_event_schedule_with_assoc(attrs \\ %{}, event) do
+    %EventSchedule{}
+    |> EventSchedule.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:event, event)
+    |> Repo.insert()
+  end
+
   def create_event_schedule(attrs \\ %{}) do
     %EventSchedule{}
     |> EventSchedule.changeset(attrs)

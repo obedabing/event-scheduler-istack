@@ -95,6 +95,14 @@ defmodule IStack.EventsTest do
       assert event_schedule.time == ~T[14:00:00]
     end
 
+    test "create_event_schedule/1 with event" do
+      event = event_fixture()
+      assert {:ok, %EventSchedule{} = event_schedule} = Events.create_event_schedule_with_assoc(@valid_attrs, event)
+   
+      assert event_schedule.event_id == event.id
+      assert event_schedule.time == ~T[14:00:00]
+    end
+
     test "create_event_schedule/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Events.create_event_schedule(@invalid_attrs)
     end

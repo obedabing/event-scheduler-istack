@@ -1,10 +1,11 @@
 defmodule IStack.Events.EventSchedule do
   use Ecto.Schema
   import Ecto.Changeset
+  alias IStack.Events.Event
 
   schema "event_schedules" do
     field :time, :time
-    field :event_id, :id
+    belongs_to :event, Event, on_replace: :nilify
 
     timestamps()
   end

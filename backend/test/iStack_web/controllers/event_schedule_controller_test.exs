@@ -17,6 +17,17 @@ defmodule IStackWeb.EventScheduleControllerTest do
     event_schedule
   end
 
+
+  @event_attrs %{
+    date: ~N[2010-04-17 14:00:00],
+    name: "some name"
+  }
+
+  def fixture(:event) do
+    {:ok, event} = Events.create_event(@event_attrs)
+    event
+  end
+
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
@@ -46,6 +57,30 @@ defmodule IStackWeb.EventScheduleControllerTest do
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
+
+  describe "create event_schedule with assoc" do
+    test "renders event_schedule when data is valid", %{conn: conn} do
+      event = fixture(:event)
+      conn = post(conn, Routes.event_schedule_path(conn, :create), event_schedule: @create_attrs, event_id: event.id)
+      assert %{"id" => id} = json_response(conn, 201)["data"]
+
+      conn = get(conn, Routes.event_schedule_path(conn, :show, id))
+      event_id = event.id
+      test = json_response(conn, 200)["data"]
+
+      assert %{
+          "id" => id,
+          "time" => "14:00:00",
+          "eventId" => event_id
+        } = json_response(conn, 200)["data"]
+    end
+
+    test "renders errors when data is invalid", %{conn: conn} do
+      conn = post(conn, Routes.event_schedule_path(conn, :create), event_schedule: @invalid_attrs)
+      assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
+
 
   describe "update event_schedule" do
     setup [:create_event_schedule]
