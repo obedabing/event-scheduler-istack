@@ -15,6 +15,6 @@ defmodule IStack.Events.Event do
   def changeset(event, attrs) do
     event
     |> cast(attrs, [:date, :name])
-    |> validate_required([:date, :name])
+    |> validate_required([:date])
   end
 end

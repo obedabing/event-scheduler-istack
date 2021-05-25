@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import { Container } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
 
 import { useRouter } from 'next/router'
 
@@ -18,10 +19,12 @@ import {
   logout,
   getCookieJwt,
   verifyToken,
+  createEvent,
 } from '../src/actions'
 
 const Admin = () => {
   const router = useRouter()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (getCookieJwt()) {
@@ -40,7 +43,15 @@ const Admin = () => {
     router.replace('/login')
   }
 
+
   const [openEventModal, setOpenEventModal] = useState(false)
+  const handleCreateEvent = (data) => {
+    dispatch(createEvent(data)).then((res) => {
+      if (res.status === 201) {
+        setOpenEventModal(false)
+      }
+    })
+  }
 
   const renderHeader = () => {
     return (
@@ -88,7 +99,7 @@ const Admin = () => {
       <EventFormModal
         open={openEventModal}
         onClose={(status) => setOpenEventModal(status)}
-        onCreate={(data) => console.log('AHAHAH', data)}
+        onCreate={handleCreateEvent}
       />
     </Container>
   )
