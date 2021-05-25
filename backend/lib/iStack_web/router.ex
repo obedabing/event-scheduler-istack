@@ -30,5 +30,6 @@ defmodule IStackWeb.Router do
     pipe_through :auth
 
     resources "/users", UserController
+    resources "/events", EventController
   end
 end
