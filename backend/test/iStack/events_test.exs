@@ -130,4 +130,73 @@ defmodule IStack.EventsTest do
       assert %Ecto.Changeset{} = Events.change_event_schedule(event_schedule)
     end
   end
+
+  describe "schedule_topics" do
+    alias IStack.Events.ScheduleTopic
+
+    @valid_attrs %{author_name: "some author_name", author_title: "some author_title", description: "some description", stage: "some stage", title: "some title", track_type: "some track_type"}
+    @update_attrs %{author_name: "some updated author_name", author_title: "some updated author_title", description: "some updated description", stage: "some updated stage", title: "some updated title", track_type: "some updated track_type"}
+    @invalid_attrs %{author_name: nil, author_title: nil, description: nil, stage: nil, title: nil, track_type: nil}
+
+    def schedule_topic_fixture(attrs \\ %{}) do
+      {:ok, schedule_topic} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Events.create_schedule_topic()
+
+      schedule_topic
+    end
+
+    test "list_schedule_topics/0 returns all schedule_topics" do
+      schedule_topic = schedule_topic_fixture()
+      assert Events.list_schedule_topics() == [schedule_topic]
+    end
+
+    test "get_schedule_topic!/1 returns the schedule_topic with given id" do
+      schedule_topic = schedule_topic_fixture()
+      assert Events.get_schedule_topic!(schedule_topic.id) == schedule_topic
+    end
+
+    test "create_schedule_topic/1 with valid data creates a schedule_topic" do
+      assert {:ok, %ScheduleTopic{} = schedule_topic} = Events.create_schedule_topic(@valid_attrs)
+      assert schedule_topic.author_name == "some author_name"
+      assert schedule_topic.author_title == "some author_title"
+      assert schedule_topic.description == "some description"
+      assert schedule_topic.stage == "some stage"
+      assert schedule_topic.title == "some title"
+      assert schedule_topic.track_type == "some track_type"
+    end
+
+    test "create_schedule_topic/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Events.create_schedule_topic(@invalid_attrs)
+    end
+
+    test "update_schedule_topic/2 with valid data updates the schedule_topic" do
+      schedule_topic = schedule_topic_fixture()
+      assert {:ok, %ScheduleTopic{} = schedule_topic} = Events.update_schedule_topic(schedule_topic, @update_attrs)
+      assert schedule_topic.author_name == "some updated author_name"
+      assert schedule_topic.author_title == "some updated author_title"
+      assert schedule_topic.description == "some updated description"
+      assert schedule_topic.stage == "some updated stage"
+      assert schedule_topic.title == "some updated title"
+      assert schedule_topic.track_type == "some updated track_type"
+    end
+
+    test "update_schedule_topic/2 with invalid data returns error changeset" do
+      schedule_topic = schedule_topic_fixture()
+      assert {:error, %Ecto.Changeset{}} = Events.update_schedule_topic(schedule_topic, @invalid_attrs)
+      assert schedule_topic == Events.get_schedule_topic!(schedule_topic.id)
+    end
+
+    test "delete_schedule_topic/1 deletes the schedule_topic" do
+      schedule_topic = schedule_topic_fixture()
+      assert {:ok, %ScheduleTopic{}} = Events.delete_schedule_topic(schedule_topic)
+      assert_raise Ecto.NoResultsError, fn -> Events.get_schedule_topic!(schedule_topic.id) end
+    end
+
+    test "change_schedule_topic/1 returns a schedule_topic changeset" do
+      schedule_topic = schedule_topic_fixture()
+      assert %Ecto.Changeset{} = Events.change_schedule_topic(schedule_topic)
+    end
+  end
 end

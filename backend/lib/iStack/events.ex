@@ -204,4 +204,100 @@ defmodule IStack.Events do
   def change_event_schedule(%EventSchedule{} = event_schedule) do
     EventSchedule.changeset(event_schedule, %{})
   end
+
+  alias IStack.Events.ScheduleTopic
+
+  @doc """
+  Returns the list of schedule_topics.
+
+  ## Examples
+
+      iex> list_schedule_topics()
+      [%ScheduleTopic{}, ...]
+
+  """
+  def list_schedule_topics do
+    Repo.all(ScheduleTopic)
+  end
+
+  @doc """
+  Gets a single schedule_topic.
+
+  Raises `Ecto.NoResultsError` if the Schedule topic does not exist.
+
+  ## Examples
+
+      iex> get_schedule_topic!(123)
+      %ScheduleTopic{}
+
+      iex> get_schedule_topic!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_schedule_topic!(id), do: Repo.get!(ScheduleTopic, id)
+
+  @doc """
+  Creates a schedule_topic.
+
+  ## Examples
+
+      iex> create_schedule_topic(%{field: value})
+      {:ok, %ScheduleTopic{}}
+
+      iex> create_schedule_topic(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_schedule_topic(attrs \\ %{}) do
+    %ScheduleTopic{}
+    |> ScheduleTopic.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a schedule_topic.
+
+  ## Examples
+
+      iex> update_schedule_topic(schedule_topic, %{field: new_value})
+      {:ok, %ScheduleTopic{}}
+
+      iex> update_schedule_topic(schedule_topic, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_schedule_topic(%ScheduleTopic{} = schedule_topic, attrs) do
+    schedule_topic
+    |> ScheduleTopic.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a schedule_topic.
+
+  ## Examples
+
+      iex> delete_schedule_topic(schedule_topic)
+      {:ok, %ScheduleTopic{}}
+
+      iex> delete_schedule_topic(schedule_topic)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_schedule_topic(%ScheduleTopic{} = schedule_topic) do
+    Repo.delete(schedule_topic)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking schedule_topic changes.
+
+  ## Examples
+
+      iex> change_schedule_topic(schedule_topic)
+      %Ecto.Changeset{source: %ScheduleTopic{}}
+
+  """
+  def change_schedule_topic(%ScheduleTopic{} = schedule_topic) do
+    ScheduleTopic.changeset(schedule_topic, %{})
+  end
 end
