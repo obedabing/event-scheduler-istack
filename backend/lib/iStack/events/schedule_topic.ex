@@ -1,6 +1,7 @@
 defmodule IStack.Events.ScheduleTopic do
   use Ecto.Schema
   import Ecto.Changeset
+  alias IStack.Events.EventSchedule
 
   schema "schedule_topics" do
     field :author_name, :string
@@ -9,7 +10,7 @@ defmodule IStack.Events.ScheduleTopic do
     field :stage, :string
     field :title, :string
     field :track_type, :string
-    field :event_schedule_id, :id
+    belongs_to :event_schedule, EventSchedule, on_replace: :nilify
 
     timestamps()
   end

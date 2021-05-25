@@ -147,6 +147,15 @@ defmodule IStack.EventsTest do
       schedule_topic
     end
 
+    def event_schedule_with_assoc_fixture(attrs \\ %{}) do
+      event = event_fixture()
+      sched_attrs = %{time: ~T[14:00:00]}
+      {:ok, event_schedule} = Events.create_event_schedule_with_assoc(sched_attrs, event)
+   
+      event_schedule
+    end
+
+
     test "list_schedule_topics/0 returns all schedule_topics" do
       schedule_topic = schedule_topic_fixture()
       assert Events.list_schedule_topics() == [schedule_topic]
@@ -159,6 +168,18 @@ defmodule IStack.EventsTest do
 
     test "create_schedule_topic/1 with valid data creates a schedule_topic" do
       assert {:ok, %ScheduleTopic{} = schedule_topic} = Events.create_schedule_topic(@valid_attrs)
+      assert schedule_topic.author_name == "some author_name"
+      assert schedule_topic.author_title == "some author_title"
+      assert schedule_topic.description == "some description"
+      assert schedule_topic.stage == "some stage"
+      assert schedule_topic.title == "some title"
+      assert schedule_topic.track_type == "some track_type"
+    end
+
+    test "create_schedule_topic/1 with event schedule" do
+      event_sched = event_schedule_with_assoc_fixture()
+      assert {:ok, %ScheduleTopic{} = schedule_topic} = Events.create_schedule_topic_with_assoc(@valid_attrs, event_sched)
+      assert schedule_topic.event_schedule_id == event_sched.id
       assert schedule_topic.author_name == "some author_name"
       assert schedule_topic.author_title == "some author_title"
       assert schedule_topic.description == "some description"

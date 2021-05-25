@@ -27,6 +27,24 @@ defmodule IStackWeb.ScheduleTopicControllerTest do
     schedule_topic
   end
 
+  def event_fixture() do
+    event_attrs = %{
+      date: ~N[2010-04-17 14:00:00],
+      name: "some name"
+    }
+
+    {:ok, event} = Events.create_event(event_attrs)
+    event
+  end
+
+  def event_schedule_with_assoc_fixture(attrs \\ %{}) do
+    event = event_fixture()
+    sched_attrs = %{time: ~T[14:00:00]}
+    {:ok, event_schedule} = Events.create_event_schedule_with_assoc(sched_attrs, event)
+ 
+    event_schedule
+  end
+
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
@@ -47,12 +65,44 @@ defmodule IStackWeb.ScheduleTopicControllerTest do
 
       assert %{
                "id" => id,
-               "author_name" => "some author_name",
-               "author_title" => "some author_title",
+               "authorName" => "some author_name",
+               "authorTitle" => "some author_title",
                "description" => "some description",
                "stage" => "some stage",
                "title" => "some title",
-               "track_type" => "some track_type"
+               "trackType" => "some track_type"
+             } = json_response(conn, 200)["data"]
+    end
+
+    test "renders errors when data is invalid", %{conn: conn} do
+      conn = post(conn, Routes.schedule_topic_path(conn, :create), schedule_topic: @invalid_attrs)
+      assert json_response(conn, 422)["errors"] != %{}
+    end
+  end
+
+
+  describe "create schedule_topic with assoc" do
+    test "renders schedule_topic when data is valid", %{conn: conn} do
+      event_sched = event_schedule_with_assoc_fixture()
+      conn = post(
+        conn,
+        Routes.schedule_topic_path(conn, :create),
+        schedule_topic: @create_attrs,
+        event_sched_id: event_sched.id
+      )
+      assert %{"id" => id} = json_response(conn, 201)["data"]
+
+      conn = get(conn, Routes.schedule_topic_path(conn, :show, id))
+      event_sched_id = event_sched.id
+      assert %{
+               "id" => id,
+               "authorName" => "some author_name",
+               "authorTitle" => "some author_title",
+               "description" => "some description",
+               "stage" => "some stage",
+               "title" => "some title",
+               "trackType" => "some track_type",
+               "eventScheduleId" => event_sched_id
              } = json_response(conn, 200)["data"]
     end
 
@@ -73,12 +123,12 @@ defmodule IStackWeb.ScheduleTopicControllerTest do
 
       assert %{
                "id" => id,
-               "author_name" => "some updated author_name",
-               "author_title" => "some updated author_title",
+               "authorName" => "some updated author_name",
+               "authorTitle" => "some updated author_title",
                "description" => "some updated description",
                "stage" => "some updated stage",
                "title" => "some updated title",
-               "track_type" => "some updated track_type"
+               "trackType" => "some updated track_type"
              } = json_response(conn, 200)["data"]
     end
 

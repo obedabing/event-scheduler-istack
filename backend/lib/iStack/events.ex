@@ -248,6 +248,13 @@ defmodule IStack.Events do
       {:error, %Ecto.Changeset{}}
 
   """
+  def create_schedule_topic_with_assoc(attrs \\ %{}, event_schedule) do
+    %ScheduleTopic{}
+    |> ScheduleTopic.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:event_schedule, event_schedule)
+    |> Repo.insert()
+  end
+
   def create_schedule_topic(attrs \\ %{}) do
     %ScheduleTopic{}
     |> ScheduleTopic.changeset(attrs)

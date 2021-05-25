@@ -41,7 +41,7 @@ defmodule IStackWeb.EventScheduleController do
     event_schedule = Events.get_event_schedule!(id)
 
     with {:ok, %EventSchedule{} = event_schedule} <- Events.update_event_schedule(event_schedule, event_schedule_params) do
-      render(conn, "show.json", event_schedule: event_schedule)
+      render(conn, "show_with_assoc.json", event_schedule: event_schedule)
     end
   end
 

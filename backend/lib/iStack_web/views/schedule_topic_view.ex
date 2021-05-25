@@ -19,4 +19,21 @@ defmodule IStackWeb.ScheduleTopicView do
       author_name: schedule_topic.author_name,
       author_title: schedule_topic.author_title}
   end
+
+  def render("show_with_assoc.json", %{schedule_topic: schedule_topic}) do
+    %{data: render_one(schedule_topic, ScheduleTopicView, "schedule_topic_with_assoc.json")}
+  end
+
+  def render("schedule_topic_with_assoc.json", %{schedule_topic: schedule_topic}) do
+    %{
+      id: schedule_topic.id,
+      title: schedule_topic.title,
+      description: schedule_topic.description,
+      stage: schedule_topic.stage,
+      trackType: schedule_topic.track_type,
+      authorName: schedule_topic.author_name,
+      authorTitle: schedule_topic.author_title,
+      eventScheduleId: schedule_topic.event_schedule_id
+    }
+  end
 end
