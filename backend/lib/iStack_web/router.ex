@@ -31,5 +31,6 @@ defmodule IStackWeb.Router do
 
     resources "/users", UserController
     resources "/events", EventController
+    resources "/event_schedules", EventScheduleController
   end
 end
