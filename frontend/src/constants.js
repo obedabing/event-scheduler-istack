@@ -32,3 +32,7 @@ export const topics = {
 }
 
 export const topicIds = Object.keys(topics)
+
+// REDUCER ACTION
+export const SET_EVENTS = 'SET_EVENTS'
+export const LOGOUT_ADMIN = 'LOGOUT_ADMIN'
