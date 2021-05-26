@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 
 import EventFormModal from '../src/components/EventFormModal'
 import EventSchedFormModal from '../src/components/EventSchedFormModal'
+import TopicFormModal from '../src/components/TopicFormModal'
 
 import {
   logout,
@@ -73,8 +74,10 @@ const Admin = () => {
   }
 
   const [selectedEvent, setSelectedEvent] = useState(null)
+  const [selectedEventSched, setSelectedEventSched] = useState(null)
   const [openEventModal, setOpenEventModal] = useState(false)
   const [openEventSchedModal, setOpenEventSchedModal] = useState(false)
+  const [openTopicModal, setOpenTopicModal] = useState(false)
 
   const handleCreateEvent = (data) => {
     dispatch(createEvent(data)).then((res) => {
@@ -87,9 +90,9 @@ const Admin = () => {
 
   const handleCreateEventSched = (data, eventId) => {
     dispatch(createEventSched(data, eventId)).then((res) => {
+      console.log(res)
       if (res.status === 201) {
         setOpenEventSchedModal(false)
-        // dispatch(fetchEvents())
       }
     })
   }
@@ -114,12 +117,30 @@ const Admin = () => {
     )
   }
 
-  const renderEventScheduleAccordionContainer = () => {
-
+  const renderTopicAccordionContainer = (eventSched) => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography>SCHEDULE</Typography>
+          <Typography>TOPICS</Typography>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              setOpenTopicModal(true)
+            }}
+          >
+            ADD TOPIC
+          </Button>
+        </Grid>
+      </Grid>
+    )
+  }
+
+  const renderEventScheduleAccordionContainer = (eventSchedules) => {
+    return (
+      <Grid container spacing={2}>
+        <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography>SCHEDULES</Typography>
           <Button
             color="primary"
             variant="contained"
@@ -130,6 +151,37 @@ const Admin = () => {
             ADD SCHEDULE
           </Button>
         </Grid>
+        {
+          eventSchedules.map((eventSched) => {
+            const { id } = eventSched
+            return (
+              <Grid item xs={10}>
+                <Accordion
+                  onChange={() => {
+                    if (selectedEventSched && selectedEventSched.id === id) {
+                      setSelectedEventSched(null)
+                    } else {
+                      setSelectedEventSched(eventSched)
+                    }
+                  }}
+                  expanded={selectedEventSched && selectedEventSched.id === id}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Typography>{eventSched.time}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {renderTopicAccordionContainer(eventSched)}
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+            )
+          })
+        }
+
       </Grid>
     )
   }
@@ -157,7 +209,7 @@ const Admin = () => {
                 <Typography>{data.date}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {renderEventScheduleAccordionContainer()}
+                {renderEventScheduleAccordionContainer(data.eventSchedules)}
               </AccordionDetails>
             </Accordion>
           </Grid>
@@ -202,6 +254,14 @@ const Admin = () => {
         onCreate={(data) => {
           handleCreateEventSched(data, selectedEvent.id)
         }}
+      />
+      <TopicFormModal
+        title={selectedEventSched && selectedEventSched.time}
+        open={openTopicModal}
+        onClose={(status) => setOpenTopicModal(status)}
+        // onCreate={(data) => {
+        //   handleCreateEventSched(data, selectedEvent.id)
+        // }}
       />
     </Container>
   )

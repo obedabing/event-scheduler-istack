@@ -17,8 +17,8 @@ import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
 
 import {
-  topicIds,
-  topics,
+  trackIds,
+  tracks,
 } from '../src/constants'
 
 const useStyles = makeStyles({
@@ -116,8 +116,8 @@ const Index = () => {
             <AccordionDetails>
               <Grid container spacing={2}>
                 {
-                  topicIds.map((id) => {
-                    const data = topics[id]
+                  trackIds.map((id) => {
+                    const data = tracks[id]
                     return (
                       <Grid item className={classes.filterCheckboxContainer}>
                         <FormControlLabel

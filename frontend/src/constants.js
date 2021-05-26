@@ -16,7 +16,7 @@ export const cookieOptions = {
 
 export { Cookies as cookieStorage }
 
-export const topics = {
+export const tracks = {
   'advertising_101': { name: 'Adevertising 101', type: 'advertising_101' },
   'advertising_agencies': { name: 'Adevertising Agencies', type: 'advertising_agencies' },
   'afilliate_marketing': { name: 'Afilliate Marketing', type: 'afilliate_marketing' },
@@ -31,9 +31,16 @@ export const topics = {
   'future_advertising': { name: 'The Future of Advertising', type: 'future_advertising' },
 }
 
-export const topicIds = Object.keys(topics)
+export const stages = {
+  'stage_one': { name: 'Stage One' },
+  'stage_two': { name: 'Stage Two' },
+  'stage_three': { name: 'Stage Three' },
+}
+
+export const trackIds = Object.keys(tracks)
 
 // REDUCER ACTION
 export const LOGOUT_ADMIN = 'LOGOUT_ADMIN'
 export const SET_EVENTS = 'SET_EVENTS'
 export const SET_EVENT_SCHEDS = 'SET_EVENT_SCHEDS'
+export const ADD_EVENT_SCHED = 'ADD_EVENT_SCHED'

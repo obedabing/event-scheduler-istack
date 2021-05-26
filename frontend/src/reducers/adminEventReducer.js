@@ -51,6 +51,25 @@ const adminEventReducer = (state = initialState, action) => {
       },
     }
   }
+  case types.ADD_EVENT_SCHED: {
+    const { eventId } = action.payload
+    return {
+      ...state,
+      event: {
+        ...state.event,
+        data: {
+          ...state.event.data,
+          [eventId]: {
+            ...state.event.data[eventId],
+            eventSchedules: [
+              ...state.event.data[eventId].eventSchedules,
+              action.payload,
+            ]
+          },
+        },
+      },
+    }
+  }
 
   case types.LOGOUT_ADMIN: {
     return initialState

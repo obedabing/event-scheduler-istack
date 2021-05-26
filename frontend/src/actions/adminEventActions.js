@@ -36,10 +36,17 @@ export const fetchEvents = () => async (dispatch) => {
   }
 }
 
-export const createEventSched = (data, eventId) => async () => {
+export const createEventSched = (dataParams, eventId) => async (dispatch) => {
   try {
     const jwt = getCookieJwt()
-    const res = await createEventSchedData(jwt, { event_schedule: data, event_id: eventId })
+    const res = await createEventSchedData(jwt, { event_schedule: dataParams, event_id: eventId })
+    const { data } = res.data
+
+    dispatch({
+      type: types.ADD_EVENT_SCHED,
+      payload: data,
+    })
+    
     return res
   } catch ({ response }) {
     return response
