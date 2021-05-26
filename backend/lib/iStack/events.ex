@@ -7,6 +7,7 @@ defmodule IStack.Events do
   alias IStack.Repo
 
   alias IStack.Events.Event
+  alias IStack.Events.EventSchedule
 
   @doc """
   Returns the list of events.
@@ -18,11 +19,17 @@ defmodule IStack.Events do
 
   """
   def list_events do
+
+    event_schedule_query = from(
+      es in EventSchedule,
+      preload: [:schedule_topics]
+    )
+
     query = from(
       e in Event,
-      preload: [:event_schedules]
+      preload: [event_schedules: ^event_schedule_query]
     )
-    
+
     Repo.all(query)
   end
 
@@ -106,8 +113,6 @@ defmodule IStack.Events do
   def change_event(%Event{} = event) do
     Event.changeset(event, %{})
   end
-
-  alias IStack.Events.EventSchedule
 
   @doc """
   Returns the list of event_schedules.

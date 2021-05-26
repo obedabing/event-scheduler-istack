@@ -12,7 +12,7 @@ import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { Container } from '@material-ui/core'
+import Container from '@material-ui/core/Container'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { useRouter } from 'next/router'
@@ -20,6 +20,7 @@ import { useRouter } from 'next/router'
 import EventFormModal from '../src/components/EventFormModal'
 import EventSchedFormModal from '../src/components/EventSchedFormModal'
 import TopicFormModal from '../src/components/TopicFormModal'
+import TopicCard from '../src/components/TopicCard'
 
 import {
   logout,
@@ -34,6 +35,7 @@ import {
 import {
   getCookieJwt
  } from '../src/utils'
+import { stages } from '../src/constants'
 
 const Admin = () => {
   const router = useRouter()
@@ -98,8 +100,8 @@ const Admin = () => {
     })
   }
 
-  const handleCreateSchedTopic = (data, eventSchedId) => {
-    dispatch(createSchedTopic(data, eventSchedId)).then((res) => {
+  const handleCreateSchedTopic = (data, eventSched, eventId) => {
+    dispatch(createSchedTopic(data, eventSched, eventId)).then((res) => {
       if (res.status === 201) {
         setOpenTopicModal(false)
       }
@@ -126,7 +128,7 @@ const Admin = () => {
     )
   }
 
-  const renderTopicAccordionContainer = (eventSched) => {
+  const renderTopicAccordionContainer = (topics) => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -141,6 +143,23 @@ const Admin = () => {
             ADD TOPIC
           </Button>
         </Grid>
+        <Grid>
+
+        </Grid>
+        {
+          topics.map((topic) => (
+            <>
+              <Grid item xs={12}>
+                <Typography variant="button">{stages[topic.stage].name}</Typography>
+              </Grid>
+              <Paper elevation={2} style={{ width: '400px' }}>
+                <Grid item>
+                  <TopicCard data={topic}/>  
+                </Grid>
+              </Paper>
+            </>
+          )) 
+        }
       </Grid>
     )
   }
@@ -183,7 +202,7 @@ const Admin = () => {
                     <Typography>{eventSched.time}</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    {renderTopicAccordionContainer(eventSched)}
+                    {renderTopicAccordionContainer(eventSched.scheduleTopics)}
                   </AccordionDetails>
                 </Accordion>
               </Grid>
@@ -269,7 +288,7 @@ const Admin = () => {
         open={openTopicModal}
         onClose={(status) => setOpenTopicModal(status)}
         onCreate={(data) => {
-          handleCreateSchedTopic(data, selectedEventSched.id)
+          handleCreateSchedTopic(data, selectedEventSched, selectedEvent.id)
         }}
       />
     </Container>

@@ -3,6 +3,10 @@ defmodule IStack.Events.ScheduleTopic do
   import Ecto.Changeset
   alias IStack.Events.EventSchedule
 
+  @derive {
+    Jason.Encoder,
+    only: [:title, :description, :stage, :track_type, :author_name, :author_title],
+  }
   schema "schedule_topics" do
     field :author_name, :string
     field :author_title, :string

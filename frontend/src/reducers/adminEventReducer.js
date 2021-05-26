@@ -70,6 +70,55 @@ const adminEventReducer = (state = initialState, action) => {
       },
     }
   }
+  case types.ADD_SCHED_TOPIC: {
+    const {
+      eventId,
+      eventScheduleData,
+      newTopic,
+    } = action.payload
+
+    const replaceElement = (current, newData, arrayData) => {
+      const array = arrayData
+      const index = array.indexOf(current)
+      array[index] = newData
+   
+      return array
+    }
+
+    const newData = {
+      ...eventScheduleData,
+      scheduleTopics: [
+        ...eventScheduleData.scheduleTopics,
+        newTopic,
+      ]
+    }
+
+    console.log("=========RES=============")
+    console.log(newData)
+    console.log("======================")
+
+    const updatedEventSchedules = replaceElement(
+      eventScheduleData,
+      newData,
+      state.event.data[eventId].eventSchedules,
+    )
+
+
+    return {
+      ...state,
+      event: {
+        ...state.event,
+        data: {
+          ...state.event.data,
+          [eventId]: {
+            ...state.event.data[eventId],
+            eventSchedules: updatedEventSchedules,
+          },
+        },
+      },
+    }
+  }
+  
 
   case types.LOGOUT_ADMIN: {
     return initialState

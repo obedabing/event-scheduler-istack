@@ -70,7 +70,7 @@ export const fetchEventScheds = () => async (dispatch) => {
   }
 }
 
-export const createSchedTopic = (dataParams, eventSchedId) => async (dispatch) => {
+export const createSchedTopic = (dataParams, eventScheduleData, eventId) => async (dispatch) => {
   try {
     const jwt = getCookieJwt()
     const tranformedData = {
@@ -84,16 +84,20 @@ export const createSchedTopic = (dataParams, eventSchedId) => async (dispatch) =
     delete tranformedData.authorName
     delete tranformedData.authorTitle
 
-    console.log("=========HAHAHAHHA=============")
-    console.log(tranformedData)
-    console.log("======================")
-
-    const res = await createTopic(jwt, { schedule_topic: tranformedData, event_sched_id: eventSchedId })
-    // const { data } = res.data
+    const res = await createTopic(jwt, { schedule_topic: tranformedData, event_sched_id: eventScheduleData.id })
+    const { data } = res.data
 
     console.log("=========RES=============")
     console.log(res)
     console.log("======================")
+    dispatch({
+      type: types.ADD_SCHED_TOPIC,
+      payload: {
+        eventId,
+        eventScheduleData,
+        newTopic: data,
+      }
+    })
 
     return res
   } catch ({ response }) {

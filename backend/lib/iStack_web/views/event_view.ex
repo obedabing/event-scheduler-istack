@@ -1,6 +1,7 @@
 defmodule IStackWeb.EventView do
   use IStackWeb, :view
   alias IStackWeb.EventView
+  alias IStackWeb.EventScheduleView
 
   def render("index.json", %{events: events}) do
     %{data: render_many(events, EventView, "event.json")}
@@ -23,7 +24,7 @@ defmodule IStackWeb.EventView do
     %{
       id: event.id,
       date: event.date,
-      eventSchedules: event.event_schedules,
+      eventSchedules: render_many(event.event_schedules, EventScheduleView, "event_schedule_with_topics.json"),
     }
   end
 
