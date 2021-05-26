@@ -26,6 +26,7 @@ import {
   createEvent,
   fetchEvents,
   createEventSched,
+  fetchEventScheds,
 } from '../src/actions'
 
 import {
@@ -37,7 +38,13 @@ const Admin = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchEvents())
+   
+    Promise.all([
+      dispatch(fetchEvents()),
+      dispatch(fetchEventScheds()),
+    ]).then((values) => {
+      console.log(values)
+    })
   }, [fetchEvents])
 
   const {
@@ -133,7 +140,13 @@ const Admin = () => {
         return (
           <Grid item xs={8}>
             <Accordion
-              onChange={() => setSelectedEvent(data)}
+              onChange={() => {
+                if (selectedEvent && selectedEvent.id === id) {
+                  setSelectedEvent(null)
+                } else {
+                  setSelectedEvent(data)
+                }
+              }}
               expanded={selectedEvent && selectedEvent.id === id}
             >
               <AccordionSummary

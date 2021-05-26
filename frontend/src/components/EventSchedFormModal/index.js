@@ -34,16 +34,21 @@ const EventSchedFormModal = ({ open, onClose, onCreate, defaultDate }) => {
     onClose(false)
   }
 
-  const handleCreate = () => {
-    const time = new Date(eventSchedData.time)
+  const transformTime = (timeData) => {
+    const time = new Date(timeData)
     const addZero = (i) => {
       if (i < 10) {
         i = "0" + i
       }
       return i
     }
+
+    return addZero(time.getHours()) + ":" + addZero(time.getMinutes()) + ":" + addZero(time.getSeconds())
+  }
+
+  const handleCreate = () => {
     onCreate({
-      time: addZero(time.getHours()) + ":" + addZero(time.getMinutes()) + ":" + addZero(time.getSeconds()),
+      time: transformTime(eventSchedData.time),
     })
   }
 

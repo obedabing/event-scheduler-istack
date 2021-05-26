@@ -22,6 +22,24 @@ const adminEventReducer = (state = initialState, action) => {
     return {
       ...state,
       event: {
+        ...state.event,
+        data: payload.reduce(
+          (acc, val) => ({
+            ...acc,
+            [val.id]: val,
+          }),
+          {}
+        ),
+        ids: payload.map((res) => res.id),
+      },
+    }
+  }
+  case types.SET_EVENT_SCHEDS: {
+    const { payload } = action
+    return {
+      ...state,
+      eventSchedule: {
+        ...state.eventSchedule,
         data: payload.reduce(
           (acc, val) => ({
             ...acc,
