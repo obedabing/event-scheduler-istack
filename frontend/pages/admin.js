@@ -28,6 +28,7 @@ import {
   fetchEvents,
   createEventSched,
   fetchEventScheds,
+  createSchedTopic,
 } from '../src/actions'
 
 import {
@@ -93,6 +94,14 @@ const Admin = () => {
       console.log(res)
       if (res.status === 201) {
         setOpenEventSchedModal(false)
+      }
+    })
+  }
+
+  const handleCreateSchedTopic = (data, eventSchedId) => {
+    dispatch(createSchedTopic(data, eventSchedId)).then((res) => {
+      if (res.status === 201) {
+        setOpenTopicModal(false)
       }
     })
   }
@@ -259,9 +268,9 @@ const Admin = () => {
         title={selectedEventSched && selectedEventSched.time}
         open={openTopicModal}
         onClose={(status) => setOpenTopicModal(status)}
-        // onCreate={(data) => {
-        //   handleCreateEventSched(data, selectedEvent.id)
-        // }}
+        onCreate={(data) => {
+          handleCreateSchedTopic(data, selectedEventSched.id)
+        }}
       />
     </Container>
   )

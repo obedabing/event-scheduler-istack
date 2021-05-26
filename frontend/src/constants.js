@@ -17,8 +17,8 @@ export const cookieOptions = {
 export { Cookies as cookieStorage }
 
 export const tracks = {
-  'advertising_101': { name: 'Adevertising 101', type: 'advertising_101' },
-  'advertising_agencies': { name: 'Adevertising Agencies', type: 'advertising_agencies' },
+  'advertising_101': { name: 'Advertising 101', type: 'advertising_101' },
+  'advertising_agencies': { name: 'Advertising Agencies', type: 'advertising_agencies' },
   'afilliate_marketing': { name: 'Afilliate Marketing', type: 'afilliate_marketing' },
   'content_marketing': { name: 'Content Marketing', type: 'content_marketing' },
   'coversion_optimization': { name: 'Conversion Optimizatoin', type: 'coversion_optimization' },

@@ -8,6 +8,7 @@ import {
   fetchEvents as getEvents,
   createEventSched as createEventSchedData,
   fetchEventScheds as getEventScheds,
+  createSchedTopic as createTopic,
 } from '../api'
 
 export const createEvent = (data) => async () => {
@@ -46,7 +47,7 @@ export const createEventSched = (dataParams, eventId) => async (dispatch) => {
       type: types.ADD_EVENT_SCHED,
       payload: data,
     })
-    
+
     return res
   } catch ({ response }) {
     return response
@@ -63,6 +64,37 @@ export const fetchEventScheds = () => async (dispatch) => {
       type: types.SET_EVENT_SCHEDS,
       payload: data,
     })
+    return res
+  } catch ({ response }) {
+    return response
+  }
+}
+
+export const createSchedTopic = (dataParams, eventSchedId) => async (dispatch) => {
+  try {
+    const jwt = getCookieJwt()
+    const tranformedData = {
+      ...dataParams,
+      track_type: dataParams.trackType,
+      author_name: dataParams.authorName,
+      author_title: dataParams.authorTitle,
+    }
+
+    delete tranformedData.trackType
+    delete tranformedData.authorName
+    delete tranformedData.authorTitle
+
+    console.log("=========HAHAHAHHA=============")
+    console.log(tranformedData)
+    console.log("======================")
+
+    const res = await createTopic(jwt, { schedule_topic: tranformedData, event_sched_id: eventSchedId })
+    // const { data } = res.data
+
+    console.log("=========RES=============")
+    console.log(res)
+    console.log("======================")
+
     return res
   } catch ({ response }) {
     return response

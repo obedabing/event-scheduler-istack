@@ -33,3 +33,11 @@ export function fetchEventScheds(jwt) {
     },
   })
 }
+
+export function createSchedTopic(jwt, data) {
+  return axios.post('/api/schedule_topics', data, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+}

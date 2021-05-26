@@ -17,24 +17,26 @@ import {
   stages
 } from '../../constants'
 
+const initialData = {
+  trackType: null,
+  stage: null,
+  title: null,
+  description: null,
+  authorName: null,
+  authorTitle: null,
+}
+
 const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
   const [openModal, setModalOpen] = useState(open || false)
-  const [data, setData] = useState({
-    trackType: null,
-    stage: null,
-    title: null,
-    description: null,
-    authorName: null,
-    authorTitle: null,
-  })
+  const [data, setData] = useState(initialData)
 
   useEffect(() => {
     setModalOpen(open)
   }, [open])
 
-  useEffect(() => {
-    console.log(data)
-  }, [data])
+  // useEffect(() => {
+  //   console.log(data)
+  // }, [data])
 
   const handleClose = () => {
     setModalOpen(false)
@@ -42,7 +44,8 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
   }
 
   const handleCreate = () => {
-    onCreate(eventData)
+    onCreate(data)
+    setData(initialData)
   }
 
   const onChangeData = (event) => {
