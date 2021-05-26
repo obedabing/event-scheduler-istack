@@ -3,7 +3,7 @@ defmodule IStack.Events.Event do
   import Ecto.Changeset
   alias IStack.Events.EventSchedule
 
-  schema "events" do
+  schema "events" do  
     field :date, :naive_datetime
     field :name, :string
     has_many :event_schedules, EventSchedule, on_replace: :delete

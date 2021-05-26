@@ -4,6 +4,7 @@ defmodule IStack.Events.EventSchedule do
   alias IStack.Events.Event
   alias IStack.Events.ScheduleTopic
 
+  @derive {Jason.Encoder, only: [:time, :id]}
   schema "event_schedules" do
     field :time, :time
     belongs_to :event, Event, on_replace: :nilify

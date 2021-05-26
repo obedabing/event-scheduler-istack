@@ -14,4 +14,17 @@ defmodule IStackWeb.EventView do
     %{id: event.id,
       date: event.date}
   end
+
+  def render("index_with_sched.json", %{events: events}) do
+    %{data: render_many(events, EventView, "event_with_sched.json")}
+  end
+
+  def render("event_with_sched.json", %{event: event}) do
+    %{
+      id: event.id,
+      date: event.date,
+      eventSchedules: event.event_schedules,
+    }
+  end
+
 end

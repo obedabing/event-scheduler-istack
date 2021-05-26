@@ -8,7 +8,7 @@ defmodule IStackWeb.EventController do
 
   def index(conn, _params) do
     events = Events.list_events()
-    render(conn, "index.json", events: events)
+    render(conn, "index_with_sched.json", events: events)
   end
 
   def create(conn, %{"event" => event_params}) do

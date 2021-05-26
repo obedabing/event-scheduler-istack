@@ -18,7 +18,12 @@ defmodule IStack.Events do
 
   """
   def list_events do
-    Repo.all(Event)
+    query = from(
+      e in Event,
+      preload: [:event_schedules]
+    )
+    
+    Repo.all(query)
   end
 
   @doc """
