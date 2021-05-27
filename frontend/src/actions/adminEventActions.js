@@ -97,19 +97,36 @@ export const createSchedTopic = (dataParams, eventScheduleData, eventId) => asyn
       }
     })
 
-    return res
+    const newData = {
+      ...eventScheduleData,
+      scheduleTopics: [
+        ...eventScheduleData.scheduleTopics,
+        data
+      ]
+    }
+
+    return {
+      ...res,
+      newData,
+    }
   } catch ({ response }) {
     return response
   }
 }
 
-export const removeSchedTopic = (schedTopicId) => async (dispatch) => {
+export const removeSchedTopic = (schedTopic, eventScheduleData, eventId) => async (dispatch) => {
   try {
     const jwt = getCookieJwt()
-    const res = await deleteSchedTopic(jwt, schedTopicId)
-    console.log("===================")
-    console.log(res)
-    console.log("===================")
+    const res = await deleteSchedTopic(jwt, schedTopic.id)
+
+    dispatch({
+      type: types.REMOVE_SCHED_TOPIC,
+      payload: {
+        eventId,
+        eventScheduleData,
+        schedTopic,
+      }
+    })
 
     return res
   } catch ({ response }) {

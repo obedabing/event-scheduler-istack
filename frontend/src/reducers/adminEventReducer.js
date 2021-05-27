@@ -1,4 +1,9 @@
+import { remove } from 'js-cookie'
 import * as types from '../constants'
+import {
+  replaceArrayElement,
+  removeArrayElement,
+} from '../utils'
 
 const initialState = {
   event: {
@@ -77,14 +82,6 @@ const adminEventReducer = (state = initialState, action) => {
       newTopic,
     } = action.payload
 
-    const replaceElement = (current, newData, arrayData) => {
-      const array = arrayData
-      const index = array.indexOf(current)
-      array[index] = newData
-   
-      return array
-    }
-
     const newData = {
       ...eventScheduleData,
       scheduleTopics: [
@@ -93,16 +90,50 @@ const adminEventReducer = (state = initialState, action) => {
       ]
     }
 
-    console.log("=========RES=============")
+    console.log("==========================")
+    console.log(eventScheduleData)
+    console.log("==========================")
     console.log(newData)
-    console.log("======================")
+    console.log("==========================")
 
-    const updatedEventSchedules = replaceElement(
+    const updatedEventSchedules = replaceArrayElement(
       eventScheduleData,
       newData,
       state.event.data[eventId].eventSchedules,
     )
 
+    return {
+      ...state,
+      event: {
+        ...state.event,
+        data: {
+          ...state.event.data,
+          [eventId]: {
+            ...state.event.data[eventId],
+            eventSchedules: updatedEventSchedules,
+          },
+        },
+      },
+    }
+  }
+
+  case types.REMOVE_SCHED_TOPIC: {
+    const {
+      eventId,
+      eventScheduleData,
+      schedTopic,
+    } = action.payload
+
+    const newData = {
+      ...eventScheduleData,
+      scheduleTopics: removeArrayElement(schedTopic, eventScheduleData.scheduleTopics),
+    }
+
+    const updatedEventSchedules = replaceArrayElement(
+      eventScheduleData,
+      newData,
+      state.event.data[eventId].eventSchedules,
+    )
 
     return {
       ...state,

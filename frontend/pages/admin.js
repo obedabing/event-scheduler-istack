@@ -103,6 +103,15 @@ const Admin = () => {
     dispatch(createSchedTopic(data, eventSched, eventId)).then((res) => {
       if (res.status === 201) {
         setOpenTopicModal(false)
+        setSelectedEventSched(res.newData)
+      }
+    })
+  }
+
+  const handleRemoveSchedTopic = (data, eventSched, eventId) => {
+    dispatch(removeSchedTopic(data, eventSched, eventId)).then((res) => {
+      if (res.status === 204) {
+        console.log(res)
       }
     })
   }
@@ -168,6 +177,7 @@ const Admin = () => {
                   <Button
                     variant="contained"
                     color="secondary"
+                    onClick={() => handleRemoveSchedTopic(topic, selectedEventSched, selectedEvent.id)}
                   >
                     Delete
                   </Button>
