@@ -127,6 +127,16 @@ const Admin = () => {
     })
   }
 
+  const renderEventDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const today  = new Date(date)
+
+    // console.log(today.toLocaleDateString("en-US")); // 9/17/2016
+    // console.log(today.toLocaleDateString("en-US", options)); // Saturday, September 17, 2016
+    // console.log(today.toLocaleDateString("hi-IN", options)); // शनिवार, 17 सितंबर 2016
+    return today.toLocaleDateString("en-US", options)
+  }
+
   const renderHeader = () => {
     return (
       <AppBar position="static">
@@ -158,7 +168,7 @@ const Admin = () => {
             justifyContent: 'space-between',
           }}
         >
-          <Typography>TOPICS</Typography>
+          <Typography variant="subtitle2">TOPICS</Typography>
           <Button
             color="primary"
             variant="contained"
@@ -205,7 +215,7 @@ const Admin = () => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography>SCHEDULES</Typography>
+          <Typography variant="subtitle2">SCHEDULES</Typography>
           <Button
             color="primary"
             variant="contained"
@@ -305,7 +315,7 @@ const Admin = () => {
                       backgroundColor: '#b0fa98'
                     }}
                   >
-                    <Typography>{data.date}</Typography>
+                    <Typography>{renderEventDate(data.date)}</Typography>
                   </AccordionSummary>
                   <AccordionDetails
                     style={{

@@ -164,7 +164,7 @@ export const removeEvent = (eventId) => async (dispatch) => {
 
     dispatch({
       type: types.REMOVE_EVENT,
-      payload: eventId
+      payload: eventId,
     })
 
     return res
