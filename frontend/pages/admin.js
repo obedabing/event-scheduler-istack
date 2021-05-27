@@ -29,6 +29,7 @@ import {
   createSchedTopic,
   removeSchedTopic,
   removeEventSched,
+  removeEvent,
 } from '../src/actions'
 
 import {
@@ -111,8 +112,15 @@ const Admin = () => {
   }
 
   const handleRemoveEventSched = (eventSched, eventId) => {
-    console.log(selectedEventSched)
     dispatch(removeEventSched(eventSched, eventId)).then((res) => {
+      if (res.status === 204) {
+        console.log(res)
+      }
+    })
+  }
+
+  const handleRemoveEvent = (eventId) => {
+    dispatch(removeEvent(eventId)).then((res) => {
       if (res.status === 204) {
         console.log(res)
       }
@@ -266,54 +274,80 @@ const Admin = () => {
       eventIds.map((id) => {
         const data = eventData[id]
         return (
-          <Grid item xs={8}>
-            <Accordion
-              onChange={() => {
-                if (selectedEvent && selectedEvent.id === id) {
-                  setSelectedEvent(null)
-                } else {
-                  setSelectedEvent(data)
-                }
-              }}
-              expanded={selectedEvent && selectedEvent.id === id}
+          <Grid
+            item
+            xs={9}
+            container
+            direction="row"
+            spacing={2}
+          >
+            <Grid
+              item
+              container
+              xs={10}
             >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                style={{
-                  backgroundColor: '#b0fa98'
-                }}
+              <Grid item xs={12}>
+                <Accordion
+                  onChange={() => {
+                    if (selectedEvent && selectedEvent.id === id) {
+                      setSelectedEvent(null)
+                    } else {
+                      setSelectedEvent(data)
+                    }
+                  }}
+                  expanded={selectedEvent && selectedEvent.id === id}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    style={{
+                      backgroundColor: '#b0fa98'
+                    }}
+                  >
+                    <Typography>{data.date}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails
+                    style={{
+                      borderTop: '2px solid #CACACA',
+                      paddingTop: '20px',
+                    }}
+                  >
+                    {renderEventScheduleAccordionContainer(data.eventSchedules)}
+                  </AccordionDetails>
+                </Accordion>
+              </Grid>
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => handleRemoveEvent(id)}
               >
-                <Typography>{data.date}</Typography>
-              </AccordionSummary>
-              <AccordionDetails
-                style={{
-                  borderTop: '2px solid #CACACA',
-                  paddingTop: '20px',
-                }}
-              >
-                {renderEventScheduleAccordionContainer(data.eventSchedules)}
-              </AccordionDetails>
-            </Accordion>
+                Delete
+              </Button>
+            </Grid>
           </Grid>
         )
       })
     )
   
   return (
-    <Container maxWidth='xl' style={{ padding: '0px' }}>
+    <Container
+      maxWidth='xl'
+      style={{
+        padding: '0px',
+        backgroundColor: '#e3e1dc',
+      }}
+    >
       {renderHeader()}
       <Grid 
         container
         justify="center"
-        style={{
-          backgroundColor: 'grey',
-          padding: '20px',
-        }}
+        style={{ padding: '30px' }}
         spacing={2}
       >
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           <Button
             color="primary"
             variant="contained"

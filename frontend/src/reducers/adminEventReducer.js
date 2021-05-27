@@ -140,6 +140,16 @@ const adminEventReducer = (state = initialState, action) => {
       },
     }
   }
+  case types.REMOVE_EVENT: {
+    const eventId = action.payload
+    return {
+      ...state,
+      event: {
+        ...state.event,
+        ids: removeArrayElement(eventId, state.event.ids)
+      },
+    }
+  }
   
 
   case types.LOGOUT_ADMIN: {

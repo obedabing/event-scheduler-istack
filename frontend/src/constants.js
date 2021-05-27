@@ -41,8 +41,9 @@ export const trackIds = Object.keys(tracks)
 
 // REDUCER ACTION
 export const LOGOUT_ADMIN = 'LOGOUT_ADMIN'
-export const SET_EVENTS = 'SET_EVENTS'
 export const SET_EVENT_SCHEDS = 'SET_EVENT_SCHEDS'
+export const SET_EVENTS = 'SET_EVENTS'
+export const REMOVE_EVENT = 'REMOVE_EVENT'
 
 export const ADD_EVENT_SCHED = 'ADD_EVENT_SCHED'
 export const REMOVE_EVENT_SCHED = 'REMOVE_EVENT_SCHED'
