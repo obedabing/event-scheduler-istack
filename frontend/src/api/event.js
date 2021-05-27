@@ -41,3 +41,11 @@ export function createSchedTopic(jwt, data) {
     },
   })
 }
+
+export function deleteSchedTopic(jwt, id) {
+  return axios.delete(`/api/schedule_topics/${id}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+}

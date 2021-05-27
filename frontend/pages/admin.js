@@ -6,8 +6,6 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
@@ -30,6 +28,7 @@ import {
   createEventSched,
   fetchEventScheds,
   createSchedTopic,
+  removeSchedTopic,
 } from '../src/actions'
 
 import {
@@ -131,7 +130,14 @@ const Admin = () => {
   const renderTopicAccordionContainer = (topics) => {
     return (
       <Grid container spacing={2}>
-        <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Grid
+          item
+          xs={12}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
           <Typography>TOPICS</Typography>
           <Button
             color="primary"
@@ -152,11 +158,21 @@ const Admin = () => {
               <Grid item xs={12}>
                 <Typography variant="button">{stages[topic.stage].name}</Typography>
               </Grid>
-              <Paper elevation={2} style={{ width: '400px' }}>
-                <Grid item>
-                  <TopicCard data={topic}/>  
+              <Grid item container spacing={4}>
+                <Paper elevation={2} style={{ width: '400px', margin: '15px' }}>
+                  <Grid item xs={10}>
+                    <TopicCard data={topic}/>  
+                  </Grid>
+                </Paper>
+                <Grid item xs={2}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Delete
+                  </Button>
                 </Grid>
-              </Paper>
+              </Grid>
             </>
           )) 
         }
@@ -198,10 +214,18 @@ const Admin = () => {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
+                    style={{
+                      backgroundColor: '#faf698'
+                    }}
                   >
                     <Typography>{eventSched.time}</Typography>
                   </AccordionSummary>
-                  <AccordionDetails>
+                  <AccordionDetails
+                    style={{
+                      borderTop: '2px solid #CACACA',
+                      paddingTop: '20px',
+                    }}
+                  >
                     {renderTopicAccordionContainer(eventSched.scheduleTopics)}
                   </AccordionDetails>
                 </Accordion>
@@ -233,10 +257,18 @@ const Admin = () => {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                style={{
+                  backgroundColor: '#b0fa98'
+                }}
               >
                 <Typography>{data.date}</Typography>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails
+                style={{
+                  borderTop: '2px solid #CACACA',
+                  paddingTop: '20px',
+                }}
+              >
                 {renderEventScheduleAccordionContainer(data.eventSchedules)}
               </AccordionDetails>
             </Accordion>

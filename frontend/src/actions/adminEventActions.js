@@ -9,6 +9,7 @@ import {
   createEventSched as createEventSchedData,
   fetchEventScheds as getEventScheds,
   createSchedTopic as createTopic,
+  deleteSchedTopic,
 } from '../api'
 
 export const createEvent = (data) => async () => {
@@ -87,9 +88,6 @@ export const createSchedTopic = (dataParams, eventScheduleData, eventId) => asyn
     const res = await createTopic(jwt, { schedule_topic: tranformedData, event_sched_id: eventScheduleData.id })
     const { data } = res.data
 
-    console.log("=========RES=============")
-    console.log(res)
-    console.log("======================")
     dispatch({
       type: types.ADD_SCHED_TOPIC,
       payload: {
@@ -105,5 +103,19 @@ export const createSchedTopic = (dataParams, eventScheduleData, eventId) => asyn
   }
 }
 
+export const removeSchedTopic = (schedTopicId) => async (dispatch) => {
+  try {
+    const jwt = getCookieJwt()
+    const res = await deleteSchedTopic(jwt, schedTopicId)
+    console.log("===================")
+    console.log(res)
+    console.log("===================")
+
+    return res
+  } catch ({ response }) {
+   
+    return response
+  }
+}
 
 
