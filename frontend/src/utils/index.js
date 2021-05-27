@@ -6,7 +6,7 @@ export const getCookieJwt = () => {
 
 export const replaceArrayElement = (current, newData, arrayData) => {
   const array = arrayData
-  const index = array.findIndex((el) => el.id === current.id)
+  const index = array.findIndex((data) => data.id === current.id)
   array[index] = newData
 
   return array

@@ -25,6 +25,7 @@ defmodule IStackWeb.EventScheduleView do
       id: event_schedule.id,
       time: event_schedule.time,
       eventId: event_schedule.event_id,
+      scheduleTopics: render_many(event_schedule.schedule_topics, ScheduleTopicView, "schedule_topic_with_assoc.json")
     }
   end
 

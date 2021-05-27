@@ -9,7 +9,7 @@ defmodule IStack.Repo.Migrations.CreateScheduleTopics do
       add :track_type, :string
       add :author_name, :string
       add :author_title, :string
-      add :event_schedule_id, references(:event_schedules, on_delete: :nothing)
+      add :event_schedule_id, references(:event_schedules, on_delete: :delete_all)
 
       timestamps()
     end

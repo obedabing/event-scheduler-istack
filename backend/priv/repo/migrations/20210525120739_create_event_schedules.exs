@@ -4,8 +4,8 @@ defmodule IStack.Repo.Migrations.CreateEventSchedules do
   def change do
     create table(:event_schedules) do
       add :time, :time
-      add :event_id, references(:events, on_delete: :nothing)
-
+      add :event_id, references(:events, on_delete: :delete_all)
+ 
       timestamps()
     end
 

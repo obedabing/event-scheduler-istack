@@ -160,6 +160,11 @@ defmodule IStack.Events do
     |> EventSchedule.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:event, event)
     |> Repo.insert()
+    |> case do
+      {:ok, res} ->
+        {:ok, Repo.preload(res, [:schedule_topics])}
+      _ = res -> res
+    end
   end
 
   def create_event_schedule(attrs \\ %{}) do
