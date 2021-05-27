@@ -21,3 +21,12 @@ export const removeArrayElement = (data, arrayData) => {
 
   return array
 }
+
+export const sortStages = (data) => {
+  return data.sort((a, b) => {
+    const aStage = parseInt(types.stages[a.stage].number)
+    const bStage = parseInt(types.stages[b.stage].number)
+
+    return aStage - bStage
+  })
+}

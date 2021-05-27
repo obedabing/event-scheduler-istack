@@ -64,6 +64,17 @@ const adminEventReducer = (state = initialState, action) => {
       newTopic,
     } = action.payload
 
+
+    // const sortedTopics = [
+    //   ...eventScheduleData.scheduleTopics,
+    //   newTopic,
+    // ].sort((a, b) => {
+    //   const aStage = parseInt(types.stages[a.stage].number)
+    //   const bStage = parseInt(types.stages[b.stage].number)
+
+    //   return aStage - bStage
+    // })
+
     const newData = {
       ...eventScheduleData,
       scheduleTopics: [

@@ -34,7 +34,8 @@ import {
 } from '../src/actions'
 
 import {
-  getCookieJwt
+  getCookieJwt,
+  sortStages,
  } from '../src/utils'
 import { stages } from '../src/constants'
 
@@ -181,7 +182,7 @@ const Admin = () => {
 
         </Grid>
         {
-          topics.map((topic) => (
+          sortStages(topics).map((topic) => (
             <>
               <Grid item xs={12}>
                 <Typography variant="button">{stages[topic.stage].name}</Typography>

@@ -19,7 +19,6 @@ defmodule IStack.Events do
 
   """
   def list_events do
-
     event_schedule_query = from(
       es in EventSchedule,
       preload: [:schedule_topics],

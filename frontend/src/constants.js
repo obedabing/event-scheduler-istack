@@ -32,9 +32,9 @@ export const tracks = {
 }
 
 export const stages = {
-  'stage_one': { name: 'Stage One' },
-  'stage_two': { name: 'Stage Two' },
-  'stage_three': { name: 'Stage Three' },
+  'stage_one': { name: 'Stage One', number: 1 },
+  'stage_two': { name: 'Stage Two', number: 2 },
+  'stage_three': { name: 'Stage Three', number: 3 },
 }
 
 export const trackIds = Object.keys(tracks)
