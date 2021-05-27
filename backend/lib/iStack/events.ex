@@ -22,12 +22,14 @@ defmodule IStack.Events do
 
     event_schedule_query = from(
       es in EventSchedule,
-      preload: [:schedule_topics]
+      preload: [:schedule_topics],
+      order_by: [es.time]
     )
 
     query = from(
       e in Event,
-      preload: [event_schedules: ^event_schedule_query]
+      preload: [event_schedules: ^event_schedule_query],
+      order_by: [e.date]
     )
 
     Repo.all(query)
