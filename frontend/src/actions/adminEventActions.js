@@ -10,6 +10,7 @@ import {
   fetchEventScheds as getEventScheds,
   createSchedTopic as createTopic,
   deleteSchedTopic,
+  deleteEventSched,
 } from '../api'
 
 export const createEvent = (data) => async () => {
@@ -134,5 +135,26 @@ export const removeSchedTopic = (schedTopic, eventScheduleData, eventId) => asyn
     return response
   }
 }
+
+export const removeEventSched = (eventScheduleData, eventId) => async (dispatch) => {
+  try {
+    const jwt = getCookieJwt()
+    const res = await deleteEventSched(jwt, eventScheduleData.id)
+
+    dispatch({
+      type: types.REMOVE_EVENT_SCHED,
+      payload: {
+        eventId,
+        eventScheduleData,
+      }
+    })
+
+    return res
+  } catch ({ response }) {
+   
+    return response
+  }
+}
+
 
 

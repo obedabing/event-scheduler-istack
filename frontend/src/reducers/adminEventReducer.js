@@ -10,14 +10,6 @@ const initialState = {
     data: {},
     ids: [],
   },
-  eventSchedule: {
-    data: {},
-    ids: [],
-  },
-  scheduleTopic: {
-    data: {},
-    ids: [],
-  }
 }
 
 const adminEventReducer = (state = initialState, action) => {
@@ -28,23 +20,6 @@ const adminEventReducer = (state = initialState, action) => {
       ...state,
       event: {
         ...state.event,
-        data: payload.reduce(
-          (acc, val) => ({
-            ...acc,
-            [val.id]: val,
-          }),
-          {}
-        ),
-        ids: payload.map((res) => res.id),
-      },
-    }
-  }
-  case types.SET_EVENT_SCHEDS: {
-    const { payload } = action
-    return {
-      ...state,
-      eventSchedule: {
-        ...state.eventSchedule,
         data: payload.reduce(
           (acc, val) => ({
             ...acc,
@@ -90,11 +65,37 @@ const adminEventReducer = (state = initialState, action) => {
       ]
     }
 
-    console.log("==========================")
-    console.log(eventScheduleData)
-    console.log("==========================")
-    console.log(newData)
-    console.log("==========================")
+    const updatedEventSchedules = replaceArrayElement(
+      eventScheduleData,
+      newData,
+      state.event.data[eventId].eventSchedules,
+    )
+
+    return {
+      ...state,
+      event: {
+        ...state.event,
+        data: {
+          ...state.event.data,
+          [eventId]: {
+            ...state.event.data[eventId],
+            eventSchedules: updatedEventSchedules,
+          },
+        },
+      },
+    }
+  }
+  case types.REMOVE_SCHED_TOPIC: {
+    const {
+      eventId,
+      eventScheduleData,
+      schedTopic,
+    } = action.payload
+
+    const newData = {
+      ...eventScheduleData,
+      scheduleTopics: removeArrayElement(schedTopic, eventScheduleData.scheduleTopics),
+    }
 
     const updatedEventSchedules = replaceArrayElement(
       eventScheduleData,
@@ -116,24 +117,14 @@ const adminEventReducer = (state = initialState, action) => {
       },
     }
   }
-
-  case types.REMOVE_SCHED_TOPIC: {
+  case types.REMOVE_EVENT_SCHED: {
     const {
       eventId,
       eventScheduleData,
-      schedTopic,
     } = action.payload
 
-    const newData = {
-      ...eventScheduleData,
-      scheduleTopics: removeArrayElement(schedTopic, eventScheduleData.scheduleTopics),
-    }
-
-    const updatedEventSchedules = replaceArrayElement(
-      eventScheduleData,
-      newData,
-      state.event.data[eventId].eventSchedules,
-    )
+    const array = state.event.data[eventId].eventSchedules
+    const updatedEventSchedules = removeArrayElement(eventScheduleData, array)
 
     return {
       ...state,

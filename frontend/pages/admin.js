@@ -26,9 +26,9 @@ import {
   createEvent,
   fetchEvents,
   createEventSched,
-  fetchEventScheds,
   createSchedTopic,
   removeSchedTopic,
+  removeEventSched,
 } from '../src/actions'
 
 import {
@@ -41,13 +41,7 @@ const Admin = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-   
-    Promise.all([
-      dispatch(fetchEvents()),
-      dispatch(fetchEventScheds()),
-    ]).then((values) => {
-      console.log(values)
-    })
+    dispatch(fetchEvents())
   }, [fetchEvents])
 
   const {
@@ -110,6 +104,15 @@ const Admin = () => {
 
   const handleRemoveSchedTopic = (data, eventSched, eventId) => {
     dispatch(removeSchedTopic(data, eventSched, eventId)).then((res) => {
+      if (res.status === 204) {
+        console.log(res)
+      }
+    })
+  }
+
+  const handleRemoveEventSched = (eventSched, eventId) => {
+    console.log(selectedEventSched)
+    dispatch(removeEventSched(eventSched, eventId)).then((res) => {
       if (res.status === 204) {
         console.log(res)
       }
@@ -209,36 +212,47 @@ const Admin = () => {
           eventSchedules.map((eventSched) => {
             const { id } = eventSched
             return (
-              <Grid item xs={10}>
-                <Accordion
-                  onChange={() => {
-                    if (selectedEventSched && selectedEventSched.id === id) {
-                      setSelectedEventSched(null)
-                    } else {
-                      setSelectedEventSched(eventSched)
-                    }
-                  }}
-                  expanded={selectedEventSched && selectedEventSched.id === id}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    style={{
-                      backgroundColor: '#faf698'
+              <Grid item container xs={10} spacing={4}>
+                <Grid item xs={10}>
+                  <Accordion
+                    onChange={() => {
+                      if (selectedEventSched && selectedEventSched.id === id) {
+                        setSelectedEventSched(null)
+                      } else {
+                        setSelectedEventSched(eventSched)
+                      }
                     }}
+                    expanded={selectedEventSched && selectedEventSched.id === id}
                   >
-                    <Typography>{eventSched.time}</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails
-                    style={{
-                      borderTop: '2px solid #CACACA',
-                      paddingTop: '20px',
-                    }}
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                      style={{
+                        backgroundColor: '#faf698'
+                      }}
+                    >
+                      <Typography>{eventSched.time}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails
+                      style={{
+                        borderTop: '2px solid #CACACA',
+                        paddingTop: '20px',
+                      }}
+                    >
+                      {renderTopicAccordionContainer(eventSched.scheduleTopics)}
+                    </AccordionDetails>
+                  </Accordion>
+                </Grid>
+                <Grid item xs={2}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleRemoveEventSched(eventSched, selectedEvent.id)}
                   >
-                    {renderTopicAccordionContainer(eventSched.scheduleTopics)}
-                  </AccordionDetails>
-                </Accordion>
+                    Delete
+                  </Button>
+                </Grid>
               </Grid>
             )
           })
