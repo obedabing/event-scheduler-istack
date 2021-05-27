@@ -1,4 +1,4 @@
-import { remove } from 'js-cookie'
+import moment from 'moment'
 import * as types from '../constants'
 import {
   replaceArrayElement,
@@ -33,6 +33,16 @@ const adminEventReducer = (state = initialState, action) => {
   }
   case types.ADD_EVENT_SCHED: {
     const { eventId } = action.payload
+    const sortedScheds = [
+      ...state.event.data[eventId].eventSchedules,
+      action.payload,
+    ].sort((a,b) => {
+      const timeA = moment(a.time, 'HH:mm').format("HH:mm:ss")
+      const timeB = moment(b.time, 'HH:mm').format("HH:mm:ss")
+
+      return timeA.localeCompare(timeB)
+    })
+
     return {
       ...state,
       event: {
@@ -41,10 +51,7 @@ const adminEventReducer = (state = initialState, action) => {
           ...state.event.data,
           [eventId]: {
             ...state.event.data[eventId],
-            eventSchedules: [
-              ...state.event.data[eventId].eventSchedules,
-              action.payload,
-            ]
+            eventSchedules: sortedScheds,
           },
         },
       },

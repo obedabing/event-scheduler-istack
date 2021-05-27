@@ -12,6 +12,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Container from '@material-ui/core/Container'
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment'
 
 import { useRouter } from 'next/router'
 
@@ -128,13 +129,10 @@ const Admin = () => {
   }
 
   const renderEventDate = (date) => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const today  = new Date(date)
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+    const renderedDate  = new Date(date)
 
-    // console.log(today.toLocaleDateString("en-US")); // 9/17/2016
-    // console.log(today.toLocaleDateString("en-US", options)); // Saturday, September 17, 2016
-    // console.log(today.toLocaleDateString("hi-IN", options)); // शनिवार, 17 सितंबर 2016
-    return today.toLocaleDateString("en-US", options)
+    return renderedDate.toLocaleDateString("en-US", options)
   }
 
   const renderHeader = () => {
@@ -250,7 +248,7 @@ const Admin = () => {
                         backgroundColor: '#faf698'
                       }}
                     >
-                      <Typography>{eventSched.time}</Typography>
+                      <Typography>{moment(eventSched.time, 'HH:mm').format("HH:mm:ss")}</Typography>
                     </AccordionSummary>
                     <AccordionDetails
                       style={{
