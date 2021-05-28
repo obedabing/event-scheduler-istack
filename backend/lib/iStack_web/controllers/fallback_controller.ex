@@ -20,8 +20,14 @@ defmodule IStackWeb.FallbackController do
     |> render(:"404")
   end
 
+  def call(conn, {:event_date_existing, true}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(IStackWeb.AuthView)
+    |> render("error.json", error: "events", message: "Event date already existing.")
+  end
 
-  def call(conn, {:error, :events_exceeded}) do
+  def call(conn, {:events_exceeded, true}) do
     conn
     |> put_status(:unprocessable_entity)
     |> put_view(IStackWeb.AuthView)

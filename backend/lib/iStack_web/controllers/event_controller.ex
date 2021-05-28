@@ -12,7 +12,13 @@ defmodule IStackWeb.EventController do
   end
 
   def create(conn, %{"event" => event_params}) do
-    with {:ok, %Event{} = event} <- Events.create_event(event_params) do
+    %{"date" => date} = event_params
+    existing_events = Events.list_events_without_assoc()
+    existing_date = Events.get_event_by_date(date)
+    
+    with {:events_exceeded, false} <- {:events_exceeded, length(existing_events) === 3},
+      {:event_date_existing, false} <- {:event_date_existing, not is_nil(existing_date)},
+      {:ok, %Event{} = event} <- Events.create_event(event_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.event_path(conn, :show, event))

@@ -26,7 +26,8 @@ const initialData = {
   authorTitle: null,
 }
 
-const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
+const TopicFormModal = ({ open, onClose, onCreate, title = '', errors }) => {
+  console.log(errors)
   const [openModal, setModalOpen] = useState(open || false)
   const [data, setData] = useState(initialData)
 
@@ -68,7 +69,11 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <FormControl variant="outlined" style={{ width: '100%' }}>
+            <FormControl
+              variant="outlined"
+              style={{ width: '100%' }}
+              error={errors && errors.stage}
+            >
               <InputLabel>Stage</InputLabel>
               <Select
                 value={data.stage}
@@ -85,7 +90,11 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl variant="outlined" style={{ width: '100%' }}>
+            <FormControl
+              variant="outlined"
+              style={{ width: '100%' }}
+              error={errors && errors.track_type}
+            >
               <InputLabel>Track type</InputLabel>
               <Select
                 value={data.trackType}
@@ -104,6 +113,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              error={errors && errors.title}
               fullWidth
               label="Title"
               variant="outlined"
@@ -115,6 +125,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              error={errors && errors.description}
               multiline
               rows={4}
               fullWidth
@@ -128,6 +139,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              error={errors && errors.author_name}
               fullWidth
               label="Author Name"
               variant="outlined"
@@ -139,6 +151,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              error={errors && errors.author_title}
               fullWidth
               label="Author Title"
               variant="outlined"

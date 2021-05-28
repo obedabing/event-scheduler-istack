@@ -90,6 +90,14 @@ const Admin = () => {
   const [openEventModal, setOpenEventModal] = useState(false)
   const [openEventSchedModal, setOpenEventSchedModal] = useState(false)
   const [openTopicModal, setOpenTopicModal] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState(null)
+
+  const setFieldErrorsFromApiRes = (res) => {
+    if (res.status === 422) {
+      const { errors } = res.data
+      setFieldErrors(errors)
+    }
+  }
 
   const handleCreateEvent = (data) => {
     dispatch(createEvent(data)).then((res) => {
@@ -97,6 +105,7 @@ const Admin = () => {
         setOpenEventModal(false)
         dispatch(fetchEvents())
       }
+      setFieldErrorsFromApiRes(res)
     })
   }
 
@@ -106,6 +115,7 @@ const Admin = () => {
       if (res.status === 201) {
         setOpenEventSchedModal(false)
       }
+      setFieldErrorsFromApiRes(res)
     })
   }
 
@@ -114,7 +124,8 @@ const Admin = () => {
       if (res.status === 201) {
         setOpenTopicModal(false)
         setSelectedEventSched(res.newData)
-      }
+      } 
+      setFieldErrorsFromApiRes(res)
     })
   }
 
@@ -382,21 +393,31 @@ const Admin = () => {
       </Grid>
       <EventFormModal
         open={openEventModal}
-        onClose={(status) => setOpenEventModal(status)}
+        onClose={(status) => {
+          setOpenEventModal(status)
+          setFieldErrors(null)
+        }}
         onCreate={handleCreateEvent}
       />
       <EventSchedFormModal
         open={openEventSchedModal}
         defaultDate={selectedEvent && selectedEvent.date}
-        onClose={(status) => setOpenEventSchedModal(status)}
+        onClose={(status) => {
+          setOpenEventSchedModal(status)
+          setFieldErrors(null)
+        }}
         onCreate={(data) => {
           handleCreateEventSched(data, selectedEvent.id)
         }}
       />
       <TopicFormModal
+        errors={fieldErrors}
         title={selectedEventSched && selectedEventSched.time}
         open={openTopicModal}
-        onClose={(status) => setOpenTopicModal(status)}
+        onClose={(status) => {
+          setOpenTopicModal(status)
+          setFieldErrors(null)
+        }}
         onCreate={(data) => {
           handleCreateSchedTopic(data, selectedEventSched, selectedEvent.id)
         }}

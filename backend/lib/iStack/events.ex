@@ -34,6 +34,10 @@ defmodule IStack.Events do
     Repo.all(query)
   end
 
+  def list_events_without_assoc do
+    Repo.all(Event)
+  end
+
   @doc """
   Gets a single event.
 
@@ -48,7 +52,15 @@ defmodule IStack.Events do
       ** (Ecto.NoResultsError)
 
   """
+
   def get_event!(id), do: Repo.get!(Event, id)
+
+  def get_event_by_date(date) do
+    from(
+      e in Event,
+      where: e.date == ^date
+    ) |> Repo.one()
+  end
 
   @doc """
   Creates a event.

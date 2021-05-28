@@ -14,12 +14,30 @@ import {
   deleteEvent,
 } from '../api'
 
-export const createEvent = (data) => async () => {
+const setTimeTo24hours = (date) => {
+  const clone = date
+  clone.setHours(24,0,0,0)
+  return clone
+}
+
+export const createEvent = (data) => async (dispatch) => {
   try {
     const jwt = getCookieJwt()
-    const res = await createEventData(jwt, { event: data })
+    const res = await createEventData(
+      jwt,
+      { event: { date: setTimeTo24hours(data.date) } }
+    )
     return res
   } catch ({ response }) {
+    if (response.status === 422) {
+      const { error } = response.data
+      if (error && error === 'events') {
+        dispatch({
+          type: types.SHOW_ERROR,
+          payload: response.data.message,
+        })
+      }
+    }
     return response
   }
 }

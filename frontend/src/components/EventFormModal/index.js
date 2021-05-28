@@ -33,6 +33,7 @@ const EventFormModal = ({ open, onClose, onCreate }) => {
   }
 
   const onChangeData = (value) => {
+    console.log(value)
     setEventData({
       date: value,
     })
