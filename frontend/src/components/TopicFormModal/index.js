@@ -56,7 +56,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
     })
   }
 
-  const disableField = () => data.trackType === 'stage-break'
+  const disableField = () => data.trackType === 'stage_break'
 
   return (
     <Dialog
@@ -93,7 +93,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
                 label="Track type"
                 name='trackType'
               >
-                 <MenuItem value={'stage-break'}>--- Stage Break ---</MenuItem>
+                 <MenuItem value={'stage_break'}>--- Stage Break ---</MenuItem>
                 {
                   Object.keys(tracks).map((id) => (
                     <MenuItem value={id}>{tracks[id].name}</MenuItem>

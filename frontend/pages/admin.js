@@ -187,13 +187,11 @@ const Admin = () => {
               <Grid item xs={12}>
                 <Typography variant="button">{stages[topic.stage].name}</Typography>
               </Grid>
-              <Grid item container spacing={4}>
-                <Paper elevation={2} style={{ width: '400px', margin: '15px' }}>
-                  <Grid item xs={10}>
-                    <TopicCard data={topic}/>  
-                  </Grid>
-                </Paper>
-                <Grid item xs={2}>
+              <Grid item container xs={12} spacing={2}>
+                <Grid item xs={12} md={10}>
+                  <TopicCard data={topic}/>  
+                </Grid>
+                <Grid item xs={12} md={2}>
                   <Button
                     variant="contained"
                     color="secondary"
