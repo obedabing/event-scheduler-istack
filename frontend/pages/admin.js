@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import Paper from '@material-ui/core/Paper'
+import Alert from '@material-ui/lab/Alert'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Accordion from '@material-ui/core/Accordion'
@@ -31,6 +31,7 @@ import {
   removeSchedTopic,
   removeEventSched,
   removeEvent,
+  clearAlerts,
 } from '../src/actions'
 
 import {
@@ -50,10 +51,20 @@ const Admin = () => {
   const {
     eventData,
     eventIds,
-  } = useSelector(({ eventData  }) => ({
+    success,
+    error,
+  } = useSelector(({ eventData, alertMessageData }) => ({
     eventData: eventData.event.data,
     eventIds: eventData.event.ids,
+    success: alertMessageData.success,
+    error: alertMessageData.error,
   }))
+
+  if (error || success) {
+    setTimeout(() => {
+      clearAlerts()
+    }, 5000)
+  }
 
   useEffect(() => {
     if (getCookieJwt()) {
@@ -244,7 +255,7 @@ const Admin = () => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                       style={{
-                        backgroundColor: '#faf698'
+                        backgroundColor: '#faf698',
                       }}
                     >
                       <Typography>{moment(eventSched.time, 'HH:mm').format("HH:mm:ss")}</Typography>
@@ -351,7 +362,7 @@ const Admin = () => {
       <Grid 
         container
         justify="center"
-        style={{ padding: '30px' }}
+        style={{ padding: '30px', overflowX: 'hidden' }}
         spacing={2}
       >
         <Grid item xs={9}>
@@ -388,6 +399,31 @@ const Admin = () => {
           handleCreateSchedTopic(data, selectedEventSched, selectedEvent.id)
         }}
       />
+      {
+        success || error
+        ? (
+          <Grid
+            justify="center"
+            alignContent="center"
+            container
+            style={{ 
+              position: 'fixed',
+              bottom: 50,
+            }}
+          >
+            <Alert
+              severity={success ? 'success' : 'error'}
+              onClose={() => {
+                dispatch(clearAlerts())
+              }}
+              elevation={6}
+              variant='filled'
+            >
+              {success || error}
+            </Alert>
+          </Grid>
+        ) : null
+      }
     </Container>
   )
 }

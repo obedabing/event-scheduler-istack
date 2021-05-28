@@ -31,6 +31,10 @@ export const fetchEvents = () => async (dispatch) => {
     const { data } = res.data
 
     dispatch({
+      type: types.SHOW_SUCCESS,
+      paylod: 'Successfully added.'
+    })
+    dispatch({
       type: types.SET_EVENTS,
       payload: data,
     })
@@ -46,6 +50,10 @@ export const createEventSched = (dataParams, eventId) => async (dispatch) => {
     const res = await createEventSchedData(jwt, { event_schedule: dataParams, event_id: eventId })
     const { data } = res.data
 
+    dispatch({
+      type: types.SHOW_SUCCESS,
+      payload: 'Successfully added.'
+    })
     dispatch({
       type: types.ADD_EVENT_SCHED,
       payload: data,
@@ -90,6 +98,10 @@ export const createSchedTopic = (dataParams, eventScheduleData, eventId) => asyn
     const res = await createTopic(jwt, { schedule_topic: tranformedData, event_sched_id: eventScheduleData.id })
     const { data } = res.data
 
+    dispatch({
+      type: types.SHOW_SUCCESS,
+      payload: 'Successfully added.'
+    })
     dispatch({
       type: types.ADD_SCHED_TOPIC,
       payload: {
@@ -173,6 +185,11 @@ export const removeEvent = (eventId) => async (dispatch) => {
     return response
   }
 }
+
+export const clearAlerts = () => ({
+  type: types.CLEAR_ALERTS,
+  payload: null,
+})
 
 
 
