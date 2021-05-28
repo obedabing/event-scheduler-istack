@@ -12,9 +12,15 @@ defmodule IStackWeb.ScheduleTopicController do
   end
 
   def create(conn, %{"schedule_topic" => schedule_topic_params, "event_sched_id" => event_sched_id}) do
+    %{"stage" => stage} = schedule_topic_params
+    topics = Events.fetch_schedule_topics(event_sched_id)
     event_sched = Events.get_event_schedule!(event_sched_id)
-    with {:ok, %ScheduleTopic{} = schedule_topic} <- 
-        Events.create_schedule_topic_with_assoc(schedule_topic_params, event_sched) do
+    existing_topic = Events.get_schedule_topic_by_stage(stage, event_sched_id)
+    
+    with {:topics_exceeded, false} <- {:topics_exceeded, length(topics) == 3},
+      {:stage_existing, false} <- {:stage_existing, not is_nil(existing_topic)},
+      {:ok, %ScheduleTopic{} = schedule_topic} <- 
+      Events.create_schedule_topic_with_assoc(schedule_topic_params, event_sched) do
 
       conn
       |> put_status(:created)

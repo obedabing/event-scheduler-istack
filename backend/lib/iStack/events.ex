@@ -236,6 +236,16 @@ defmodule IStack.Events do
     Repo.all(ScheduleTopic)
   end
 
+  def fetch_schedule_topics(event_schedule_id) do
+    query = from(
+      st in ScheduleTopic,
+      where: st.event_schedule_id == ^event_schedule_id,
+    )
+    
+    Repo.all(query)
+  end
+
+
   @doc """
   Gets a single schedule_topic.
 
@@ -250,6 +260,14 @@ defmodule IStack.Events do
       ** (Ecto.NoResultsError)
 
   """
+  def get_schedule_topic_by_stage(stage, event_sched_id) do 
+    from(
+      st in ScheduleTopic,
+      where: st.stage == ^stage
+        and st.event_schedule_id == ^event_sched_id,
+    )|> Repo.one()
+  end
+
   def get_schedule_topic!(id), do: Repo.get!(ScheduleTopic, id)
 
   @doc """

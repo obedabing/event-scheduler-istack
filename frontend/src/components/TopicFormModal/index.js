@@ -32,6 +32,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
 
   useEffect(() => {
     setModalOpen(open)
+    setData(initialData)
   }, [open])
 
   // useEffect(() => {
@@ -45,7 +46,6 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '' }) => {
 
   const handleCreate = () => {
     onCreate(data)
-    setData(initialData)
   }
 
   const onChangeData = (event) => {

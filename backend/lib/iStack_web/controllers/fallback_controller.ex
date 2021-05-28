@@ -19,4 +19,26 @@ defmodule IStackWeb.FallbackController do
     |> put_view(IStackWeb.ErrorView)
     |> render(:"404")
   end
+
+
+  def call(conn, {:error, :events_exceeded}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(IStackWeb.AuthView)
+    |> render("error.json", error: "events", message: "You already have three events created.")
+  end
+
+  def call(conn, {:topics_exceeded, true}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(IStackWeb.AuthView)
+    |> render("error.json", error: "topics", message: "You already have three topics created.")
+  end
+
+  def call(conn, {:stage_existing, true}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(IStackWeb.AuthView)
+    |> render("error.json", error: "stage", message: "The stage already existing.")
+  end
 end

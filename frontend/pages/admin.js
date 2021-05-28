@@ -60,11 +60,13 @@ const Admin = () => {
     error: alertMessageData.error,
   }))
 
-  if (error || success) {
-    setTimeout(() => {
-      clearAlerts()
-    }, 5000)
-  }
+  useEffect(() => {
+    if (error || success) {
+      setTimeout(() => {
+        dispatch(clearAlerts())
+      }, 5000)
+    }
+  }, [error, success])
 
   useEffect(() => {
     if (getCookieJwt()) {
@@ -409,6 +411,7 @@ const Admin = () => {
             style={{ 
               position: 'fixed',
               bottom: 50,
+              zIndex: 1500,
             }}
           >
             <Alert

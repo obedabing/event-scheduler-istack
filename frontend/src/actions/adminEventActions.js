@@ -124,6 +124,15 @@ export const createSchedTopic = (dataParams, eventScheduleData, eventId) => asyn
       newData,
     }
   } catch ({ response }) {
+    if (response.status === 422) {
+      const { error } = response.data
+      if (error && ['topics', 'stage'].includes(error)) {
+        dispatch({
+          type: types.SHOW_ERROR,
+          payload: response.data.message,
+        })
+      }
+    }
     return response
   }
 }
