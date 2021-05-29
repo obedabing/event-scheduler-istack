@@ -11,6 +11,9 @@ import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Container from '@material-ui/core/Container'
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
+
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 
@@ -32,6 +35,8 @@ import {
   removeEventSched,
   removeEvent,
   clearAlerts,
+  clearFieldErrors,
+  updateSchedTopic,
 } from '../src/actions'
 
 import {
@@ -53,11 +58,17 @@ const Admin = () => {
     eventIds,
     success,
     error,
+    fieldErrors,
+    isCreatingTopic,
+    isUpdatingTopic,
   } = useSelector(({ eventData, alertMessageData }) => ({
     eventData: eventData.event.data,
     eventIds: eventData.event.ids,
     success: alertMessageData.success,
     error: alertMessageData.error,
+    fieldErrors: alertMessageData.fieldErrors,
+    isCreatingTopic: eventData.loader.isLoading === 'creatingTopic',
+    isUpdatingTopic: eventData.loader.isLoading === 'updatingTopic',
   }))
 
   useEffect(() => {
@@ -87,16 +98,13 @@ const Admin = () => {
 
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [selectedEventSched, setSelectedEventSched] = useState(null)
+  const [selectedSchedTopic, setSelectedSchedTopic] = useState(null)
   const [openEventModal, setOpenEventModal] = useState(false)
   const [openEventSchedModal, setOpenEventSchedModal] = useState(false)
   const [openTopicModal, setOpenTopicModal] = useState(false)
-  const [fieldErrors, setFieldErrors] = useState(null)
 
-  const setFieldErrorsFromApiRes = (res) => {
-    if (res.status === 422) {
-      const { errors } = res.data
-      setFieldErrors(errors)
-    }
+  const handleClearFieldErrors = () => {
+    dispatch(clearFieldErrors())
   }
 
   const handleCreateEvent = (data) => {
@@ -105,17 +113,14 @@ const Admin = () => {
         setOpenEventModal(false)
         dispatch(fetchEvents())
       }
-      setFieldErrorsFromApiRes(res)
     })
   }
 
   const handleCreateEventSched = (data, eventId) => {
     dispatch(createEventSched(data, eventId)).then((res) => {
-      console.log(res)
       if (res.status === 201) {
         setOpenEventSchedModal(false)
       }
-      setFieldErrorsFromApiRes(res)
     })
   }
 
@@ -125,7 +130,15 @@ const Admin = () => {
         setOpenTopicModal(false)
         setSelectedEventSched(res.newData)
       } 
-      setFieldErrorsFromApiRes(res)
+    })
+  }
+
+  const handleUpdateSchedTopic = (data, eventSched, eventId) => {
+    dispatch(updateSchedTopic(data, eventSched, eventId)).then((res) => {
+      if (res.status === 200) {
+        setOpenTopicModal(false)
+        setSelectedEventSched(res.newData)
+      } 
     })
   }
 
@@ -151,6 +164,11 @@ const Admin = () => {
         console.log(res)
       }
     })
+  }
+
+  const handleOpenTopicFormModalForUpdate = (data) => {
+    setSelectedSchedTopic(data)
+    setOpenTopicModal(true)
   }
 
   const renderEventDate = (date) => {
@@ -212,17 +230,26 @@ const Admin = () => {
                 <Typography variant="button">{stages[topic.stage].name}</Typography>
               </Grid>
               <Grid item container xs={12} spacing={2}>
-                <Grid item xs={12} md={10}>
+                <Grid item xs={12} md={8}>
                   <TopicCard data={topic}/>  
                 </Grid>
-                <Grid item xs={12} md={2}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleRemoveSchedTopic(topic, selectedEventSched, selectedEvent.id)}
-                  >
-                    Delete
-                  </Button>
+                <Grid item container xs={12} md={4} direction="row">
+                  <Grid item style={{ paddingTop: '10px' }}>
+                    <Button
+                      variant="contained"
+                      color="grey"
+                      onClick={() => handleOpenTopicFormModalForUpdate(topic)}
+                    >
+                      Edit
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <IconButton
+                      onClick={() => handleRemoveSchedTopic(topic, selectedEventSched, selectedEvent.id)}
+                    >
+                      <DeleteIcon fontSize="large" color="secondary"/>
+                    </IconButton>
+                  </Grid>
                 </Grid>
               </Grid>
             </>
@@ -395,7 +422,7 @@ const Admin = () => {
         open={openEventModal}
         onClose={(status) => {
           setOpenEventModal(status)
-          setFieldErrors(null)
+          handleClearFieldErrors()
         }}
         onCreate={handleCreateEvent}
       />
@@ -404,22 +431,29 @@ const Admin = () => {
         defaultDate={selectedEvent && selectedEvent.date}
         onClose={(status) => {
           setOpenEventSchedModal(status)
-          setFieldErrors(null)
+          handleClearFieldErrors()
         }}
         onCreate={(data) => {
           handleCreateEventSched(data, selectedEvent.id)
         }}
       />
       <TopicFormModal
+        loading={isCreatingTopic || isUpdatingTopic}
+        updateData={selectedSchedTopic}
         errors={fieldErrors}
         title={selectedEventSched && selectedEventSched.time}
         open={openTopicModal}
         onClose={(status) => {
           setOpenTopicModal(status)
-          setFieldErrors(null)
+          handleClearFieldErrors()
         }}
-        onCreate={(data) => {
-          handleCreateSchedTopic(data, selectedEventSched, selectedEvent.id)
+        onCreate={({data , isUpdate}) => {
+          if (isUpdate) {
+            setSelectedSchedTopic(null)
+            handleUpdateSchedTopic(data, selectedEventSched, selectedEvent.id)
+          } else {
+            handleCreateSchedTopic(data, selectedEventSched, selectedEvent.id)
+          }
         }}
       />
       {

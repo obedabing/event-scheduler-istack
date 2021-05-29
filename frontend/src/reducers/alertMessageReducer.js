@@ -3,6 +3,7 @@ import * as types from '../constants'
 const initialState = {
   error: null,
   success: null,
+  fieldErrors: null,
 }
 
 const alertMessageReducer = (state = initialState, action) => {
@@ -24,6 +25,12 @@ const alertMessageReducer = (state = initialState, action) => {
     return {
       ...state,
       success: action.payload,
+    }
+  }
+  case types.SET_FIELD_ERRORS: {
+    return {
+      ...state,
+      fieldErrors: action.payload,
     }
   }
 

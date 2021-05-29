@@ -1,11 +1,14 @@
 import moment from 'moment'
 import * as types from '../constants'
 import {
-  replaceArrayElement,
-  removeArrayElement,
+  replaceArrayObjectElement,
+  removeArrayObjectElement,
 } from '../utils'
 
 const initialState = {
+  loader: {
+    isLoading: null,
+  },
   event: {
     data: {},
     ids: [],
@@ -64,17 +67,6 @@ const adminEventReducer = (state = initialState, action) => {
       newTopic,
     } = action.payload
 
-
-    // const sortedTopics = [
-    //   ...eventScheduleData.scheduleTopics,
-    //   newTopic,
-    // ].sort((a, b) => {
-    //   const aStage = parseInt(types.stages[a.stage].number)
-    //   const bStage = parseInt(types.stages[b.stage].number)
-
-    //   return aStage - bStage
-    // })
-
     const newData = {
       ...eventScheduleData,
       scheduleTopics: [
@@ -83,7 +75,49 @@ const adminEventReducer = (state = initialState, action) => {
       ]
     }
 
-    const updatedEventSchedules = replaceArrayElement(
+    const updatedEventSchedules = replaceArrayObjectElement(
+      eventScheduleData,
+      newData,
+      state.event.data[eventId].eventSchedules,
+    )
+
+    return {
+      ...state,
+      event: {
+        ...state.event,
+        data: {
+          ...state.event.data,
+          [eventId]: {
+            ...state.event.data[eventId],
+            eventSchedules: updatedEventSchedules,
+          },
+        },
+      },
+    }
+  }
+  case types.UPDATE_SCHED_TOPIC: {
+    const {
+      eventId,
+      eventScheduleData,
+      updatedSchedTopic,
+    } = action.payload
+
+    const outdatedSchedTopic = eventScheduleData.scheduleTopics.find((res) => {
+      if (res.id === updatedSchedTopic.id) {
+        return res
+      }
+    })
+
+    const newData = {
+      ...eventScheduleData,
+      scheduleTopics: replaceArrayObjectElement(
+        outdatedSchedTopic,
+        updatedSchedTopic,
+        eventScheduleData.scheduleTopics,
+      ),
+    }
+
+    const updatedEventSchedules = replaceArrayObjectElement(
       eventScheduleData,
       newData,
       state.event.data[eventId].eventSchedules,
@@ -112,10 +146,10 @@ const adminEventReducer = (state = initialState, action) => {
 
     const newData = {
       ...eventScheduleData,
-      scheduleTopics: removeArrayElement(schedTopic, eventScheduleData.scheduleTopics),
+      scheduleTopics: removeArrayObjectElement(schedTopic, eventScheduleData.scheduleTopics),
     }
 
-    const updatedEventSchedules = replaceArrayElement(
+    const updatedEventSchedules = replaceArrayObjectElement(
       eventScheduleData,
       newData,
       state.event.data[eventId].eventSchedules,
@@ -142,7 +176,7 @@ const adminEventReducer = (state = initialState, action) => {
     } = action.payload
 
     const array = state.event.data[eventId].eventSchedules
-    const updatedEventSchedules = removeArrayElement(eventScheduleData, array)
+    const updatedEventSchedules = removeArrayObjectElement(eventScheduleData, array)
 
     return {
       ...state,
@@ -164,7 +198,15 @@ const adminEventReducer = (state = initialState, action) => {
       ...state,
       event: {
         ...state.event,
-        ids: removeArrayElement(eventId, state.event.ids)
+        ids: removeArrayObjectElement(eventId, state.event.ids)
+      },
+    }
+  }
+  case types.SET_LOADER: {
+    return {
+      ...state,
+      loader: {
+        isLoading: action.payload,
       },
     }
   }

@@ -48,9 +48,21 @@ defmodule IStackWeb.ScheduleTopicController do
   end
 
   def update(conn, %{"id" => id, "schedule_topic" => schedule_topic_params}) do
-    schedule_topic = Events.get_schedule_topic!(id)
+    %{"stage" => stage} = schedule_topic_params
+    %{event_schedule_id: event_schedule_id, stage: current_stage} = schedule_topic = Events.get_schedule_topic!(id)
+    existing_topic = 
+    case not is_nil(stage) do
+      true -> 
+        if stage === current_stage do
+          nil
+        else
+          Events.get_schedule_topic_by_stage(stage, event_schedule_id)
+        end
+      _ -> nil
+    end
 
-    with {:ok, %ScheduleTopic{} = schedule_topic} <- Events.update_schedule_topic(schedule_topic, schedule_topic_params) do
+    with {:stage_existing, false} <- {:stage_existing, not is_nil(existing_topic)},
+      {:ok, %ScheduleTopic{} = schedule_topic} <- Events.update_schedule_topic(schedule_topic, schedule_topic_params) do
       render(conn, "show_with_assoc.json", schedule_topic: schedule_topic)
     end
   end

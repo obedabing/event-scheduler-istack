@@ -6,6 +6,8 @@ import DialogActions from '@material-ui/core/DialogActions'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
+import CircularProgress from '@material-ui/core/CircularProgress'
+
 
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -26,19 +28,33 @@ const initialData = {
   authorTitle: null,
 }
 
-const TopicFormModal = ({ open, onClose, onCreate, title = '', errors }) => {
-  console.log(errors)
+const TopicFormModal = ({
+  open,
+  onClose,
+  onCreate,
+  title = '',
+  errors,
+  updateData = {},
+  loading = false,
+}) => {
   const [openModal, setModalOpen] = useState(open || false)
   const [data, setData] = useState(initialData)
+  const [isUpdate, setIsUpdateForm] = useState(false)
 
   useEffect(() => {
     setModalOpen(open)
-    setData(initialData)
+    setIsUpdateForm(false)
+    if (updateData) {
+      setData(updateData)
+      setIsUpdateForm(true)
+    } else {
+      setData(initialData)
+    }
   }, [open])
 
-  // useEffect(() => {
-  //   console.log(data)
-  // }, [data])
+  useEffect(() => {
+    console.log(data)
+  }, [])
 
   const handleClose = () => {
     setModalOpen(false)
@@ -46,7 +62,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '', errors }) => {
   }
 
   const handleCreate = () => {
-    onCreate(data)
+    onCreate({data, isUpdate})
   }
 
   const onChangeData = (event) => {
@@ -65,7 +81,7 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '', errors }) => {
       aria-labelledby="simple-dialog-title"
       open={openModal}
     >
-      <DialogTitle id="simple-dialog-title">{`${title} - Add Topic`}</DialogTitle>
+      <DialogTitle id="simple-dialog-title">{`${title} - ${!isUpdate ? 'Add' : 'Update'} Topic`}</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -176,9 +192,25 @@ const TopicFormModal = ({ open, onClose, onCreate, title = '', errors }) => {
           color="primary"
           variant="contained"
         >
-          Create
+          {isUpdate ? 'Update' : 'Create'}
         </Button>
       </DialogActions>
+      {loading ? (
+        <div
+          style={{
+            position: 'absolute',
+            opacity: '0.7',
+            height: '100%',
+            display: 'flex',
+            width: '100%',
+            backgroundColor: 'white',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress />
+        </div>
+      ) : null}
     </Dialog>
   )
 }

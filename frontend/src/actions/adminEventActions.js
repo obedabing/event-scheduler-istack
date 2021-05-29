@@ -12,6 +12,7 @@ import {
   deleteSchedTopic,
   deleteEventSched,
   deleteEvent,
+  updateSchedTopic as updateTopic,
 } from '../api'
 
 const setTimeTo24hours = (date) => {
@@ -99,19 +100,29 @@ export const fetchEventScheds = () => async (dispatch) => {
   }
 }
 
+const tansformSchedTopicData = (dataParams) => {
+  const tranformedData = {
+    ...dataParams,
+    track_type: dataParams.trackType,
+    author_name: dataParams.authorName,
+    author_title: dataParams.authorTitle,
+  }
+
+  delete tranformedData.trackType
+  delete tranformedData.authorName
+  delete tranformedData.authorTitle
+
+  return tranformedData
+}
+
 export const createSchedTopic = (dataParams, eventScheduleData, eventId) => async (dispatch) => {
+  dispatch({
+    type: types.SET_LOADER,
+    payload: 'creatingTopic',
+  })
   try {
     const jwt = getCookieJwt()
-    const tranformedData = {
-      ...dataParams,
-      track_type: dataParams.trackType,
-      author_name: dataParams.authorName,
-      author_title: dataParams.authorTitle,
-    }
-
-    delete tranformedData.trackType
-    delete tranformedData.authorName
-    delete tranformedData.authorTitle
+    const tranformedData = tansformSchedTopicData(dataParams)
 
     const res = await createTopic(jwt, { schedule_topic: tranformedData, event_sched_id: eventScheduleData.id })
     const { data } = res.data
@@ -128,6 +139,10 @@ export const createSchedTopic = (dataParams, eventScheduleData, eventId) => asyn
         newTopic: data,
       }
     })
+    dispatch({
+      type: types.SET_LOADER,
+      payload: null,
+    })
 
     const newData = {
       ...eventScheduleData,
@@ -143,14 +158,91 @@ export const createSchedTopic = (dataParams, eventScheduleData, eventId) => asyn
     }
   } catch ({ response }) {
     if (response.status === 422) {
-      const { error } = response.data
+      const { error, errors } = response.data
+      if (error && ['topics', 'stage'].includes(error)) {
+        dispatch({
+          type: types.SHOW_ERROR,
+          payload: response.data.message,
+        })
+      } 
+
+      if (errors) {
+        dispatch({
+          type: types.SET_FIELD_ERRORS,
+          payload: errors,
+        })
+      }
+    }
+    dispatch({
+      type: types.SET_LOADER,
+      payload: null,
+    })
+    return response
+  }
+}
+
+export const updateSchedTopic = (dataParams, eventScheduleData, eventId) => async (dispatch) => {
+  dispatch({
+    type: types.SET_LOADER,
+    payload: 'updatingTopic',
+  })
+  try {
+    const jwt = getCookieJwt()
+    const tranformedData = tansformSchedTopicData(dataParams)
+
+    const res = await updateTopic(jwt, { schedule_topic: tranformedData }, dataParams.id)
+    const { data } = res.data
+
+    dispatch({
+      type: types.SHOW_SUCCESS,
+      payload: 'Successfully updated.'
+    })
+    dispatch({
+      type: types.UPDATE_SCHED_TOPIC,
+      payload: {
+        eventId,
+        eventScheduleData,
+        updatedSchedTopic: data,
+      }
+    })
+    dispatch({
+      type: types.SET_LOADER,
+      payload: null,
+    })
+
+    const newData = {
+      ...eventScheduleData,
+      scheduleTopics: [
+        ...eventScheduleData.scheduleTopics,
+        data
+      ]
+    }
+
+    return {
+      ...res,
+      newData,
+    }
+  } catch ({ response }) {
+    if (response.status === 422) {
+      const { error, errors } = response.data
       if (error && ['topics', 'stage'].includes(error)) {
         dispatch({
           type: types.SHOW_ERROR,
           payload: response.data.message,
         })
       }
+
+      if (errors) {
+        dispatch({
+          type: types.SET_FIELD_ERRORS,
+          payload: errors,
+        })
+      }
     }
+    dispatch({
+      type: types.SET_LOADER,
+      payload: null,
+    })
     return response
   }
 }
@@ -215,6 +307,11 @@ export const removeEvent = (eventId) => async (dispatch) => {
 
 export const clearAlerts = () => ({
   type: types.CLEAR_ALERTS,
+  payload: null,
+})
+
+export const clearFieldErrors = () => ({
+  type: types.SET_FIELD_ERRORS,
   payload: null,
 })
 

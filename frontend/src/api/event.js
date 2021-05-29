@@ -42,6 +42,14 @@ export function createSchedTopic(jwt, data) {
   })
 }
 
+export function updateSchedTopic(jwt, data, id) {
+  return axios.patch(`/api/schedule_topics/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+}
+
 export function deleteSchedTopic(jwt, id) {
   return axios.delete(`/api/schedule_topics/${id}`, {
     headers: {
@@ -59,9 +67,6 @@ export function deleteEventSched(jwt, id) {
 }
 
 export function deleteEvent(jwt, id) {
-  console.log(id, "AHAHAHAHAHAHAHAHAHAHAH")
-  console.log(id, "AHAHAHAHAHAHAHAHAHAHAH")
-  console.log(id, "AHAHAHAHAHAHAHAHAHAHAH")
   return axios.delete(`/api/events/${id}`, {
     headers: {
       Authorization: `Bearer ${jwt}`,

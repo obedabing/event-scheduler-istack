@@ -4,7 +4,7 @@ export const getCookieJwt = () => {
   return types.cookieStorage.get('istack-token')
 }
 
-export const replaceArrayElement = (current, newData, arrayData) => {
+export const replaceArrayObjectElement = (current, newData, arrayData) => {
   const array = arrayData
   const index = array.findIndex((data) => data.id === current.id)
   array[index] = newData
@@ -12,7 +12,7 @@ export const replaceArrayElement = (current, newData, arrayData) => {
   return array
 }
 
-export const removeArrayElement = (data, arrayData) => {
+export const removeArrayObjectElement = (data, arrayData) => {
   const array = arrayData
   const index = arrayData.indexOf(data)
   if (index > -1) {
