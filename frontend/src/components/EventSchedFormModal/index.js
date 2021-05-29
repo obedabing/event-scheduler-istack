@@ -5,6 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 
 import DateFnsUtils from '@date-io/date-fns'
 
@@ -69,10 +70,12 @@ const EventSchedFormModal = ({ open, onClose, onCreate, defaultDate }) => {
         <Grid container>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardTimePicker
+              minutesStep={30}
+              ampm={false}
               margin="normal"
               id="time-picker"
               label="Time schedule"
-              value={eventSchedData.time}
+              value={eventSchedData.time || ''}
               onChange={onChangeData}
               KeyboardButtonProps={{
                 'aria-label': 'change time',
