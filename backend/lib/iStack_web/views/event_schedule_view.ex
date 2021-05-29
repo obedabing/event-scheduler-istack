@@ -29,7 +29,8 @@ defmodule IStackWeb.EventScheduleView do
     }
   end
 
-  def render("event_schedule_with_topics.json", %{event_schedule: event_schedule}) do
+  def render("event_schedule_with_topics.json", %{event_schedule: event_schedule}) do 
+    IO.inspect event_schedule.time
     %{
       id: event_schedule.id,
       time: event_schedule.time,

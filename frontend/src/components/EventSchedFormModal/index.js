@@ -75,7 +75,7 @@ const EventSchedFormModal = ({ open, onClose, onCreate, defaultDate }) => {
               margin="normal"
               id="time-picker"
               label="Time schedule"
-              value={eventSchedData.time || ''}
+              value={eventSchedData.time || null}
               onChange={onChangeData}
               KeyboardButtonProps={{
                 'aria-label': 'change time',

@@ -428,7 +428,6 @@ const Admin = () => {
       />
       <EventSchedFormModal
         open={openEventSchedModal}
-        defaultDate={selectedEvent && selectedEvent.date}
         onClose={(status) => {
           setOpenEventSchedModal(status)
           handleClearFieldErrors()

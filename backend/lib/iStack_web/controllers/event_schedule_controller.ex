@@ -15,10 +15,16 @@ defmodule IStackWeb.EventScheduleController do
     event = Events.get_event!(event_id)
     %{ "time" => time } = event_schedule_params
     {:ok, transformed_time} = Time.from_iso8601(time)
+
+    {:ok, timeDate} = Time.new(transformed_time.hour, transformed_time.minute,0 ,0)
+    existing_sched = Events.get_event_schedule_by_time(timeDate, event_id)
+
     data = %{
-      "time" => transformed_time
+      "time" => timeDate
     }
-    with {:ok, %EventSchedule{} = event_schedule} <- 
+
+    with  {:event_sched_existing, false} <- {:event_sched_existing, not is_nil(existing_sched)},
+      {:ok, %EventSchedule{} = event_schedule} <- 
       Events.create_event_schedule_with_assoc(data, event) do
       conn
       |> put_status(:created)

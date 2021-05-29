@@ -156,6 +156,14 @@ defmodule IStack.Events do
   """
   def get_event_schedule!(id), do: Repo.get!(EventSchedule, id)
 
+  def get_event_schedule_by_time(time, event_id) do
+    from(
+      e in EventSchedule,
+      where: e.time == ^time
+        and e.event_id == ^ event_id
+    ) |> Repo.one()
+  end
+
   @doc """
   Creates a event_schedule.
 

@@ -27,6 +27,13 @@ defmodule IStackWeb.FallbackController do
     |> render("error.json", error: "events", message: "Event date already existing.")
   end
 
+  def call(conn, {:event_sched_existing, true}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(IStackWeb.AuthView)
+    |> render("error.json", error: "eventSched", message: "Schedule already existing.")
+  end
+
   def call(conn, {:events_exceeded, true}) do
     conn
     |> put_status(:unprocessable_entity)
