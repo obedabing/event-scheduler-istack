@@ -38,6 +38,7 @@ import {
   clearFieldErrors,
   updateSchedTopic,
   updatedEventSched,
+  updateEvent,
 } from '../src/actions'
 
 import {
@@ -117,6 +118,15 @@ const Admin = () => {
     })
   }
 
+  const handleUpdateEvent = (data) => {
+    dispatch(updateEvent(data)).then((res) => {
+      if (res.status === 200) {
+        setOpenEventModal(false)
+        dispatch(fetchEvents())
+      }
+    })
+  }
+
   const handleCreateEventSched = (data, eventId) => {
     dispatch(createEventSched(data, eventId)).then((res) => {
       if (res.status === 201) {
@@ -182,9 +192,14 @@ const Admin = () => {
     setOpenTopicModal(true)
   }
 
-  const handleOpenEventSchedForUpdate = (data) => {
+  const handleOpenEventSchedModalForUpdate = (data) => {
     setSelectedEventSched(data)
     setOpenEventSchedModal(true)
+  }
+
+  const handleOpenEventModalForUpdate = (data) => {
+    setSelectedEvent(data)
+    setOpenEventModal(true)
   }
 
   const renderEventDate = (date) => {
@@ -332,7 +347,7 @@ const Admin = () => {
                     <Button
                       variant="contained"
                       color="grey"
-                      onClick={() => handleOpenEventSchedForUpdate(eventSched)}
+                      onClick={() => handleOpenEventSchedModalForUpdate(eventSched)}
                     >
                       Edit
                     </Button>
@@ -383,8 +398,6 @@ const Admin = () => {
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
                     style={{
                       backgroundColor: '#b0fa98'
                     }}
@@ -402,14 +415,23 @@ const Admin = () => {
                 </Accordion>
               </Grid>
             </Grid>
-            <Grid item xs={2}>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => handleRemoveEvent(id)}
-              >
-                Delete
-              </Button>
+            <Grid item container xs={2} direction="row">
+              <Grid item style={{ paddingTop: '10px' }}>
+                <Button
+                  variant="contained"
+                  color="grey"
+                  onClick={() => handleOpenEventModalForUpdate(data)}
+                >
+                  Edit
+                </Button>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  onClick={() => handleRemoveEvent(id)}
+                >
+                  <DeleteIcon fontSize="large" color="secondary"/>
+                </IconButton>
+              </Grid>
             </Grid>
           </Grid>
         )
@@ -421,7 +443,10 @@ const Admin = () => {
       maxWidth='xl'
       style={{
         padding: '0px',
-        backgroundColor: '#e3e1dc',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        backgroundColor: '#f0f0ed',
+        height: '100vh',
       }}
     >
       {renderHeader()}
@@ -437,6 +462,7 @@ const Admin = () => {
             variant="contained"
             onClick={() => {
               setOpenEventModal(true)
+              setSelectedEvent(null)
             }}
           >
             ADD EVENT
@@ -445,12 +471,19 @@ const Admin = () => {
         {renderEventAccordionList()}
       </Grid>
       <EventFormModal
+        updateData={selectedEvent}
         open={openEventModal}
         onClose={(status) => {
           setOpenEventModal(status)
           handleClearFieldErrors()
         }}
-        onCreate={handleCreateEvent}
+        onCreate={({ data, isUpdate }) => {
+          if (isUpdate) {
+            handleUpdateEvent(data)
+          } else {
+            handleCreateEvent(data)
+          }
+        }}
       />
       <EventSchedFormModal
         updateData={selectedEventSched}

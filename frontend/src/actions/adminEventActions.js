@@ -14,6 +14,7 @@ import {
   deleteEvent,
   updateSchedTopic as updateTopic,
   updateEventSched as updateSched,
+  updateEvent as updateEventData,
 } from '../api'
 
 const setTimeTo24hours = (date) => {
@@ -29,6 +30,30 @@ export const createEvent = (data) => async (dispatch) => {
       jwt,
       { event: { date: setTimeTo24hours(data.date) } }
     )
+    return res
+  } catch ({ response }) {
+    if (response.status === 422) {
+      const { error } = response.data
+      if (error && error === 'events') {
+        dispatch({
+          type: types.SHOW_ERROR,
+          payload: response.data.message,
+        })
+      }
+    }
+    return response
+  }
+}
+
+export const updateEvent = (data) => async (dispatch) => {
+  try {
+    const jwt = getCookieJwt()
+    const res = await updateEventData(
+      jwt,
+      { event: { date: setTimeTo24hours(data.date) } },
+      data.id,
+    )
+
     return res
   } catch ({ response }) {
     if (response.status === 422) {

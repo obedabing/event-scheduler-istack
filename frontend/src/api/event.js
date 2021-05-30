@@ -10,6 +10,14 @@ export function createEvent(jwt, data) {
   })
 }
 
+export function updateEvent(jwt, data, id) {
+  return axios.patch(`/api/events/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+}
+
 export function fetchEvents(jwt) {
   return axios.get('api/events', {
     headers: {

@@ -13,15 +13,29 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-const EventFormModal = ({ open, onClose, onCreate }) => {
+const EventFormModal = ({
+  open,
+  onClose,
+  onCreate,
+  updateData = {},
+}) => {
   const [openModal, setModalOpen] = useState(open || false)
+  const [isUpdate, setIsUpdate] = useState(false)
   const [eventData, setEventData] = useState({
     date: null,
   })
 
   useEffect(() => {
+    if (updateData) {
+      setEventData({
+        ...updateData,
+      })
+      setIsUpdate(true)
+    } else {
+      setIsUpdate(false)
+    }
     setModalOpen(open)
-  }, [open])
+  }, [open, updateData])
 
   const handleClose = () => {
     setModalOpen(false)
@@ -29,12 +43,15 @@ const EventFormModal = ({ open, onClose, onCreate }) => {
   }
 
   const handleCreate = () => {
-    onCreate(eventData)
+    onCreate({
+      data: eventData,
+      isUpdate,
+    })
   }
 
   const onChangeData = (value) => {
-    console.log(value)
     setEventData({
+      ...eventData,
       date: value,
     })
   }
@@ -45,7 +62,7 @@ const EventFormModal = ({ open, onClose, onCreate }) => {
       aria-labelledby="simple-dialog-title"
       open={openModal}
     >
-      <DialogTitle id="simple-dialog-title">Add Event</DialogTitle>
+      <DialogTitle id="simple-dialog-title">{`${isUpdate ? 'Update' : 'Add'} Event`}</DialogTitle>
       <DialogContent>
         <Grid container>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -77,7 +94,7 @@ const EventFormModal = ({ open, onClose, onCreate }) => {
           color="primary"
           variant="contained"
         >
-          Create
+          {isUpdate? 'Update' : 'Create'}
         </Button>
       </DialogActions>
     </Dialog>
