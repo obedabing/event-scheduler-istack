@@ -33,8 +33,11 @@ defmodule IStackWeb.EventController do
 
   def update(conn, %{"id" => id, "event" => event_params}) do
     event = Events.get_event!(id)
+    %{"date" => date} = event_params
+    existing_date = Events.get_event_by_date(date)
 
-    with {:ok, %Event{} = event} <- Events.update_event(event, event_params) do
+    with {:event_date_existing, false} <- {:event_date_existing, not is_nil(existing_date)},
+      {:ok, %Event{} = event} <- Events.update_event(event, event_params) do
       render(conn, "show.json", event: event)
     end
   end

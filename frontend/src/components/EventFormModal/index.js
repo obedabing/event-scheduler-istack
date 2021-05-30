@@ -29,6 +29,7 @@ const EventFormModal = ({
     if (updateData) {
       setEventData({
         ...updateData,
+        date: new Date(updateData.date)
       })
       setIsUpdate(true)
     } else {

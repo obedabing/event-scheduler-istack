@@ -271,7 +271,7 @@ const Admin = () => {
                       color="grey"
                       onClick={() => handleOpenTopicFormModalForUpdate(topic)}
                     >
-                      Edit
+                      Update
                     </Button>
                   </Grid>
                   <Grid item>
@@ -349,7 +349,7 @@ const Admin = () => {
                       color="grey"
                       onClick={() => handleOpenEventSchedModalForUpdate(eventSched)}
                     >
-                      Edit
+                      Update
                     </Button>
                   </Grid>
                   <Grid item>
@@ -422,7 +422,7 @@ const Admin = () => {
                   color="grey"
                   onClick={() => handleOpenEventModalForUpdate(data)}
                 >
-                  Edit
+                  Update
                 </Button>
               </Grid>
               <Grid item>
