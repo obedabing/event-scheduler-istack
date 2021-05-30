@@ -82,7 +82,8 @@ export const createEventSched = (dataParams, eventId) => async (dispatch) => {
   } catch ({ response }) {
     if (response.status === 422) {
       const { error, errors } = response.data
-      if (error && error === 'eventSched') {
+
+      if (error && ['eventSched', 'minutesInterval'].includes(error)) {
         dispatch({
           type: types.SHOW_ERROR,
           payload: response.data.message,

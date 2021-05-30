@@ -11,19 +11,22 @@ defmodule IStackWeb.EventScheduleController do
     render(conn, "index.json", event_schedules: event_schedules)
   end
 
+  def is_thirty_minutes_interva(minutes), do: Enum.member?([00, 30], minutes)
+
   def create(conn, %{"event_schedule" => event_schedule_params, "event_id" => event_id}) do
     event = Events.get_event!(event_id)
     %{ "time" => time } = event_schedule_params
     {:ok, transformed_time} = Time.from_iso8601(time)
-
-    {:ok, timeDate} = Time.new(transformed_time.hour, transformed_time.minute,0 ,0)
+    {:ok, timeDate} = Time.new(transformed_time.hour, transformed_time.minute, 0 ,0)
+    minutes_interval = is_thirty_minutes_interva(transformed_time.minute)
     existing_sched = Events.get_event_schedule_by_time(timeDate, event_id)
 
     data = %{
       "time" => timeDate
     }
 
-    with  {:event_sched_existing, false} <- {:event_sched_existing, not is_nil(existing_sched)},
+    with {:event_sched_existing, false} <- {:event_sched_existing, not is_nil(existing_sched)},
+      {:interval_not_valid, false} <- {:interval_not_valid, not is_nil(minutes_interval)},
       {:ok, %EventSchedule{} = event_schedule} <- 
       Events.create_event_schedule_with_assoc(data, event) do
       conn

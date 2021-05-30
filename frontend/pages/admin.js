@@ -427,6 +427,7 @@ const Admin = () => {
         onCreate={handleCreateEvent}
       />
       <EventSchedFormModal
+        defaultDate={new Date().setHours(0,0,0,0)}
         open={openEventSchedModal}
         onClose={(status) => {
           setOpenEventSchedModal(status)

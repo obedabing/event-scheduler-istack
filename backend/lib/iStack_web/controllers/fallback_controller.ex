@@ -34,6 +34,13 @@ defmodule IStackWeb.FallbackController do
     |> render("error.json", error: "eventSched", message: "Schedule already existing.")
   end
 
+  def call(conn, {:interval_not_valid, true}) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> put_view(IStackWeb.AuthView)
+    |> render("error.json", error: "minutesInterval", message: "Minutes interval invalid.")
+  end
+
   def call(conn, {:events_exceeded, true}) do
     conn
     |> put_status(:unprocessable_entity)
