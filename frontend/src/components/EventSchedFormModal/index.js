@@ -5,7 +5,6 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
 
 import DateFnsUtils from '@date-io/date-fns'
 
@@ -14,29 +13,20 @@ import {
   KeyboardTimePicker,
 } from '@material-ui/pickers';
 
-const EventSchedFormModal = ({ open, onClose, onCreate, defaultDate }) => {
+const EventSchedFormModal = ({
+  open,
+  onClose,
+  onCreate,
+  defaultDate,
+  updateData = {},
+}) => {
   const [openModal, setModalOpen] = useState(open || false)
+  const [isUpdate, setIsUpdate] = useState(false)
   const [eventSchedData, setEventSchedData] = useState({
     time: null,
   })
 
-  useEffect(() => {
-    setModalOpen(open)
-  }, [open])
-
-  useEffect(() => {
-    setEventSchedData({
-      time: defaultDate,
-    })
-  }, [defaultDate])
-
-  const handleClose = () => {
-    setModalOpen(false)
-    onClose(false)
-  }
-
-  const transformTime = (timeData) => {
-    const time = new Date(timeData)
+  const transformTime = (time) => {
     const addZero = (i) => {
       if (i < 10) {
         i = "0" + i
@@ -47,14 +37,53 @@ const EventSchedFormModal = ({ open, onClose, onCreate, defaultDate }) => {
     return addZero(time.getHours()) + ":" + addZero(time.getMinutes()) + ":" + addZero(time.getSeconds())
   }
 
+  const transformDataForUpdate = (dateData, time) => {
+    const setDate = new Date(dateData)
+    const date = setDate.getFullYear()
+      + '-' 
+      + (setDate.getMonth()+1)
+      + '-'
+    + setDate.getDate()
+
+    return new Date(`${date} ${time}`)
+  }
+
+  useEffect(() => {
+    if (updateData) {
+      const data = transformDataForUpdate(defaultDate, updateData.time)
+      setEventSchedData({
+        ...updateData,
+        time: data,
+      })
+      setIsUpdate(true)
+    } else {
+      setEventSchedData({
+        time: defaultDate,
+      })
+      setIsUpdate(false)
+    }
+    setModalOpen(open)
+  }, [open, updateData])
+
+  const handleClose = () => {
+    setModalOpen(false)
+    onClose(false)
+  }
+
   const handleCreate = () => {
+    const time = new Date(eventSchedData.time)
     onCreate({
-      time: transformTime(eventSchedData.time),
+      data: {
+        ...eventSchedData,
+        time: transformTime(time)
+      },
+      isUpdate,
     })
   }
 
   const onChangeData = (value) => {
     setEventSchedData({
+      ...eventSchedData,
       time: value,
     })
   }
@@ -62,10 +91,9 @@ const EventSchedFormModal = ({ open, onClose, onCreate, defaultDate }) => {
   return (
     <Dialog
       onClose={handleClose}
-      aria-labelledby="simple-dialog-title"
       open={openModal}
     >
-      <DialogTitle id="simple-dialog-title">Add Event Schedule</DialogTitle>
+      <DialogTitle>{`${isUpdate ? 'Update' : 'Add'} Event Schedule`}</DialogTitle>
       <DialogContent>
         <Grid container>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -97,7 +125,7 @@ const EventSchedFormModal = ({ open, onClose, onCreate, defaultDate }) => {
           color="primary"
           variant="contained"
         >
-          Create
+          {isUpdate ? 'Update' : 'Create'}
         </Button>
       </DialogActions>
     </Dialog>

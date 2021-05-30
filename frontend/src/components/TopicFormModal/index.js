@@ -52,10 +52,6 @@ const TopicFormModal = ({
     }
   }, [open])
 
-  useEffect(() => {
-    console.log(data)
-  }, [])
-
   const handleClose = () => {
     setModalOpen(false)
     onClose(false)
@@ -78,10 +74,9 @@ const TopicFormModal = ({
   return (
     <Dialog
       onClose={handleClose}
-      aria-labelledby="simple-dialog-title"
       open={openModal}
     >
-      <DialogTitle id="simple-dialog-title">{`${title} - ${!isUpdate ? 'Add' : 'Update'} Topic`}</DialogTitle>
+      <DialogTitle>{`${title} - ${!isUpdate ? 'Add' : 'Update'} Topic`}</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>

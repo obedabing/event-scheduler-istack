@@ -26,6 +26,14 @@ export function createEventSched(jwt, data) {
   })
 }
 
+export function updateEventSched(jwt, data, id) {
+  return axios.patch(`/api/event_schedules/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+}
+
 export function fetchEventScheds(jwt) {
   return axios.get('api/event_schedules', {
     headers: {

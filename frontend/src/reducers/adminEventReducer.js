@@ -60,6 +60,55 @@ const adminEventReducer = (state = initialState, action) => {
       },
     }
   }
+  case types.UPDATE_EVENT_SCHED: {
+    const { eventId } = action.payload
+    const schedId = action.payload.id
+    const outdatedSched =  state.event.data[eventId].eventSchedules.find((res) => {
+      if (res.id === schedId) {
+        return res
+      }
+    })
+    const updatedSched = {
+      ...outdatedSched,
+      ...action.payload,
+    }
+
+    const updatedEventSchedules = replaceArrayObjectElement(
+      outdatedSched,
+      updatedSched,
+      state.event.data[eventId].eventSchedules,
+    ).sort((a,b) => {
+      const timeA = moment(a.time, 'HH:mm').format("HH:mm:ss")
+      const timeB = moment(b.time, 'HH:mm').format("HH:mm:ss")
+
+      return timeA.localeCompare(timeB)
+    })
+
+    // const sortedScheds = [
+    //   ...state.event.data[eventId].eventSchedules,
+    //   action.payload,
+    // ].sort((a,b) => {
+    //   const timeA = moment(a.time, 'HH:mm').format("HH:mm:ss")
+    //   const timeB = moment(b.time, 'HH:mm').format("HH:mm:ss")
+
+    //   return timeA.localeCompare(timeB)
+    // })
+
+    return {
+      ...state,
+      event: {
+        ...state.event,
+        data: {
+          ...state.event.data,
+          [eventId]: {
+            ...state.event.data[eventId],
+            eventSchedules: updatedEventSchedules,
+          },
+        },
+      },
+    }
+  }
+  
   case types.ADD_SCHED_TOPIC: {
     const {
       eventId,

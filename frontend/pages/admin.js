@@ -37,6 +37,7 @@ import {
   clearAlerts,
   clearFieldErrors,
   updateSchedTopic,
+  updatedEventSched,
 } from '../src/actions'
 
 import {
@@ -124,6 +125,15 @@ const Admin = () => {
     })
   }
 
+  const handleUpdateEventSched = (data, eventId) => {
+    dispatch(updatedEventSched(data, eventId)).then((res) => {
+      if (res.status === 200) {
+        setSelectedEventSched(null)
+        setOpenEventSchedModal(false)
+      }
+    })
+  }
+
   const handleCreateSchedTopic = (data, eventSched, eventId) => {
     dispatch(createSchedTopic(data, eventSched, eventId)).then((res) => {
       if (res.status === 201) {
@@ -137,6 +147,7 @@ const Admin = () => {
     dispatch(updateSchedTopic(data, eventSched, eventId)).then((res) => {
       if (res.status === 200) {
         setOpenTopicModal(false)
+        setSelectedSchedTopic(null)
         setSelectedEventSched(res.newData)
       } 
     })
@@ -171,10 +182,15 @@ const Admin = () => {
     setOpenTopicModal(true)
   }
 
+  const handleOpenEventSchedForUpdate = (data) => {
+    setSelectedEventSched(data)
+    setOpenEventSchedModal(true)
+  }
+
   const renderEventDate = (date) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
     const renderedDate  = new Date(date)
-
+    
     return renderedDate.toLocaleDateString("en-US", options)
   }
 
@@ -268,6 +284,7 @@ const Admin = () => {
             color="primary"
             variant="contained"
             onClick={() => {
+              setSelectedEventSched(null)
               setOpenEventSchedModal(true)
             }}
           >
@@ -278,8 +295,8 @@ const Admin = () => {
           eventSchedules.map((eventSched) => {
             const { id } = eventSched
             return (
-              <Grid item container xs={10} spacing={4}>
-                <Grid item xs={10}>
+              <Grid item container xs={10} spacing={2}>
+                <Grid item xs={12} md={9}>
                   <Accordion
                     onChange={() => {
                       if (selectedEventSched && selectedEventSched.id === id) {
@@ -310,14 +327,23 @@ const Admin = () => {
                     </AccordionDetails>
                   </Accordion>
                 </Grid>
-                <Grid item xs={2}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleRemoveEventSched(eventSched, selectedEvent.id)}
-                  >
-                    Delete
-                  </Button>
+                <Grid item container xs={12} md={3} direction="row">
+                  <Grid item style={{ paddingTop: '10px' }}>
+                    <Button
+                      variant="contained"
+                      color="grey"
+                      onClick={() => handleOpenEventSchedForUpdate(eventSched)}
+                    >
+                      Edit
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <IconButton
+                      onClick={() => handleRemoveEventSched(eventSched, selectedEvent.id)}
+                    >
+                      <DeleteIcon fontSize="large" color="secondary"/>
+                    </IconButton>
+                  </Grid>
                 </Grid>
               </Grid>
             )
@@ -427,14 +453,19 @@ const Admin = () => {
         onCreate={handleCreateEvent}
       />
       <EventSchedFormModal
-        defaultDate={new Date().setHours(0,0,0,0)}
+        updateData={selectedEventSched}
+        defaultDate={selectedEvent && new Date(selectedEvent.date).setHours(0,0,0,0)}
         open={openEventSchedModal}
         onClose={(status) => {
           setOpenEventSchedModal(status)
           handleClearFieldErrors()
         }}
-        onCreate={(data) => {
-          handleCreateEventSched(data, selectedEvent.id)
+        onCreate={({ data, isUpdate }) => {
+          if (isUpdate) {
+            handleUpdateEventSched(data, selectedEvent.id)
+          } else {
+            handleCreateEventSched(data, selectedEvent.id)
+          }
         }}
       />
       <TopicFormModal
@@ -447,9 +478,8 @@ const Admin = () => {
           setOpenTopicModal(status)
           handleClearFieldErrors()
         }}
-        onCreate={({data , isUpdate}) => {
+        onCreate={({ data , isUpdate }) => {
           if (isUpdate) {
-            setSelectedSchedTopic(null)
             handleUpdateSchedTopic(data, selectedEventSched, selectedEvent.id)
           } else {
             handleCreateSchedTopic(data, selectedEventSched, selectedEvent.id)

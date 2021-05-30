@@ -13,6 +13,7 @@ import {
   deleteEventSched,
   deleteEvent,
   updateSchedTopic as updateTopic,
+  updateEventSched as updateSched,
 } from '../api'
 
 const setTimeTo24hours = (date) => {
@@ -76,6 +77,51 @@ export const createEventSched = (dataParams, eventId) => async (dispatch) => {
     dispatch({
       type: types.ADD_EVENT_SCHED,
       payload: data,
+    })
+
+    return res
+  } catch ({ response }) {
+    if (response.status === 422) {
+      const { error, errors } = response.data
+
+      if (error && ['eventSched', 'minutesInterval'].includes(error)) {
+        dispatch({
+          type: types.SHOW_ERROR,
+          payload: response.data.message,
+        })
+      }
+
+      if (errors) {
+        dispatch({
+          type: types.SET_FIELD_ERRORS,
+          payload: errors,
+        })
+      }
+    }
+    return response
+  }
+}
+
+export const updatedEventSched = (dataParams, eventId) => async (dispatch) => {
+  try {
+    const jwt = getCookieJwt()
+    const res = await updateSched(
+      jwt,
+      { event_schedule: dataParams, event_id: eventId },
+      dataParams.id,
+    )
+    const { data } = res
+
+    dispatch({
+      type: types.SHOW_SUCCESS,
+      payload: 'Successfully updated.'
+    })
+    dispatch({
+      type: types.UPDATE_EVENT_SCHED,
+      payload: {
+        ...data,
+        eventId: eventId,
+      }
     })
 
     return res
