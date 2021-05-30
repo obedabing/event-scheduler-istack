@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
@@ -16,13 +15,13 @@ import DeleteIcon from '@material-ui/icons/Delete'
 
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
-
 import { useRouter } from 'next/router'
 
 import EventFormModal from '../src/components/EventFormModal'
 import EventSchedFormModal from '../src/components/EventSchedFormModal'
 import TopicFormModal from '../src/components/TopicFormModal'
 import TopicCard from '../src/components/TopicCard'
+import DeleteIconButtonWithConfirmation from '../src/components/DeleteIconButtonWithConfirmation'
 
 import {
   logout,
@@ -275,11 +274,10 @@ const Admin = () => {
                     </Button>
                   </Grid>
                   <Grid item>
-                    <IconButton
+                    <DeleteIconButtonWithConfirmation
+                      title={`Are you sure to remove ${stages[topic.stage].name.toLowerCase()}?`}
                       onClick={() => handleRemoveSchedTopic(topic, selectedEventSched, selectedEvent.id)}
-                    >
-                      <DeleteIcon fontSize="large" color="secondary"/>
-                    </IconButton>
+                    />
                   </Grid>
                 </Grid>
               </Grid>
@@ -309,6 +307,7 @@ const Admin = () => {
         {
           eventSchedules.map((eventSched) => {
             const { id } = eventSched
+            const time = moment(eventSched.time, 'HH:mm').format("HH:mm:ss")
             return (
               <Grid item container xs={10} spacing={2}>
                 <Grid item xs={12} md={9}>
@@ -330,7 +329,7 @@ const Admin = () => {
                         backgroundColor: '#faf698',
                       }}
                     >
-                      <Typography>{moment(eventSched.time, 'HH:mm').format("HH:mm:ss")}</Typography>
+                      <Typography>{time}</Typography>
                     </AccordionSummary>
                     <AccordionDetails
                       style={{
@@ -353,11 +352,10 @@ const Admin = () => {
                     </Button>
                   </Grid>
                   <Grid item>
-                    <IconButton
+                    <DeleteIconButtonWithConfirmation
+                      title={`Are you sure to remove ${time}?`}
                       onClick={() => handleRemoveEventSched(eventSched, selectedEvent.id)}
-                    >
-                      <DeleteIcon fontSize="large" color="secondary"/>
-                    </IconButton>
+                    />
                   </Grid>
                 </Grid>
               </Grid>
@@ -372,6 +370,7 @@ const Admin = () => {
   const renderEventAccordionList = () => (
       eventIds.map((id) => {
         const data = eventData[id]
+        const date = renderEventDate(data.date)
         return (
           <Grid
             item
@@ -402,7 +401,7 @@ const Admin = () => {
                       backgroundColor: '#b0fa98'
                     }}
                   >
-                    <Typography>{renderEventDate(data.date)}</Typography>
+                    <Typography>{date}</Typography>
                   </AccordionSummary>
                   <AccordionDetails
                     style={{
@@ -426,11 +425,10 @@ const Admin = () => {
                 </Button>
               </Grid>
               <Grid item>
-                <IconButton
+                <DeleteIconButtonWithConfirmation
+                  title={`Are you sure to remove ${date}?`}
                   onClick={() => handleRemoveEvent(id)}
-                >
-                  <DeleteIcon fontSize="large" color="secondary"/>
-                </IconButton>
+                />
               </Grid>
             </Grid>
           </Grid>
