@@ -22,6 +22,7 @@ import EventSchedFormModal from '../src/components/EventSchedFormModal'
 import TopicFormModal from '../src/components/TopicFormModal'
 import TopicCard from '../src/components/TopicCard'
 import DeleteIconButtonWithConfirmation from '../src/components/DeleteIconButtonWithConfirmation'
+import Loader from '../src/components/Loader'
 
 import {
   logout,
@@ -72,6 +73,8 @@ const Admin = () => {
     isUpdatingTopic: eventData.loader.isLoading === 'updatingTopic',
   }))
 
+  const [isAuthenticating, setAuthentication] = useState(false)
+
   useEffect(() => {
     if (error || success) {
       setTimeout(() => {
@@ -82,10 +85,12 @@ const Admin = () => {
 
   useEffect(() => {
     if (getCookieJwt()) {
+      setAuthentication(true)
       verifyToken().then((res) => {
         if (res.status !== 200) {
           router.replace('/login')
         }
+        setAuthentication(false)
       })
     } else {
       router.replace('/login')
@@ -435,6 +440,14 @@ const Admin = () => {
         )
       })
     )
+
+  if (isAuthenticating) {
+    return (
+      <Grid container style={{ height: '90vh' }}>
+        <Loader loading/>
+      </Grid>
+    )
+  }
   
   return (
     <Container
