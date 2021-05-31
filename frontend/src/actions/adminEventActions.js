@@ -1,6 +1,7 @@
 import * as types from '../constants'
 import {
-  getCookieJwt
+  getCookieJwt,
+  replaceArrayObjectElement,
 } from '../utils'
 
 import {
@@ -298,12 +299,19 @@ export const updateSchedTopic = (dataParams, eventScheduleData, eventId) => asyn
       payload: null,
     })
 
+    const outdatedSchedTopic = eventScheduleData.scheduleTopics.find((res) => {
+      if (res.id === data.id) {
+        return res
+      }
+    })
+
     const newData = {
       ...eventScheduleData,
-      scheduleTopics: [
-        ...eventScheduleData.scheduleTopics,
-        data
-      ]
+      scheduleTopics: replaceArrayObjectElement(
+        outdatedSchedTopic,
+        data,
+        eventScheduleData.scheduleTopics,
+      ),
     }
 
     return {

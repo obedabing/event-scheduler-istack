@@ -249,6 +249,7 @@ const Admin = () => {
             color="primary"
             variant="contained"
             onClick={() => {
+              setSelectedSchedTopic(null)
               setOpenTopicModal(true)
             }}
           >

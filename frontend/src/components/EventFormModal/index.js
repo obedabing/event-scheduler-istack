@@ -91,6 +91,7 @@ const EventFormModal = ({
           Cancel
         </Button>
         <Button
+          disabled={!eventData.date}
           onClick={handleCreate}
           color="primary"
           variant="contained"

@@ -35,7 +35,8 @@ defmodule IStack.Events.ScheduleTopic do
       "lead_generation",
       "media_buying",
       "seo_sem",
-      "future_advertising",      
+      "future_advertising",  
+      "stage_break"    
     ])
   end
 
