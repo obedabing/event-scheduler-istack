@@ -108,9 +108,49 @@ schedules = [
 
 stages = ["stage_one", "stage_two", "stage_three"]
 
-{:ok, event_1} = Events.create_event(%{date: ~N[2021-06-10 23:00:00], name: "some name"})
+
+# Event 1
+{:ok, event_1} = Events.create_event(%{date: ~N[2021-06-07 23:00:00], name: "Event One"})
 Enum.each(schedules, fn time ->
   {:ok, event_schedule} = Events.create_event_schedule_with_assoc(%{time: time}, event_1)
+  Enum.each(stages, fn stage ->
+    Events.create_schedule_topic_with_assoc(
+      %{
+        author_name: Enum.random(author_names),
+        author_title: Enum.random(author_titles),
+        description: Enum.random(descriptions),
+        stage: stage,
+        title: Enum.random(titles),
+        track_type: Enum.random(tracks)
+      },
+      event_schedule
+    )
+  end)
+end)
+
+# Event 2
+{:ok, event_2} = Events.create_event(%{date: ~N[2021-06-08 23:00:00], name: "Event Two"})
+Enum.each(schedules, fn time ->
+  {:ok, event_schedule} = Events.create_event_schedule_with_assoc(%{time: time}, event_2)
+  Enum.each(stages, fn stage ->
+    Events.create_schedule_topic_with_assoc(
+      %{
+        author_name: Enum.random(author_names),
+        author_title: Enum.random(author_titles),
+        description: Enum.random(descriptions),
+        stage: stage,
+        title: Enum.random(titles),
+        track_type: Enum.random(tracks)
+      },
+      event_schedule
+    )
+  end)
+end)
+
+# Event 3
+{:ok, event_3} = Events.create_event(%{date: ~N[2021-06-09 23:00:00], name: "Event Three"})
+Enum.each(schedules, fn time ->
+  {:ok, event_schedule} = Events.create_event_schedule_with_assoc(%{time: time}, event_3)
   Enum.each(stages, fn stage ->
     Events.create_schedule_topic_with_assoc(
       %{
