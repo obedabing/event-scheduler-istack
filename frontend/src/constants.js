@@ -38,9 +38,15 @@ export const stages = {
 }
 
 export const days = {
-  1: { name: 'Day One', key: 'one' },
-  2: { name: 'Day Two', key: 'two' },
-  3: { name: 'Day Three', key: 'three' },
+  0: { name: 'Day One', key: 'one' },
+  1: { name: 'Day Two', key: 'two' },
+  2: { name: 'Day Three', key: 'three' },
+}
+
+export const daysIndex = {
+  'one': 0,
+  'two': 1,
+  'three': 2,
 }
 
 export const trackIds = Object.keys(tracks)

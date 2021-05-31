@@ -18,6 +18,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import { useDispatch, useSelector} from 'react-redux'
+import { useRouter } from 'next/router'
 
 import TopicCard from '../src/components/TopicCard'
 
@@ -30,7 +31,8 @@ import {
   trackIds,
   tracks,
   stages,
-  days
+  days,
+  daysIndex,
 } from '../src/constants'
 
 import { renderEventDate } from '../src/utils'
@@ -61,9 +63,11 @@ const useStyles = makeStyles({
 const Index = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const router = useRouter()
   const [showFilter, setShowFilter] = useState(false)
   const [selectedEventId, setSelectEventId] = useState(null)
 
+  // DATA FROM SERVER ARE ALWAYS IN ORDER
   const {
     events,
     schedules,
@@ -74,15 +78,17 @@ const Index = () => {
 
   useEffect(() => {
     if (!events.length) {
-      dispatch(fetchEventDates()).then((res) => {
-        if (res.status === 200) {
-          const { data } = res.data
-          setSelectEventId(data[0].id)
-        }
-      })
+      dispatch(fetchEventDates())
     }
   },[events])
 
+  useEffect(() => {
+    if (router.query.day && events.length) {
+      const { day } = router.query
+      const selectedEvent = events[daysIndex[day]]
+      setSelectEventId(selectedEvent.id)
+    }
+  }, [router, events])
 
   useEffect(() => {
     if (selectedEventId !== null && !schedules[selectedEventId]) {
@@ -94,9 +100,11 @@ const Index = () => {
     setShowFilter(!showFilter)
   }
 
-  const handleChangeDate = (event, id) => {
-    setSelectEventId(id)
-  };
+  const handleChangeDate = (event) => {
+    const index = events.indexOf(event)
+    const day = days[index].key
+    router.push(`/schedule?day=${day}`)
+  }
   
   const renderSearchContainer = () => {
     return (
@@ -210,7 +218,7 @@ const Index = () => {
                         </TableCell>
                       ))
                     }
-                  </TableRow>
+                  </TableRow> 
                 )
               })
             }
@@ -229,17 +237,16 @@ const Index = () => {
         <Tabs
           aria-label="simple tabs example"
           value={selectedEventId}
-          onChange={handleChangeDate}
         >
           {events.map((res, index) => {
             const date = renderEventDate(res.date)
-            const value = index + 1
             return (
               <Tab
                 key={date}
-                icon={<Typography>{days[value].name}</Typography>}
+                icon={<Typography>{days[index].name}</Typography>}
                 label={date}
                 value={res.id}
+                onClick={() => handleChangeDate(res)}
               />
             )
           })}
