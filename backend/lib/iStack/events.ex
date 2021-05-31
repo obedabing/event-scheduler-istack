@@ -34,6 +34,18 @@ defmodule IStack.Events do
     Repo.all(query)
   end
 
+  def list_schedules(event_id) do
+    event_schedule_query = from(
+      es in EventSchedule,
+      where: es.event_id == ^event_id,
+      preload: [:schedule_topics],
+      order_by: [es.time]
+    )
+
+    Repo.all(event_schedule_query)
+  end
+
+
   def list_events_without_assoc do
     Repo.all(Event)
   end

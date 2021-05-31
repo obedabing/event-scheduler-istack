@@ -4,9 +4,29 @@ import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import { tracks } from '../../constants'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 const TopicCard = ({ data = {} }) => {
+
+  if (!Object.keys(data).length) {
+    return (
+      <Paper elevation={2} style={{ width: '100%', maxWidth: '400px' }}>
+        <Grid
+          container
+          spacing={2}
+          style={{ padding: '20px', textAlign: 'center' }}
+          justify="center"
+          alignContent="center"
+          direction="column"
+        >
+          <Grid item xs={12}>
+            <Typography variant="h6" style={{ fontWeight: 700 }}>
+              -----  -----
+            </Typography>
+          </Grid>
+        </Grid>
+      </Paper>
+    )
+  }
   
   if (data.trackType === 'stage_break') {
     return (

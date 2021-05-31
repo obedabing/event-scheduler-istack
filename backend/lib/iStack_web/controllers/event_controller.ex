@@ -6,9 +6,14 @@ defmodule IStackWeb.EventController do
 
   action_fallback IStackWeb.FallbackController
 
-  def index(conn, _params) do
+  def index(%{assigns: %{current_user: current_user}} = conn, _params) do
     events = Events.list_events()
     render(conn, "index_with_sched.json", events: events)
+  end
+
+  def index(conn, _params) do
+    events = Events.list_events()
+    render(conn, "index.json", events: events)
   end
 
   def create(conn, %{"event" => event_params}) do

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
@@ -8,7 +8,6 @@ import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
@@ -16,17 +15,25 @@ import Typography from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import Paper from '@material-ui/core/Paper'
+import { useDispatch, useSelector} from 'react-redux'
 
+import TopicCard from '../src/components/TopicCard'
+
+import {
+  fetchEventDates,
+  fetchSchedules,
+} from '../src/actions'
 
 import {
   trackIds,
   tracks,
   stages,
+  days
 } from '../src/constants'
+
+import { renderEventDate } from '../src/utils'
 
 const useStyles = makeStyles({
   searchContainer: {
@@ -53,15 +60,42 @@ const useStyles = makeStyles({
 
 const Index = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const [showFilter, setShowFilter] = useState(false)
-  const [dayTab, setDayTab] = useState(0)
+  const [selectedEventId, setSelectEventId] = useState(null)
+
+  const {
+    events,
+    schedules,
+  } = useSelector(({ publicData }) => ({
+    events: publicData.events,
+    schedules: publicData.schedules,
+  }))
+
+  useEffect(() => {
+    if (!events.length) {
+      dispatch(fetchEventDates()).then((res) => {
+        if (res.status === 200) {
+          const { data } = res.data
+          setSelectEventId(data[0].id)
+        }
+      })
+    }
+  },[events])
+
+
+  useEffect(() => {
+    if (selectedEventId !== null && !schedules[selectedEventId]) {
+      dispatch(fetchSchedules(selectedEventId))
+    }
+  },[selectedEventId])
 
   const handleShowFilter = () => {
     setShowFilter(!showFilter)
   }
 
-  const handleChangeDayTab = (event, newValue) => {
-    setDayTab(newValue)
+  const handleChangeDate = (event, id) => {
+    setSelectEventId(id)
   };
   
   const renderSearchContainer = () => {
@@ -146,8 +180,9 @@ const Index = () => {
     )
   }
 
-  const renderSchuleContaner = () => {
+  const renderScheduleContaner = () => {
     const stageKeys = Object.keys(stages)
+    const scheduleData = schedules[selectedEventId] || []
     return (
       <Grid container>
         <Table>
@@ -156,17 +191,28 @@ const Index = () => {
               <TableCell>Time</TableCell>
               {
                 stageKeys.map((key) => (
-                  <TableCell>{stages[key].name}</TableCell>
+                  <TableCell key={key}>{stages[key].name}</TableCell>
                 ))
               }
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableCell>10:00:00</TableCell>
             {
-              stageKeys.map((key) => (
-                <TableCell>{stages[key].name}</TableCell>
-              ))
+              scheduleData.map((res) => {
+                const { scheduleTopics } = res
+                return (
+                  <TableRow key={res.id}>
+                    <TableCell>{res.time}</TableCell>
+                    {
+                      stageKeys.map((key) => (
+                        <TableCell key={key}>
+                          <TopicCard data={scheduleTopics[key]}/>
+                        </TableCell>
+                      ))
+                    }
+                  </TableRow>
+                )
+              })
             }
           </TableBody>
         </Table>
@@ -182,16 +228,23 @@ const Index = () => {
       <Grid item xs={9} className={classes.eventsContainer}>
         <Tabs
           aria-label="simple tabs example"
-          value={dayTab}
-          onChange={handleChangeDayTab}
+          value={selectedEventId}
+          onChange={handleChangeDate}
         >
-          <Tab label="Item One" />
-          <Tab label="Item Two" />
-          <Tab label="Item Three" />
+          {events.map((res, index) => {
+            const date = renderEventDate(res.date)
+            const value = index + 1
+            return (
+              <Tab
+                key={date}
+                icon={<Typography>{days[value].name}</Typography>}
+                label={date}
+                value={res.id}
+              />
+            )
+          })}
         </Tabs>
-        {dayTab === 0 && renderSchuleContaner()}
-        {dayTab === 1 && renderSchuleContaner()}
-        {dayTab === 2 && renderSchuleContaner()}
+        {renderScheduleContaner()}
       </Grid>
     </Grid>
   )

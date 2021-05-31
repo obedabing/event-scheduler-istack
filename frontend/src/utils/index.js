@@ -30,3 +30,10 @@ export const sortStages = (data) => {
     return aStage - bStage
   })
 }
+
+export const renderEventDate = (date) => {
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+  const renderedDate  = new Date(date)
+  
+  return renderedDate.toLocaleDateString("en-US", options)
+}

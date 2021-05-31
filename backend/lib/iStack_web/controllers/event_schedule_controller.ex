@@ -11,6 +11,13 @@ defmodule IStackWeb.EventScheduleController do
     render(conn, "index.json", event_schedules: event_schedules)
   end
 
+  def index_by_event_id(conn, %{"event_id" => event_id}) do
+    event = Events.get_event!(event_id)
+    with event_schedules = Events.list_schedules(event.id) do
+      render(conn, "index_with_assoc.json", event_schedules: event_schedules)
+    end
+  end
+
   def is_thirty_minutes_interva(minutes), do: Enum.member?([0, 30], minutes)
 
   def create(conn, %{"event_schedule" => event_schedule_params, "event_id" => event_id}) do

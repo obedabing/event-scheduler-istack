@@ -44,16 +44,14 @@ import {
 import {
   getCookieJwt,
   sortStages,
+  renderEventDate,
  } from '../src/utils'
+ 
 import { stages } from '../src/constants'
 
 const Admin = () => {
   const router = useRouter()
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchEvents())
-  }, [fetchEvents])
 
   const {
     eventData,
@@ -74,6 +72,7 @@ const Admin = () => {
   }))
 
   const [isAuthenticating, setAuthentication] = useState(false)
+  const [authenticated, setAuthenticated] = useState(false)
 
   useEffect(() => {
     if (error || success) {
@@ -91,11 +90,20 @@ const Admin = () => {
           router.replace('/login')
         }
         setAuthentication(false)
+        setAuthenticated(true)
       })
     } else {
+      setAuthenticated(false)
       router.replace('/login')
     }
   }, [verifyToken])
+
+
+  useEffect(() => {
+    if (authenticated) {
+      dispatch(fetchEvents())
+    }
+  }, [fetchEvents, authenticated])
 
   const handleLogout = () => {
     logout()
@@ -204,13 +212,6 @@ const Admin = () => {
   const handleOpenEventModalForUpdate = (data) => {
     setSelectedEvent(data)
     setOpenEventModal(true)
-  }
-
-  const renderEventDate = (date) => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-    const renderedDate  = new Date(date)
-    
-    return renderedDate.toLocaleDateString("en-US", options)
   }
 
   const renderHeader = () => {

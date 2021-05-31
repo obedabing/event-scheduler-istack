@@ -37,6 +37,12 @@ export const stages = {
   'stage_three': { name: 'Stage Three', number: 3 },
 }
 
+export const days = {
+  1: { name: 'Day One', key: 'one' },
+  2: { name: 'Day Two', key: 'two' },
+  3: { name: 'Day Three', key: 'three' },
+}
+
 export const trackIds = Object.keys(tracks)
 
 // REDUCER ACTION
@@ -57,5 +63,7 @@ export const SHOW_ERROR = 'SHOW_ERROR'
 export const SHOW_SUCCESS = 'SHOW_SUCCESS'
 export const CLEAR_ALERTS = 'CLEAR_ALERTS'
 export const SET_FIELD_ERRORS = 'SET_FIELD_ERRORS'
-
 export const SET_LOADER = 'SET_LOADER'
+
+export const SET_PUBLIC_EVENTS = 'SET_PUBLIC_EVENTS' 
+export const SET_PUBLIC_SCHEDULES = 'SET_PUBLIC_SCHEDULES' 

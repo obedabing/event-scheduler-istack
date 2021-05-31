@@ -29,6 +29,10 @@ defmodule IStackWeb.EventScheduleView do
     }
   end
 
+  def render("index_with_assoc.json", %{event_schedules: event_schedules}) do
+    %{data: render_many(event_schedules, EventScheduleView, "event_schedule_with_topics.json")}
+  end
+
   def render("event_schedule_with_topics.json", %{event_schedule: event_schedule}) do 
     %{
       id: event_schedule.id,

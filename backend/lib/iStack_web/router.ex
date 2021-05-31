@@ -11,6 +11,7 @@ defmodule IStackWeb.Router do
 
   pipeline :auth do
     plug IStack.Auth.Pipeline
+    plug IStack.ExtractTokenUserPlug
   end
 
   pipeline :api do
@@ -21,6 +22,11 @@ defmodule IStackWeb.Router do
 
   scope "/api", IStackWeb do
     pipe_through :api
+
+    scope "/public" do
+      get "/events", EventController, :index
+      get "/event_schedules", EventScheduleController, :index_by_event_id
+    end
 
     scope "/auth" do
       post "/login", AuthController, :verify_name_password
