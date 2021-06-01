@@ -57,6 +57,9 @@ const useStyles = makeStyles({
     marginRight: '10px',
     width: '150px'
   },
+  tableCell: {
+    padding: '0px',
+  }
 })
 
 const Index = () => {
@@ -106,7 +109,6 @@ const Index = () => {
   },[selectedEventId, selectedFilters])
 
   const handleShowFilter = () => {
-    console.log('HAHAHAHAHHAHAHAHAH')
     setShowFilter(!showFilter)
   }
 
@@ -259,7 +261,10 @@ const Index = () => {
                     <TableCell>{res.time}</TableCell>
                     {
                       stageKeys.map((key) => (
-                        <TableCell key={key}>
+                        <TableCell
+                          key={key}
+                          className={classes.tableCell}
+                        >
                           <TopicCard data={scheduleTopics[key]}/>
                         </TableCell>
                       ))
@@ -281,7 +286,6 @@ const Index = () => {
       </Grid>
       <Grid item xs={9} className={classes.eventsContainer}>
         <Tabs
-          aria-label="simple tabs example"
           value={selectedEventId}
         >
           {events.map((res, index) => {
