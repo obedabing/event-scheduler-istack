@@ -32,7 +32,6 @@ import {
   tracks,
   stages,
   days,
-  daysIndex,
 } from '../src/constants'
 
 import { renderEventDate } from '../src/utils'
@@ -65,10 +64,10 @@ const Index = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const [showFilter, setShowFilter] = useState(false)
+  const [selectedFilters, setSlectedFilters] = useState([])
   const [selectedEventId, setSelectEventId] = useState(null)
-  // const [selectedEventId, setSelectEventId] = useState(null)
 
-  // DATA FROM SERVER ARE ALWAYS IN ORDER
+  // ASSUMES THAT DATA FROM SERVER ARE IN ORDER
   const {
     events,
     schedules,
@@ -86,7 +85,8 @@ const Index = () => {
   useEffect(() => {
     if (router.query.day && events.length) {
       const { day } = router.query
-      const selectedEvent = events[daysIndex[day]]
+      const index = Object.values(days).findIndex((data) => data.key === day)
+      const selectedEvent = events[index]
       setSelectEventId(selectedEvent.id)
     } else {
       if (events.length) {
@@ -96,12 +96,17 @@ const Index = () => {
   }, [router, events])
 
   useEffect(() => {
-    if (selectedEventId !== null && !schedules[selectedEventId]) {
-      dispatch(fetchSchedules(selectedEventId, []))
+    console.log(selectedFilters)
+    if (selectedEventId !== null) {
+      dispatch(fetchSchedules(
+        selectedEventId,
+        selectedFilters,
+      ))
     }
-  },[selectedEventId])
+  },[selectedEventId, selectedFilters])
 
   const handleShowFilter = () => {
+    console.log('HAHAHAHAHHAHAHAHAH')
     setShowFilter(!showFilter)
   }
 
@@ -109,6 +114,23 @@ const Index = () => {
     const index = events.indexOf(event)
     const day = days[index].key
     router.push(`/schedule?day=${day}`)
+  }
+
+  const handleAddFilter = (id) => {
+    setSlectedFilters([...selectedFilters, id])
+  }
+
+  const handleRemoveFilter = (id) => {
+    const updatedData = selectedFilters.filter((res) => res !== id)
+    setSlectedFilters(updatedData)
+  }
+
+  const handleSelectTracks = (status) => {
+    if (status) {
+      setSlectedFilters(trackIds)
+    } else {
+      setSlectedFilters([])
+    }
   }
   
   const renderSearchContainer = () => {
@@ -145,7 +167,7 @@ const Index = () => {
         <Grid item xs={12}>
           <Accordion
             expanded={showFilter}
-            onClick={handleShowFilter}
+            onChange={handleShowFilter}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Grid
@@ -158,14 +180,13 @@ const Index = () => {
                     control={<Checkbox
                       name="track"
                       onChange={() => {
-                        if (showFilter) {
-                          setShowFilter(true)
-                        } else {
-                          setShowFilter(false)
-                        }
+                        const { checked } = event.target
+                        handleSelectTracks(checked)
+
+                        setShowFilter(showFilter)
                       }}
                     />}
-                    label="Track"
+                    label="Tracks"
                   />
                 </Grid>
               </Grid>
@@ -175,11 +196,26 @@ const Index = () => {
                 {
                   trackIds.map((id) => {
                     const data = tracks[id]
+                    if (id === 'stage_break') {
+                      return null
+                    }
+                    
                     return (
                       <Grid item className={classes.filterCheckboxContainer}>
                         <FormControlLabel
                           control={<Checkbox name={data.name} />}
                           label={data.name}
+                          checked={selectedFilters.includes(id)}
+                          color="primary"
+                          onChange={(event) => {
+                            const { checked } = event.target
+                            if (checked) {
+                              handleAddFilter(id)
+                            } else {
+                              handleRemoveFilter(id)
+                            }
+                            setShowFilter(showFilter)
+                          }}
                         />
                       </Grid>
                     )

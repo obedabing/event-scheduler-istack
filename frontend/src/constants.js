@@ -29,6 +29,7 @@ export const tracks = {
   'media_buying': { name: 'Media Buying', type: 'media_buying' },
   'seo_sem': { name: 'SEO & SEM', type: 'seo_sem' },
   'future_advertising': { name: 'The Future of Advertising', type: 'future_advertising' },
+  'stage_break': { name: '', type: 'stage_break' },
 }
 
 export const stages = {
@@ -41,12 +42,6 @@ export const days = {
   0: { name: 'Day One', key: 'one' },
   1: { name: 'Day Two', key: 'two' },
   2: { name: 'Day Three', key: 'three' },
-}
-
-export const daysIndex = {
-  'one': 0,
-  'two': 1,
-  'three': 2,
 }
 
 export const trackIds = Object.keys(tracks)
