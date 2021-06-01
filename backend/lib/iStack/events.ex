@@ -54,11 +54,9 @@ defmodule IStack.Events do
 
     topic_query = from(
       st in ScheduleTopic,
-      where: fragment("? similar to ?", st.title, ^final_format)
-        or fragment("? similar to ?", st.description, ^final_format)
-        or fragment("? similar to ?", st.author_name, ^final_format)
-        or fragment("? similar to ?", st.author_title, ^final_format)
-        or fragment("? similar to ?", st.track_type, ^final_format)
+      where: fragment("lower(?) similar to ?", st.title, ^final_format)
+        or fragment("lower(?) similar to ?", st.author_name, ^final_format)
+        or fragment("lower(?) similar to ?", st.track_type, ^final_format)
     )
 
     event_schedule_query = from(

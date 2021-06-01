@@ -69,6 +69,7 @@ const Index = () => {
   const [showFilter, setShowFilter] = useState(false)
   const [selectedFilters, setSlectedFilters] = useState([])
   const [selectedEventId, setSelectEventId] = useState(null)
+  const [searchData, setSearchData] = useState('')
 
   // ASSUMES THAT DATA FROM SERVER ARE IN ORDER
   const {
@@ -99,14 +100,14 @@ const Index = () => {
   }, [router, events])
 
   useEffect(() => {
-    console.log(selectedFilters)
     if (selectedEventId !== null) {
       dispatch(fetchSchedules(
         selectedEventId,
         selectedFilters,
+        searchData,
       ))
     }
-  },[selectedEventId, selectedFilters])
+  },[selectedEventId, selectedFilters, searchData])
 
   const handleShowFilter = () => {
     setShowFilter(!showFilter)
@@ -144,6 +145,8 @@ const Index = () => {
             required
             placeholder="Search..."
             variant="filled"
+            value={searchData}
+            onChange={({ target }) => setSearchData(target.value)}
           />
         </Grid>
         <Grid item xs={12}>
