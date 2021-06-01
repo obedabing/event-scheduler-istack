@@ -66,6 +66,7 @@ const Index = () => {
   const router = useRouter()
   const [showFilter, setShowFilter] = useState(false)
   const [selectedEventId, setSelectEventId] = useState(null)
+  // const [selectedEventId, setSelectEventId] = useState(null)
 
   // DATA FROM SERVER ARE ALWAYS IN ORDER
   const {
@@ -87,12 +88,16 @@ const Index = () => {
       const { day } = router.query
       const selectedEvent = events[daysIndex[day]]
       setSelectEventId(selectedEvent.id)
+    } else {
+      if (events.length) {
+        router.replace(`/schedule?day=one`)
+      }
     }
   }, [router, events])
 
   useEffect(() => {
     if (selectedEventId !== null && !schedules[selectedEventId]) {
-      dispatch(fetchSchedules(selectedEventId))
+      dispatch(fetchSchedules(selectedEventId, []))
     }
   },[selectedEventId])
 
@@ -208,6 +213,11 @@ const Index = () => {
             {
               scheduleData.map((res) => {
                 const { scheduleTopics } = res
+
+                if (!Object.keys(scheduleTopics).length) {
+                  return null
+                }
+
                 return (
                   <TableRow key={res.id}>
                     <TableCell>{res.time}</TableCell>

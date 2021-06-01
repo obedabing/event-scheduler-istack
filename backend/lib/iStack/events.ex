@@ -8,6 +8,7 @@ defmodule IStack.Events do
 
   alias IStack.Events.Event
   alias IStack.Events.EventSchedule
+  alias IStack.Events.ScheduleTopic
 
   @doc """
   Returns the list of events.
@@ -39,6 +40,31 @@ defmodule IStack.Events do
       es in EventSchedule,
       where: es.event_id == ^event_id,
       preload: [:schedule_topics],
+      order_by: [es.time]
+    )
+
+    Repo.all(event_schedule_query)
+  end
+
+  def list_schedules(event_id, list_of_keyword) do
+    partial_format = Enum.reduce(list_of_keyword, fn res, acc -> 
+      "#{acc}|#{res}"
+    end)
+    final_format = ~s|%(#{partial_format})%|
+
+    topic_query = from(
+      st in ScheduleTopic,
+      where: fragment("? similar to ?", st.title, ^final_format)
+        or fragment("? similar to ?", st.description, ^final_format)
+        or fragment("? similar to ?", st.author_name, ^final_format)
+        or fragment("? similar to ?", st.author_title, ^final_format)
+        or fragment("? similar to ?", st.track_type, ^final_format)
+    )
+
+    event_schedule_query = from(
+      es in EventSchedule,
+      where: es.event_id == ^event_id,
+      preload: [schedule_topics: ^topic_query],
       order_by: [es.time]
     )
 

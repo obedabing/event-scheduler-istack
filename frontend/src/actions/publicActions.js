@@ -25,9 +25,12 @@ export const fetchEventDates = () => async (dispatch) => {
   }
 }
 
-export const fetchSchedules = (eventId) => async (dispatch) => {
+export const fetchSchedules = (eventId, listOfKeywords = []) => async (dispatch) => {
   try {
-    const res = await fetchEventSchedules({ event_id: eventId })
+    const res = await fetchEventSchedules({
+      event_id: eventId,
+      list_of_keywords: listOfKeywords,
+    })
     const { data } = res.data
 
     dispatch({

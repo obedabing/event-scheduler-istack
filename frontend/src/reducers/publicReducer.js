@@ -3,6 +3,7 @@ import * as types from '../constants'
 const initialState = {
   events: [],
   schedules: {},
+  listOfKeyWords: [],
 }
 
 const adminEventReducer = (state = initialState, action) => {
