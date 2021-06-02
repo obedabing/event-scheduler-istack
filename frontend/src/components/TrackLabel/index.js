@@ -6,13 +6,13 @@ const TrackLabel = ({
   type,
   ...props
 }) => {
-  const { left, right } = tracks[type].colors
+  const { left, right, text } = tracks[type].colors
   return (
     <Typography
       {...props}
       variant="subtitle2"
       style={{
-        color: 'white',
+        color: text,
         fontWeight: 900,
         fontSize: '11px',
         padding: '2px 5px',

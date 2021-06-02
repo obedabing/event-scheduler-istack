@@ -80,7 +80,7 @@ const useStyles = makeStyles({
   },
   showFilter: {
     color: '#0A4AFA',
-    fontSize: '12px',
+    fontSize: '14px',
     fontWeight: 'bolder',
     textDecoration: 'underline',
     '&:hover': {
@@ -90,6 +90,7 @@ const useStyles = makeStyles({
   filterCheckboxContainer: {
     width: '160px',
     padding: '0px',
+    marginRight: '5px',
   },
   tableCell: {
     padding: '0px',
@@ -216,6 +217,7 @@ const Index = () => {
             container
             spacing={2}
             justify="space-between"
+            alignItems="center"
           >
             <Grid item>
               <Typography variant="h6" style={{ fontWeight: 'bolder' }}>

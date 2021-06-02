@@ -23,6 +23,7 @@ export const tracks = {
     colors: {
       left: '#01AFAE',
       right: '#08C7AC',
+      text: 'white',
     }
   },
   'advertising_agencies': {
@@ -31,6 +32,7 @@ export const tracks = {
     colors: {
       left: '#FE6D5D',
       right: '#FF9565',
+      text: 'white',
     }
   },
   'afilliate_marketing': {
@@ -39,6 +41,7 @@ export const tracks = {
     colors: {
       left: '#1C1656',
       right: '#20167F',
+      text: 'white',
     }
   },
   'content_marketing': {
@@ -47,6 +50,7 @@ export const tracks = {
     colors: {
       left: '#6B2CFF',
       right: '#4929FE',
+      text: 'white',
     }
   },
   'coversion_optimization': {
@@ -55,6 +59,7 @@ export const tracks = {
     colors: {
       left: '#FEF801',
       right: '#FECE00',
+      text: 'black',
     }
   },
   'design_for_growth': {
@@ -63,6 +68,7 @@ export const tracks = {
     colors: {
       left: '#CDF87E',
       right: '#9EEB9A',
+      text: 'black',
     }
   },
   'ecommerce_d2c': {
@@ -71,6 +77,7 @@ export const tracks = {
     colors: {
       left: '#0B1CF3',
       right: '#0419C7',
+      text: 'white',
     }
   },
   'influencer_marketing': {
@@ -79,6 +86,7 @@ export const tracks = {
     colors: {
       left: '#8F01FE',
       right: '#E100FE',
+      text: 'white',
     }
   },
   'lead_generation': {
@@ -87,6 +95,7 @@ export const tracks = {
     colors: {
       left: '#01BAFE',
       right: '#0080FE',
+      text: 'white',
     }
   },
   'media_buying': {
@@ -95,6 +104,7 @@ export const tracks = {
     colors: {
       left: '#5EFAE1',
       right: '#5FE6F8',
+      text: 'black',
     }
   },
   'seo_sem': {
@@ -103,6 +113,7 @@ export const tracks = {
     colors: {
       left: '#FF9C0D',
       right: '#FFB200',
+      text: 'black',
     }
   },
   'future_advertising': {
@@ -111,6 +122,7 @@ export const tracks = {
     colors: {
       left: '#D6172B',
       right: '#E73346',
+      text: 'white',
     }
   },
   'stage_break': { name: '', type: 'stage_break' },
