@@ -32,7 +32,7 @@ export const sortStages = (data) => {
 }
 
 export const renderEventDate = (date) => {
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+  const options = { month: 'long', day: 'numeric', weekday: 'long' }
   const renderedDate  = new Date(date)
   
   return renderedDate.toLocaleDateString("en-US", options)

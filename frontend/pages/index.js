@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Accordion from '@material-ui/core/Accordion'
@@ -17,8 +17,10 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import QueryBuilderIcon from '@material-ui/icons/QueryBuilder'
 import { useDispatch, useSelector} from 'react-redux'
 import { useRouter } from 'next/router'
+
 
 import TopicCard from '../src/components/TopicCard'
 
@@ -36,6 +38,16 @@ import {
 
 import { renderEventDate } from '../src/utils'
 
+const StyledTabs = withStyles({
+  root: {
+    backgroundColor: '#F6F9FD',
+  },
+  indicator: {
+    backgroundImage: `linear-gradient(to right, #FCF75E , #FDCD2D)`,
+    height: '100%',
+  },
+})((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />)
+
 const useStyles = makeStyles({
   searchContainer: {
     height: '90vh',
@@ -43,8 +55,9 @@ const useStyles = makeStyles({
     padding: '15px',
   },
   eventsContainer: {
-    height: '90vh',
     padding: '15px',
+    padding: '0px',
+    borderLeft: '1px solid #E0E0E0'
   },
   showFilter: {
     color: '#0A4AFA',
@@ -59,6 +72,34 @@ const useStyles = makeStyles({
   },
   tableCell: {
     padding: '0px',
+  },
+  filterContainer: {
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+  },
+  rowHeader: {
+    border: '1px solid #E0E0E0',
+  },
+  stageHeader: {
+    fontSize: '24px',
+    fontWeight: 'bolder',
+    borderBottom: '5px solid #570DEA',
+    marginRight: '20px',
+  },
+  clockIcon: {
+    fontSize: '30px',
+    color: '#15194C',
+  },
+  cellSpan: {
+    width: '10px',
+  },
+  dateTab: {
+    zIndex: 2,
+    borderRight: '1px solid #E0E0E0',
+    borderTop: '1px solid #E0E0E0',
+    height: '100px',
+    textTransform: 'capitalize',
+    fontSize: '15px',
   }
 })
 
@@ -173,6 +214,7 @@ const Index = () => {
           <Accordion
             expanded={showFilter}
             onChange={handleShowFilter}
+            className={classes.filterContainer}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Grid
@@ -187,7 +229,6 @@ const Index = () => {
                       onChange={() => {
                         const { checked } = event.target
                         handleSelectTracks(checked)
-
                         setShowFilter(showFilter)
                       }}
                     />}
@@ -241,11 +282,22 @@ const Index = () => {
       <Grid container>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell>Time</TableCell>
+            <TableRow className={classes.rowHeader}>
+              <TableCell>
+                <QueryBuilderIcon className={classes.clockIcon}/>
+              </TableCell>
               {
                 stageKeys.map((key) => (
-                  <TableCell key={key}>{stages[key].name}</TableCell>
+                  <>
+                    <TableCell
+                      align="center"
+                      className={classes.stageHeader}
+                      key={key}
+                    >
+                        {stages[key].name.toUpperCase()}
+                    </TableCell>
+                    <TableCell className={classes.cellSpan} />
+                  </>
                 ))
               }
             </TableRow>
@@ -254,6 +306,7 @@ const Index = () => {
             {
               scheduleData.map((res) => {
                 const { scheduleTopics } = res
+                let time = res.time.slice(0, -3)
 
                 if (!Object.keys(scheduleTopics).length) {
                   return null
@@ -261,15 +314,26 @@ const Index = () => {
 
                 return (
                   <TableRow key={res.id}>
-                    <TableCell>{res.time}</TableCell>
+                    <TableCell
+                      style={{
+                        width: '100px',
+                        fontSize: '15px',
+                        fontWeight: 'bolder',
+                      }}
+                    >
+                      {time}
+                    </TableCell>
                     {
                       stageKeys.map((key) => (
-                        <TableCell
-                          key={key}
-                          className={classes.tableCell}
-                        >
-                          <TopicCard data={scheduleTopics[key]}/>
-                        </TableCell>
+                        <>
+                          <TableCell
+                            key={key}
+                            className={classes.tableCell}
+                          >
+                            <TopicCard data={scheduleTopics[key]}/>
+                          </TableCell>
+                          <TableCell className={classes.cellSpan} />
+                        </>
                       ))
                     }
                   </TableRow> 
@@ -288,22 +352,34 @@ const Index = () => {
         {renderSearchContainer()}
       </Grid>
       <Grid item xs={9} className={classes.eventsContainer}>
-        <Tabs
+        <StyledTabs
           value={selectedEventId}
         >
           {events.map((res, index) => {
             const date = renderEventDate(res.date)
             return (
               <Tab
+                className={classes.dateTab}
                 key={date}
-                icon={<Typography>{days[index].name}</Typography>}
+                icon={(
+                  <Typography
+                    variant="h6"
+                    style={{
+                      fontWeight: selectedEventId === res.id
+                        ? 'bolder'
+                        : '200',
+                    }}
+                  >
+                    {days[index].name.toUpperCase()}
+                  </Typography>
+                )}
                 label={date}
                 value={res.id}
                 onClick={() => handleChangeDate(res)}
               />
             )
           })}
-        </Tabs>
+        </StyledTabs>
         {renderScheduleContaner()}
       </Grid>
     </Grid>

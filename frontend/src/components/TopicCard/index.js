@@ -27,6 +27,7 @@ const useStyles = makeStyles({
     borderRadius: '0px',
     margin: '0px',
     textTransform: 'capitalize',
+    backgroundColor: '#F9F9F9',
   },
   title: {
     fontWeight: 'bolder',
