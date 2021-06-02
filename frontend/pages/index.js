@@ -18,6 +18,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder'
+import InputBase from '@material-ui/core/InputBase'
 import { useDispatch, useSelector} from 'react-redux'
 import { useRouter } from 'next/router'
 
@@ -37,6 +38,24 @@ import {
 } from '../src/constants'
 
 import { renderEventDate } from '../src/utils'
+
+const SearchInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    borderRadius: 2,
+    position: 'relative',
+    backgroundColor: theme.palette.common.white,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    width: '100%',
+    padding: '10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+  },
+}))(InputBase)
 
 const StyledTabs = withStyles({
   root: {
@@ -61,14 +80,16 @@ const useStyles = makeStyles({
   },
   showFilter: {
     color: '#0A4AFA',
+    fontSize: '12px',
+    fontWeight: 'bolder',
     textDecoration: 'underline',
     '&:hover': {
       cursor: 'pointer',
     },
   },
   filterCheckboxContainer: {
-    marginRight: '10px',
-    width: '150px'
+    width: '160px',
+    padding: '0px',
   },
   tableCell: {
     padding: '0px',
@@ -76,6 +97,8 @@ const useStyles = makeStyles({
   filterContainer: {
     backgroundColor: 'transparent',
     boxShadow: 'none',
+    margin: '0px',
+    padding: '0px',
   },
   rowHeader: {
     border: '1px solid #E0E0E0',
@@ -181,11 +204,9 @@ const Index = () => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <TextField
+          <SearchInput
             fullWidth
-            required
             placeholder="Search..."
-            variant="filled"
             value={searchData}
             onChange={({ target }) => setSearchData(target.value)}
           />
@@ -197,7 +218,7 @@ const Index = () => {
             justify="space-between"
           >
             <Grid item>
-              <Typography variant="h6">
+              <Typography variant="h6" style={{ fontWeight: 'bolder' }}>
                 Refined by
               </Typography>
             </Grid>
@@ -226,6 +247,7 @@ const Index = () => {
                   <FormControlLabel
                     control={<Checkbox
                       name="track"
+                      color="primary"
                       onChange={() => {
                         const { checked } = event.target
                         handleSelectTracks(checked)
@@ -238,7 +260,7 @@ const Index = () => {
               </Grid>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container spacing={2}>
+              <Grid container>
                 {
                   trackIds.map((id) => {
                     const data = tracks[id]
@@ -249,10 +271,9 @@ const Index = () => {
                     return (
                       <Grid item className={classes.filterCheckboxContainer}>
                         <FormControlLabel
-                          control={<Checkbox name={data.name} />}
-                          label={data.name}
+                          control={<Checkbox color="primary" name={data.name} />}
+                          label={<Typography variant="body1">{data.name}</Typography>}
                           checked={selectedFilters.includes(id)}
-                          color="primary"
                           onChange={(event) => {
                             const { checked } = event.target
                             if (checked) {

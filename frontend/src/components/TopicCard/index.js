@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import InputBase from '@material-ui/core/InputBase'
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -15,6 +16,7 @@ const useStyles = makeStyles({
   },
   noDataLabel: {
     fontWeight: 700,
+    fontSize: '18px',
   },
   withDataContainer: {
     padding: '10px',
@@ -33,6 +35,7 @@ const useStyles = makeStyles({
     fontWeight: 'bolder',
     textAlign: 'left',
     fontSize: '13px',
+    paddingRight: '1px',
   },
   authorName: {
     paddingTop: '3px',
@@ -46,6 +49,10 @@ const useStyles = makeStyles({
   accountBoxIcon: {
     fontSize: '60px',
   },
+  greySpan: {
+    color: '#D9DCEC',
+    padding: '0px 10px'
+  }
 })
 
 const TopicCard = ({ data = {} }) => {
@@ -68,7 +75,7 @@ const TopicCard = ({ data = {} }) => {
       >
         <Grid item xs={12}>
           <Typography variant="h6" className={classes.noDataLabel}>
-            -------   -------
+            <spa className={classes.greySpan}>-------   -------</spa>
           </Typography>
         </Grid>
       </Grid>
@@ -87,7 +94,9 @@ const TopicCard = ({ data = {} }) => {
       >
         <Grid item xs={12}>
           <Typography variant="h6" className={classes.noDataLabel}>
-            ----- STAGE BREAK -----
+            <spa className={classes.greySpan}>-----</spa>
+              STAGE BREAK
+            <spa className={classes.greySpan}>-----</spa>
           </Typography>
         </Grid>
       </Grid>
