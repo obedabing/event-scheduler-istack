@@ -8,8 +8,10 @@ import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import Divider from '@material-ui/core/Divider'
 import CloseIcon from '@material-ui/icons/Close'
+import RoomIcon from '@material-ui/icons/Room'
 
-import { tracks } from '../../constants'
+import TrackLabel from '../TrackLabel'
+import { stages } from '../../constants'
 
 const TopicModalInfo = ({
   data = {},
@@ -27,7 +29,7 @@ const TopicModalInfo = ({
       maxWidth="xs"
       fullWidth
     >
-      <DialogTitle>
+      <DialogTitle style={{ paddingBottom: '0px' }}>
         <Grid container>
           <Grid
             xs={10}
@@ -35,7 +37,12 @@ const TopicModalInfo = ({
             container
             alignContent="center"
           >
-            {data.trackType}
+            <TrackLabel
+              type={data.trackType}
+              style={{
+                fontSize: '15px'
+              }}
+            />
           </Grid>
           <Grid
             item
@@ -53,18 +60,36 @@ const TopicModalInfo = ({
       </DialogTitle>
       <DialogContent
         style={{
-          paddingBottom: '30px',
+          paddingBottom: '20px',
         }}
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="h6">
+            <Typography
+              variant="h6"
+              style={{
+                fontWeight: 900,
+              }}
+            >
               {data.title}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            container
+            direct="column"
+            alignItems="center"
+            xs={12}
+          >
+            <RoomIcon
+              style={{
+                fontSize: '14px',
+                margin: '5px',
+                color: '#F43C51',
+              }}
+            />
             <Typography variant="body2">
-              {data.stage}
+              {stages[data.stage].name}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -80,17 +105,18 @@ const TopicModalInfo = ({
             container
             xs={12}
           >
-            <Grid item container xs={9}>
-              <Grid item xs={12}>
-                <Typography variant="subtitle2">
-                  {data.authorName}
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="body2">
-                  {data.authorTitle}
-                </Typography>
-              </Grid>
+            <Grid
+              item
+              container
+              xs={9}
+              direction="column"
+            >
+              <Typography variant="subtitle2" style={{ fontSize: '18px' }}>
+                {data.authorName}
+              </Typography>
+              <Typography variant="body2">
+                {data.authorTitle}
+              </Typography>
             </Grid>
             <Grid item container justify="flex-end" xs={3}>
               <AccountBoxIcon

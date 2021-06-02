@@ -71,7 +71,6 @@ const Index = () => {
   const [selectedEventId, setSelectEventId] = useState(null)
   const [searchData, setSearchData] = useState('')
 
-  // ASSUMES THAT DATA FROM SERVER ARE IN ORDER
   const {
     events,
     schedules,
@@ -86,6 +85,7 @@ const Index = () => {
     }
   },[events])
 
+  // ASSUMES DATA FROM SERVER ARE IN ORDER
   useEffect(() => {
     if (router.query.day && events.length) {
       const { day } = router.query

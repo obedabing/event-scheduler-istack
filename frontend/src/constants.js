@@ -17,18 +17,102 @@ export const cookieOptions = {
 export { Cookies as cookieStorage }
 
 export const tracks = {
-  'advertising_101': { name: 'Advertising 101', type: 'advertising_101' },
-  'advertising_agencies': { name: 'Advertising Agencies', type: 'advertising_agencies' },
-  'afilliate_marketing': { name: 'Afilliate Marketing', type: 'afilliate_marketing' },
-  'content_marketing': { name: 'Content Marketing', type: 'content_marketing' },
-  'coversion_optimization': { name: 'Conversion Optimizatoin', type: 'coversion_optimization' },
-  'design_for_growth': { name: 'Design for Growth', type: 'design_for_growth' },
-  'ecommerce_d2c': { name: 'Ecommerce/D2C', type: 'ecommerce_d2c' },
-  'influencer_marketing': { name: 'Influencer Marketing', type: 'influencer_marketing' },
-  'lead_generation': { name: 'Lead Generation', type: 'lead_generation' },
-  'media_buying': { name: 'Media Buying', type: 'media_buying' },
-  'seo_sem': { name: 'SEO & SEM', type: 'seo_sem' },
-  'future_advertising': { name: 'The Future of Advertising', type: 'future_advertising' },
+  'advertising_101': {
+    name: 'Advertising 101',
+    type: 'advertising_101',
+    colors: {
+      left: '#01AFAE',
+      right: '#08C7AC',
+    }
+  },
+  'advertising_agencies': {
+    name: 'Advertising Agencies',
+    type: 'advertising_agencies',
+    colors: {
+      left: '#FE6D5D',
+      right: '#FF9565',
+    }
+  },
+  'afilliate_marketing': {
+    name: 'Afilliate Marketing',
+    type: 'afilliate_marketing',
+    colors: {
+      left: '#1C1656',
+      right: '#20167F',
+    }
+  },
+  'content_marketing': {
+    name: 'Content Marketing',
+    type: 'content_marketing',
+    colors: {
+      left: '#6B2CFF',
+      right: '#4929FE',
+    }
+  },
+  'coversion_optimization': {
+    name: 'Conversion Optimizatoin',
+    type: 'coversion_optimization',
+    colors: {
+      left: '#FEF801',
+      right: '#FECE00',
+    }
+  },
+  'design_for_growth': {
+    name: 'Design for Growth',
+    type: 'design_for_growth',
+    colors: {
+      left: '#CDF87E',
+      right: '#9EEB9A',
+    }
+  },
+  'ecommerce_d2c': {
+    name: 'Ecommerce/D2C',
+    type: 'ecommerce_d2c',
+    colors: {
+      left: '#0B1CF3',
+      right: '#0419C7',
+    }
+  },
+  'influencer_marketing': {
+    name: 'Influencer Marketing',
+    type: 'influencer_marketing',
+    colors: {
+      left: '#8F01FE',
+      right: '#E100FE',
+    }
+  },
+  'lead_generation': {
+    name: 'Lead Generation',
+    type: 'lead_generation',
+    colors: {
+      left: '#01BAFE',
+      right: '#0080FE',
+    }
+  },
+  'media_buying': {
+    name: 'Media Buying',
+    type: 'media_buying',
+    colors: {
+      left: '#5EFAE1',
+      right: '#5FE6F8',
+    }
+  },
+  'seo_sem': {
+    name: 'SEO & SEM',
+    type: 'seo_sem',
+    colors: {
+      left: '#FF9C0D',
+      right: '#FFB200',
+    }
+  },
+  'future_advertising': {
+    name: 'The Future of Advertising',
+    type: 'future_advertising',
+    colors: {
+      left: '#D6172B',
+      right: '#E73346',
+    }
+  },
   'stage_break': { name: '', type: 'stage_break' },
 }
 

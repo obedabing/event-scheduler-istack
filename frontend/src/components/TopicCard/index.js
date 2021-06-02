@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button'
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
 
 import TopicModalInfo from '../TopicModalInfo'
-import { tracks } from '../../constants'
+import TrackLabel from '../TrackLabel'
 
 const TopicCard = ({ data = {} }) => {
   const [openModal, setOpenModal] = useState(false)
@@ -81,7 +81,7 @@ const TopicCard = ({ data = {} }) => {
             <Typography
               variant="subtitle2"
               style={{
-                fontWeight: 900,
+                fontWeight: 'bolder',
                 textAlign: 'left',
                 fontSize: '13px',
               }}
@@ -91,17 +91,7 @@ const TopicCard = ({ data = {} }) => {
           </Grid>
           <Grid container item xs={12} spacing={2}>
             <Grid item={6}>
-              <Typography
-                variant="subtitle2"
-                style={{
-                  fontWeight: 900,
-                  fontSize: '11px',
-                  padding: '2px 5px',
-                  backgroundColor: 'grey'
-                }}
-              >
-                {tracks[data.trackType].name}
-              </Typography>
+              <TrackLabel type={data.trackType}/>
             </Grid>
             <Grid item={6} alignContent="center" justify="center">
               <Typography
