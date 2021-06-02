@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
+
+import TopicModalInfo from '../TopicModalInfo'
 import { tracks } from '../../constants'
 
 const TopicCard = ({ data = {} }) => {
+  const [openModal, setOpenModal] = useState(false)
+
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
   if (!Object.keys(data).length) {
     return (
@@ -47,68 +53,76 @@ const TopicCard = ({ data = {} }) => {
   }
 
   return (
-    <Grid
-      component={Button}
-      container
-      style={{
-        padding: '10px',
-        alignContent: 'center',
-        maxWidth: '400px',
-        width: '100%',
-        minHeight: '100px',
-        borderRight: '1px solid transparent',
-        borderLeft: '1px solid #15184D',
-        borderRadius: '0px',
-        margin: '0px',
-        textTransform: 'capitalize',
-      }}
-    >
-      <Grid container xs={10} style={{ alignContent: 'center' }}>
-        <Grid item xs={12}>
-          <Typography
-            variant="subtitle2"
-            style={{
-              fontWeight: 900,
-              textAlign: 'left',
-              fontSize: '13px',
-            }}
-          >
-            {data.title}
-          </Typography>
-        </Grid>
-        <Grid container item xs={12} spacing={2}>
-          <Grid item={6}>
+    <>
+      <TopicModalInfo
+        data={data}
+        openModal={openModal}
+        onClose={() => handleCloseModal()}
+      />
+      <Grid
+        onClick={() => setOpenModal(true)}
+        component={Button}
+        container
+        style={{
+          padding: '10px',
+          alignContent: 'center',
+          maxWidth: '400px',
+          width: '100%',
+          minHeight: '100px',
+          borderRight: '1px solid transparent',
+          borderLeft: '1px solid #15184D',
+          borderRadius: '0px',
+          margin: '0px',
+          textTransform: 'capitalize',
+        }}
+      >
+        <Grid container xs={10} style={{ alignContent: 'center' }}>
+          <Grid item xs={12}>
             <Typography
               variant="subtitle2"
               style={{
                 fontWeight: 900,
-                fontSize: '11px',
-                padding: '2px 5px',
-                backgroundColor: 'grey'
+                textAlign: 'left',
+                fontSize: '13px',
               }}
             >
-              {tracks[data.trackType].name}
+              {data.title}
             </Typography>
           </Grid>
-          <Grid item={6} alignContent="center" justify="center">
-            <Typography
-              variant="body2"
-              style={{
-                paddingTop: '3px',
-                fontSize: '11px',
-              }}
-            >
-              {data.authorName}
-            </Typography>
+          <Grid container item xs={12} spacing={2}>
+            <Grid item={6}>
+              <Typography
+                variant="subtitle2"
+                style={{
+                  fontWeight: 900,
+                  fontSize: '11px',
+                  padding: '2px 5px',
+                  backgroundColor: 'grey'
+                }}
+              >
+                {tracks[data.trackType].name}
+              </Typography>
+            </Grid>
+            <Grid item={6} alignContent="center" justify="center">
+              <Typography
+                variant="body2"
+                style={{
+                  paddingTop: '3px',
+                  fontSize: '11px',
+                }}
+              >
+                {data.authorName}
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
+        <Grid item xs={2} style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
+          <AccountBoxIcon
+            style={{ fontSize: '60px' }}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={2} style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
-        <AccountBoxIcon
-          style={{ fontSize: '50px' }}
-        />
-      </Grid>
-    </Grid>
+    </>
   )
 }
 
