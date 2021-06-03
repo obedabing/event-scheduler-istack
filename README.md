@@ -33,7 +33,17 @@ Make sure to install the following in your machine properly.
 - Start with `npm run dev`
 - You may now be able to access it on [`localhost:3000`](http://localhost:3000)
 
-> Note: You may also use `yarn`.
+To access administration page:
+
+Navigate through this route [`localhost:3000/admin`](http://localhost:3000/admin)
+
+Credentials:
+- Name: istack
+- Password: istack
+
+> Note:
+> - You may also use `yarn`.
+> - Make sure backend is already setup and running.
 
 **Backend**
 - Navigate to backend path with `cd backend/`
@@ -42,8 +52,6 @@ Make sure to install the following in your machine properly.
 - Start Phoenix endpoint with `mix phx.server`
 
 > Note:
-> 
-> - In order for the application to work properly, make sure both ***frontend*** and ***backend*** are running.
 > - Running the `mix ecto.setup` will automatically include the data seeds.
 > - If you wish to reset the data, run `mix ecto.reset`. And `mix ecto.drop` for deleting all the data.
 
