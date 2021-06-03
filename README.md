@@ -31,7 +31,7 @@ Make sure to install the following in your machine properly.
 - Navigate to frontend path with `cd frontend/`
 - Install dependencies with `npm install`
 - Start with `npm run dev`
-- You may now be able to access it on http://localhost:3000
+- You may now be able to access it on [`localhost:3000`](http://localhost:3000)
 
 > Note: You may also use `yarn`.
 
@@ -39,7 +39,7 @@ Make sure to install the following in your machine properly.
 - Navigate to backend path with `cd backend/`
 - Install dependencies with `mix deps.get`
 - Create and migrate your database with `mix ecto.setup`
-- Start Phoenix endpoint with mix `phx.server`
+- Start Phoenix endpoint with `mix phx.server`
 
 > Note:
 > 
