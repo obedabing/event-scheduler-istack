@@ -10,9 +10,9 @@ The project was created by following:
 
 ### Setup and Installation
 Make sure to install the following in your machine properly.
-- Setup your database with postgresql. Link for postgresql installation (https://www.postgresql.org/download/).
 - Install the Elixir. See the guide on this link (https://elixir-lang.org/install.html).
 - After installing the elixir, install the phoenix. See the guide on this link (https://hexdocs.pm/phoenix/installation.html).
+- Setup your database with postgresql. Link for postgresql installation (https://www.postgresql.org/download/).
 
 > Note:
 > 
