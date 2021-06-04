@@ -18,5 +18,4 @@ Credentials:
 - Password: istack
 
 > Note:
-> - You may also use `yarn`.
 > - Makse `Event Scheduler - iStack (Backend)` is running along with this.
