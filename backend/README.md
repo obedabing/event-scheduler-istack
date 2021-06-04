@@ -1,5 +1,10 @@
 # Event Scheduler - iStack (Backend)
 
+This was created by following:
+- [Elixir](https://elixir-lang.org/install.html)
+- [Phoenix 1.5](https://hexdocs.pm/phoenix/installation.html)
+- [PostgreSQL](https://www.postgresql.org/download/)
+
 ### Setup and Installation
 Make sure to install the following in your machine properly.
 - Install the Elixir. See the guide on this link (https://elixir-lang.org/install.html).
