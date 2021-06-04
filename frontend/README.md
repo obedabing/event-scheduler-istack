@@ -1,6 +1,6 @@
 # Event Scheduler - iStack (Frontend)
 
-This project was created by [Next.js](https://nextjs.org/learn/basics/create-nextjs-app?utm_source=next-site&utm_medium=homepage-cta&utm_campaign=next-website).
+This was created by [Next.js](https://nextjs.org/learn/basics/create-nextjs-app?utm_source=next-site&utm_medium=homepage-cta&utm_campaign=next-website).
 
 ### Start your application
 
