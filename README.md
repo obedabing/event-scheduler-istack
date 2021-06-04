@@ -42,7 +42,6 @@ Credentials:
 - Password: istack
 
 > Note:
-> - You may also use `yarn`.
 > - Make sure backend is already setup and running.
 
 **Backend**
