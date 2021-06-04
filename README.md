@@ -42,7 +42,7 @@ Credentials:
 - Password: istack
 
 > Note:
-> - Make sure backend is already setup and running.
+> - Make sure backend was already setup and up running.
 
 **Backend**
 - Navigate to backend path with `cd backend/`
