@@ -12,7 +12,7 @@ Make sure to install the following in your machine properly.
 > - username: postgres
 > - password: postgres
 >
-> But if you already have existing postgres installed in your machine, you may change the credentials of backend 
+> But if you already have existing postgresql installed in your machine, you may change the credentials of backend 
 > config located at `backend/config/dev.exs`. Then replace it with the credentials of your existing postgresql.
 
 ### Start your Phoenix server
