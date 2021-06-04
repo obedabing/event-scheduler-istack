@@ -260,7 +260,7 @@ const Admin = () => {
         </Grid>
         {
           sortStages(topics).map((topic) => (
-            <>
+            <React.Fragment key={topic.id}>
               <Grid item xs={12}>
                 <Typography variant="button">{stages[topic.stage].name}</Typography>
               </Grid>
@@ -272,7 +272,7 @@ const Admin = () => {
                   <Grid item style={{ paddingTop: '10px' }}>
                     <Button
                       variant="contained"
-                      color="grey"
+                      style={{ color: 'grey' }}
                       onClick={() => handleOpenTopicFormModalForUpdate(topic)}
                     >
                       Update
@@ -286,7 +286,7 @@ const Admin = () => {
                   </Grid>
                 </Grid>
               </Grid>
-            </>
+            </React.Fragment>
           )) 
         }
       </Grid>
@@ -314,7 +314,7 @@ const Admin = () => {
             const { id } = eventSched
             const time = moment(eventSched.time, 'HH:mm').format("HH:mm:ss")
             return (
-              <Grid item container xs={10} spacing={2}>
+              <Grid key={id} item container xs={10} spacing={2}>
                 <Grid item xs={12} md={9}>
                   <Accordion
                     onChange={() => {
@@ -350,7 +350,7 @@ const Admin = () => {
                   <Grid item style={{ paddingTop: '10px' }}>
                     <Button
                       variant="contained"
-                      color="grey"
+                      style={{ color: 'grey' }}
                       onClick={() => handleOpenEventSchedModalForUpdate(eventSched)}
                     >
                       Update
@@ -378,6 +378,7 @@ const Admin = () => {
         const date = renderEventDate(data.date)
         return (
           <Grid
+            key={id}
             item
             xs={9}
             container
@@ -423,7 +424,7 @@ const Admin = () => {
               <Grid item style={{ paddingTop: '10px' }}>
                 <Button
                   variant="contained"
-                  color="grey"
+                  style={{ color: 'grey' }}
                   onClick={() => handleOpenEventModalForUpdate(data)}
                 >
                   Update

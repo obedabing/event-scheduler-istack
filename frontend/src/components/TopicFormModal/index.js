@@ -94,7 +94,7 @@ const TopicFormModal = ({
               >
                 {
                   Object.keys(stages).map((id) => (
-                    <MenuItem value={id}>{stages[id].name}</MenuItem>
+                    <MenuItem key={id} value={id}>{stages[id].name}</MenuItem>
                   ))
                 }
               </Select>
@@ -113,7 +113,7 @@ const TopicFormModal = ({
                 label="Track type"
                 name='trackType'
               >
-                 <MenuItem value={'stage_break'}>--- Stage Break ---</MenuItem>
+                 <MenuItem key="stage_break" value={'stage_break'}>--- Stage Break ---</MenuItem>
                 {
                   Object.keys(tracks).map((id) => {
                     if (id === 'stage_break') {
@@ -121,7 +121,7 @@ const TopicFormModal = ({
                     }
 
                     return (
-                      <MenuItem value={id}>{tracks[id].name}</MenuItem>
+                      <MenuItem key={id} value={id}>{tracks[id].name}</MenuItem>
                     )
                   })
                 }
