@@ -18,4 +18,4 @@ Credentials:
 - Password: istack
 
 > Note:
-> - Makse `Event Scheduler - iStack (Backend)` is running along with this.
+> - Make sure `Event Scheduler - iStack (Backend)` is running along with this.
