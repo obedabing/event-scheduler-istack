@@ -22,7 +22,6 @@ import InputBase from '@material-ui/core/InputBase'
 import { useDispatch, useSelector} from 'react-redux'
 import { useRouter } from 'next/router'
 
-
 import TopicCard from '../src/components/TopicCard'
 
 import {
@@ -156,7 +155,9 @@ const Index = () => {
       const { day } = router.query
       const index = Object.values(days).findIndex((data) => data.key === day)
       const selectedEvent = events[index]
-      setSelectEventId(selectedEvent.id)
+      if (selectedEvent) {
+        setSelectEventId(selectedEvent.id)
+      }
     } else {
       if (events.length) {
         router.replace(`/schedule?day=one`)

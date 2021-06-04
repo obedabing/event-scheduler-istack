@@ -17,7 +17,6 @@ import {
   getCookieJwt
  } from '../src/utils'
 
-
 const Admin = () => {
   const router = useRouter()
   const [userData, setUserData] = useState({

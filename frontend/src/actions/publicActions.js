@@ -1,14 +1,9 @@
 import * as types from '../constants'
-import {
-  getCookieJwt,
-  replaceArrayObjectElement,
-} from '../utils'
 
 import {
   fetchEventDates as fetchEvents,
   fetchSchedules as fetchEventSchedules,
 } from '../api'
-
 
 export const fetchEventDates = () => async (dispatch) => {
   try {

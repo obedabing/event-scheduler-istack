@@ -53,8 +53,8 @@ const TopicFormModal = ({
   }, [open])
 
   const handleClose = () => {
-    setModalOpen(false)
     onClose(false)
+    setModalOpen(false)
   }
 
   const handleCreate = () => {
@@ -115,9 +115,15 @@ const TopicFormModal = ({
               >
                  <MenuItem value={'stage_break'}>--- Stage Break ---</MenuItem>
                 {
-                  Object.keys(tracks).map((id) => (
-                    <MenuItem value={id}>{tracks[id].name}</MenuItem>
-                  ))
+                  Object.keys(tracks).map((id) => {
+                    if (id === 'stage_break') {
+                      return null
+                    }
+
+                    return (
+                      <MenuItem value={id}>{tracks[id].name}</MenuItem>
+                    )
+                  })
                 }
               </Select>
             </FormControl>

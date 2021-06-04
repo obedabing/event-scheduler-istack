@@ -84,16 +84,6 @@ const adminEventReducer = (state = initialState, action) => {
       return timeA.localeCompare(timeB)
     })
 
-    // const sortedScheds = [
-    //   ...state.event.data[eventId].eventSchedules,
-    //   action.payload,
-    // ].sort((a,b) => {
-    //   const timeA = moment(a.time, 'HH:mm').format("HH:mm:ss")
-    //   const timeB = moment(b.time, 'HH:mm').format("HH:mm:ss")
-
-    //   return timeA.localeCompare(timeB)
-    // })
-
     return {
       ...state,
       event: {

@@ -125,7 +125,7 @@ export const tracks = {
       text: 'white',
     }
   },
-  'stage_break': { name: '', type: 'stage_break' },
+  'stage_break': { name: '--- Stage Break ---', type: 'stage_break' },
 }
 
 export const stages = {

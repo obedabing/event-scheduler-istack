@@ -489,6 +489,7 @@ const Admin = () => {
           handleClearFieldErrors()
         }}
         onCreate={({ data, isUpdate }) => {
+          handleClearFieldErrors()
           if (isUpdate) {
             handleUpdateEvent(data)
           } else {
@@ -505,6 +506,7 @@ const Admin = () => {
           handleClearFieldErrors()
         }}
         onCreate={({ data, isUpdate }) => {
+          handleClearFieldErrors()
           if (isUpdate) {
             handleUpdateEventSched(data, selectedEvent.id)
           } else {
@@ -523,6 +525,7 @@ const Admin = () => {
           handleClearFieldErrors()
         }}
         onCreate={({ data , isUpdate }) => {
+          handleClearFieldErrors()
           if (isUpdate) {
             handleUpdateSchedTopic(data, selectedEventSched, selectedEvent.id)
           } else {
