@@ -265,14 +265,14 @@ const Index = () => {
             <AccordionDetails>
               <Grid container>
                 {
-                  trackIds.map((id) => {
+                  trackIds.map((id, index) => {
                     const data = tracks[id]
                     if (id === 'stage_break') {
                       return null
                     }
                     
                     return (
-                      <Grid item className={classes.filterCheckboxContainer}>
+                      <Grid key={`${id}-${index}`} item className={classes.filterCheckboxContainer}>
                         <FormControlLabel
                           control={<Checkbox color="primary" name={data.name} />}
                           label={<Typography variant="body1">{data.name}</Typography>}
@@ -311,17 +311,17 @@ const Index = () => {
                 <QueryBuilderIcon className={classes.clockIcon}/>
               </TableCell>
               {
-                stageKeys.map((key) => (
-                  <>
+                stageKeys.map((key, index) => (
+                  <React.Fragment key={key}>
                     <TableCell
+                      key={`${index}-${key}`}
                       align="center"
                       className={classes.stageHeader}
-                      key={key}
                     >
                         {stages[key].name.toUpperCase()}
                     </TableCell>
-                    <TableCell className={classes.cellSpan} />
-                  </>
+                    <TableCell  key={`${key}-span`} className={classes.cellSpan} />
+                  </React.Fragment>
                 ))
               }
             </TableRow>
@@ -337,7 +337,7 @@ const Index = () => {
                 }
 
                 return (
-                  <TableRow key={res.id}>
+                  <TableRow key={`${res.id}-${res.time}`}>
                     <TableCell
                       style={{
                         width: '100px',
@@ -348,16 +348,13 @@ const Index = () => {
                       {time}
                     </TableCell>
                     {
-                      stageKeys.map((key) => (
-                        <>
-                          <TableCell
-                            key={key}
-                            className={classes.tableCell}
-                          >
+                      stageKeys.map((key, index) => (
+                        <React.Fragment key={`${key}-${index}`}>
+                          <TableCell className={classes.tableCell}>
                             <TopicCard data={scheduleTopics[key]}/>
                           </TableCell>
                           <TableCell className={classes.cellSpan} />
-                        </>
+                        </React.Fragment>
                       ))
                     }
                   </TableRow> 
@@ -384,7 +381,7 @@ const Index = () => {
             return (
               <Tab
                 className={classes.dateTab}
-                key={date}
+                key={`${res.id}-${res.date}`}
                 icon={(
                   <Typography
                     variant="h6"

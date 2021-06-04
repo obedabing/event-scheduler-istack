@@ -75,7 +75,7 @@ const TopicCard = ({ data = {} }) => {
       >
         <Grid item xs={12}>
           <Typography variant="h6" className={classes.noDataLabel}>
-            <spa className={classes.greySpan}>-------   -------</spa>
+            <span className={classes.greySpan}>-------   -------</span>
           </Typography>
         </Grid>
       </Grid>
@@ -94,9 +94,9 @@ const TopicCard = ({ data = {} }) => {
       >
         <Grid item xs={12}>
           <Typography variant="h6" className={classes.noDataLabel}>
-            <spa className={classes.greySpan}>-----</spa>
+            <span className={classes.greySpan}>-----</span>
               STAGE BREAK
-            <spa className={classes.greySpan}>-----</spa>
+            <span className={classes.greySpan}>-----</span>
           </Typography>
         </Grid>
       </Grid>
@@ -116,7 +116,7 @@ const TopicCard = ({ data = {} }) => {
         component={Button}
         container
       >
-        <Grid container xs={10} style={{ alignContent: 'center' }}>
+        <Grid container style={{ alignContent: 'center' }}>
           <Grid item xs={12}>
             <Typography variant="subtitle2" className={classes.title}>
               {data.title}
@@ -126,7 +126,7 @@ const TopicCard = ({ data = {} }) => {
             <Grid item={6}>
               <TrackLabel type={data.trackType}/>
             </Grid>
-            <Grid item={6} alignContent="center" justify="center">
+            <Grid item={6}>
               <Typography variant="body2" className={classes.authorName}>
                 {data.authorName}
               </Typography>
