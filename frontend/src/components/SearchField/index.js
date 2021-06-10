@@ -20,6 +20,4 @@ const SearchInput = withStyles((theme) => ({
   },
 }))(InputBase)
 
-const SearchField = ({ ...props }) => <SearchInput {...props} />
-
-export default SearchField
+export default ({ ...props }) => <SearchInput {...props} />

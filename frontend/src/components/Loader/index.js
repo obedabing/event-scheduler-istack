@@ -1,7 +1,7 @@
 import React from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const Loader = ({
+export default ({
   loading
 }) => {
   if (!loading) {
@@ -22,5 +22,3 @@ const Loader = ({
     </div>
   )
 }
-
-export default Loader

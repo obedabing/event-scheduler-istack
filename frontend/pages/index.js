@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { makeStyles } from '@material-ui/core/styles'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Link from '@material-ui/core/Link'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -23,6 +19,7 @@ import { useRouter } from 'next/router'
 import TopicCard from '../src/components/TopicCard'
 import SearchField from '../src/components/SearchField'
 import EventsTab from '../src/components/EventsTab'
+import Checkbox from '../src/components/Checkbox'
 
 import {
   fetchEventDates,
@@ -35,18 +32,6 @@ import {
   stages,
   days,
 } from '../src/constants'
-
-import { renderEventDate } from '../src/utils'
-
-const StyledTabs = withStyles({
-  root: {
-    backgroundColor: '#F6F9FD',
-  },
-  indicator: {
-    backgroundImage: `linear-gradient(to right, #FCF75E , #FDCD2D)`,
-    height: '100%',
-  },
-})((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />)
 
 const useStyles = makeStyles({
   searchContainer: {
@@ -98,14 +83,6 @@ const useStyles = makeStyles({
   cellSpan: {
     width: '10px',
   },
-  dateTab: {
-    zIndex: 2,
-    borderRight: '1px solid #E0E0E0',
-    borderTop: '1px solid #E0E0E0',
-    height: '100px',
-    textTransform: 'capitalize',
-    fontSize: '15px',
-  }
 })
 
 const Index = () => {
@@ -229,16 +206,14 @@ const Index = () => {
                 justify="space-between"
               >
                 <Grid item>
-                  <FormControlLabel
-                    control={<Checkbox
-                      name="track"
-                      color="primary"
-                      onChange={() => {
-                        const { checked } = event.target
-                        handleSelectTracks(checked)
-                        setShowFilter(showFilter)
-                      }}
-                    />}
+                  <Checkbox
+                    name="track"
+                    color="primary"
+                    onChange={() => {
+                      const { checked } = event.target
+                      handleSelectTracks(checked)
+                      setShowFilter(showFilter)
+                    }}
                     label="Tracks"
                   />
                 </Grid>
@@ -255,8 +230,9 @@ const Index = () => {
                     
                     return (
                       <Grid key={`${id}-${index}`} item className={classes.filterCheckboxContainer}>
-                        <FormControlLabel
-                          control={<Checkbox color="primary" name={data.name} />}
+                        <Checkbox
+                          color="primary"
+                          name={data.name}
                           label={<Typography variant="body1">{data.name}</Typography>}
                           checked={selectedFilters.includes(id)}
                           onChange={(event) => {
