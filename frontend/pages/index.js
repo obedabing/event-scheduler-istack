@@ -6,20 +6,14 @@ import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import QueryBuilderIcon from '@material-ui/icons/QueryBuilder'
 import { useDispatch, useSelector} from 'react-redux'
 import { useRouter } from 'next/router'
 
-import TopicCard from '../src/components/TopicCard'
 import SearchField from '../src/components/SearchField'
 import EventsTab from '../src/components/EventsTab'
 import Checkbox from '../src/components/Checkbox'
 import LinkButton from '../src/components/LinkButton'
+import ScheduleTable from '../src/components/ScheduleTable'
 
 import {
   fetchEventDates,
@@ -29,7 +23,6 @@ import {
 import {
   trackIds,
   tracks,
-  stages,
   days,
 } from '../src/constants'
 
@@ -49,30 +42,11 @@ const useStyles = makeStyles({
     padding: '0px',
     marginRight: '5px',
   },
-  tableCell: {
-    padding: '0px',
-  },
   filterContainer: {
     backgroundColor: 'transparent',
     boxShadow: 'none',
     margin: '0px',
     padding: '0px',
-  },
-  rowHeader: {
-    border: '1px solid #E0E0E0',
-  },
-  stageHeader: {
-    fontSize: '24px',
-    fontWeight: 'bolder',
-    borderBottom: '5px solid #570DEA',
-    marginRight: '20px',
-  },
-  clockIcon: {
-    fontSize: '30px',
-    color: '#15194C',
-  },
-  cellSpan: {
-    width: '10px',
   },
 })
 
@@ -246,74 +220,6 @@ const Index = () => {
     )
   }
 
-  const renderScheduleContaner = () => {
-    const stageKeys = Object.keys(stages)
-    const scheduleData = schedules[selectedEventId] || []
-    return (
-      <Grid container>
-        <Table>
-          <TableHead>
-            <TableRow className={classes.rowHeader}>
-              <TableCell>
-                <QueryBuilderIcon className={classes.clockIcon}/>
-              </TableCell>
-              {
-                stageKeys.map((key, index) => (
-                  <React.Fragment key={key}>
-                    <TableCell
-                      key={`${index}-${key}`}
-                      align="center"
-                      className={classes.stageHeader}
-                    >
-                        {stages[key].name.toUpperCase()}
-                    </TableCell>
-                    <TableCell  key={`${key}-span`} className={classes.cellSpan} />
-                  </React.Fragment>
-                ))
-              }
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              scheduleData.map((res) => {
-                const { scheduleTopics } = res
-                let time = res.time.slice(0, -3)
-
-                if (!Object.keys(scheduleTopics).length) {
-                  return null
-                }
-
-                return (
-                  <TableRow key={`${res.id}-${res.time}`}>
-                    <TableCell
-                      style={{
-                        width: '100px',
-                        fontSize: '15px',
-                        fontWeight: 'bolder',
-                      }}
-                    >
-                      {time}
-                    </TableCell>
-                    {
-                      stageKeys.map((key, index) => (
-                        <React.Fragment key={`${key}-${index}`}>
-                          <TableCell className={classes.tableCell}>
-                            <TopicCard data={scheduleTopics[key]}/>
-                          </TableCell>
-                          <TableCell className={classes.cellSpan} />
-                        </React.Fragment>
-                      ))
-                    }
-                  </TableRow> 
-                )
-              })
-            }
-          </TableBody>
-        </Table>
-      </Grid>
-    )
-  }
-
   return (
     <Grid container>
       <Grid item xs={3} className={classes.searchContainer}>
@@ -325,7 +231,9 @@ const Index = () => {
           value={selectedEventId}
           onChange={handleChangeDate}
         />
-        {renderScheduleContaner()}
+        <Grid container>
+          <ScheduleTable data={schedules[selectedEventId] || []}/>
+        </Grid>
       </Grid>
     </Grid>
   )
