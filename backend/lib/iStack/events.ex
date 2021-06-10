@@ -46,10 +46,26 @@ defmodule IStack.Events do
     Repo.all(event_schedule_query)
   end
 
+  defp remove_invalid_expression(string) do
+    Regex.replace(~r/[*()+\[\]\/\?\\]/, string, "")
+  end
+
   def list_schedules(event_id, list_of_keyword) do
-    partial_format = Enum.reduce(list_of_keyword, fn res, acc -> 
-      "#{acc}|#{res}"
-    end)
+    partial_format =
+    if length(list_of_keyword) == 1 do
+      data = List.first(list_of_keyword)
+      remove_invalid_expression(data)
+    else
+      Enum.reduce(list_of_keyword, fn res, acc -> 
+        replaced_inval_exp = remove_invalid_expression(res)
+        if replaced_inval_exp == "" do
+          acc
+        else
+          "#{acc}|#{replaced_inval_exp}"
+        end
+      end)
+    end
+
     final_format = ~s|%(#{partial_format})%|
 
     topic_query = from(
@@ -363,6 +379,12 @@ defmodule IStack.Events do
       {:error, %Ecto.Changeset{}}
 
   """
+  def update_schedule_topic(%ScheduleTopic{} = schedule_topic, attrs, track_type) do
+    schedule_topic
+    |> ScheduleTopic.update_changeset(attrs, track_type)
+    |> Repo.update()
+  end
+
   def update_schedule_topic(%ScheduleTopic{} = schedule_topic, attrs) do
     schedule_topic
     |> ScheduleTopic.changeset(attrs)
