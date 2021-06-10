@@ -14,7 +14,6 @@ defmodule IStackWeb.EventScheduleController do
 
   def index_by_event_id(conn, %{"event_id" => event_id, "list_of_keywords" => list_of_keywords}) do
     event = Events.get_event!(event_id)
-    IO.inspect "AHAHAHAHAHHAHAHA======="
     event_schedules = 
     if (length(list_of_keywords)) do
       Events.list_schedules(event.id, list_of_keywords)
@@ -29,11 +28,6 @@ defmodule IStackWeb.EventScheduleController do
 
   def index_by_event_id(conn, %{"event_id" => event_id}) do
     event = Events.get_event!(event_id)
-    # list = ["influencer_marketing", "Yuhan Niya"]
-    # test = Events.list_schedules(event.id, list)
-    # IO.inspect "=============================="
-    # IO.inspect test
-    # IO.inspect "=============================="
     with event_schedules = Events.list_schedules(event.id) do
       render(conn, "index_with_assoc.json", event_schedules: event_schedules)
     end
