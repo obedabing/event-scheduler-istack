@@ -13,7 +13,7 @@ import SearchField from '../src/components/SearchField'
 import EventsTab from '../src/components/EventsTab'
 import Checkbox from '../src/components/Checkbox'
 import LinkButton from '../src/components/LinkButton'
-import ScheduleTable from '../src/components/ScheduleTable'
+import EventScheduleTable from '../src/components/EventScheduleTable'
 
 import {
   fetchEventDates,
@@ -232,7 +232,7 @@ const Index = () => {
           onChange={handleChangeDate}
         />
         <Grid container>
-          <ScheduleTable data={schedules[selectedEventId] || []}/>
+          <EventScheduleTable data={schedules[selectedEventId] || []}/>
         </Grid>
       </Grid>
     </Grid>

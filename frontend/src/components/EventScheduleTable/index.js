@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   }
 })
 
-const ScheduleTable = ({
+const EventScheduleTable = ({
   data = [],
 }) => {
   const classes = useStyles()
@@ -100,4 +100,4 @@ const ScheduleTable = ({
   )
 }
 
-export default ScheduleTable
+export default EventScheduleTable
