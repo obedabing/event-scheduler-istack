@@ -22,6 +22,7 @@ import { useRouter } from 'next/router'
 
 import TopicCard from '../src/components/TopicCard'
 import SearchField from '../src/components/SearchField'
+import EventsTab from '../src/components/EventsTab'
 
 import {
   fetchEventDates,
@@ -354,34 +355,11 @@ const Index = () => {
         {renderSearchContainer()}
       </Grid>
       <Grid item xs={9} className={classes.eventsContainer}>
-        <StyledTabs
+        <EventsTab
+          data={events}
           value={selectedEventId}
-        >
-          {events.map((res, index) => {
-            const date = renderEventDate(res.date)
-            return (
-              <Tab
-                className={classes.dateTab}
-                key={`${res.id}-${res.date}`}
-                icon={(
-                  <Typography
-                    variant="h6"
-                    style={{
-                      fontWeight: selectedEventId === res.id
-                        ? 'bolder'
-                        : '200',
-                    }}
-                  >
-                    {days[index].name.toUpperCase()}
-                  </Typography>
-                )}
-                label={date}
-                value={res.id}
-                onClick={() => handleChangeDate(res)}
-              />
-            )
-          })}
-        </StyledTabs>
+          onChange={handleChangeDate}
+        />
         {renderScheduleContaner()}
       </Grid>
     </Grid>
