@@ -5,7 +5,6 @@ import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -20,6 +19,7 @@ import TopicCard from '../src/components/TopicCard'
 import SearchField from '../src/components/SearchField'
 import EventsTab from '../src/components/EventsTab'
 import Checkbox from '../src/components/Checkbox'
+import LinkButton from '../src/components/LinkButton'
 
 import {
   fetchEventDates,
@@ -43,15 +43,6 @@ const useStyles = makeStyles({
     padding: '15px',
     padding: '0px',
     borderLeft: '1px solid #E0E0E0'
-  },
-  showFilter: {
-    color: '#0A4AFA',
-    fontSize: '14px',
-    fontWeight: 'bolder',
-    textDecoration: 'underline',
-    '&:hover': {
-      cursor: 'pointer',
-    },
   },
   filterCheckboxContainer: {
     width: '160px',
@@ -185,11 +176,9 @@ const Index = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Link onClick={handleShowFilter}>
-                <Typography className={classes.showFilter}>
-                  Show all filters
-                </Typography>
-              </Link>
+              <LinkButton onClick={handleShowFilter}>
+                Show all filters
+              </LinkButton>
             </Grid>
           </Grid>
         </Grid>
