@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -18,11 +17,11 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder'
-import InputBase from '@material-ui/core/InputBase'
 import { useDispatch, useSelector} from 'react-redux'
 import { useRouter } from 'next/router'
 
 import TopicCard from '../src/components/TopicCard'
+import SearchField from '../src/components/SearchField'
 
 import {
   fetchEventDates,
@@ -37,24 +36,6 @@ import {
 } from '../src/constants'
 
 import { renderEventDate } from '../src/utils'
-
-const SearchInput = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    borderRadius: 2,
-    position: 'relative',
-    backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    width: '100%',
-    padding: '10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-  },
-}))(InputBase)
 
 const StyledTabs = withStyles({
   root: {
@@ -206,7 +187,7 @@ const Index = () => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <SearchInput
+          <SearchField
             fullWidth
             placeholder="Search..."
             value={searchData}
